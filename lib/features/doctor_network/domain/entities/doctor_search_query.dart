@@ -47,12 +47,12 @@ class DoctorSearchQuery extends Equatable {
 
   @override
   List<Object?> get props => [
-        search,
-        specialty,
-        city,
-        experienceMin,
-        openToOpportunities,
-        page,
-        pageSize,
-      ];
+    search,
+    specialty,
+    city,
+    experienceMin,
+    openToOpportunities,
+    page,
+    pageSize,
+  ];
 }

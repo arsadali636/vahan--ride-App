@@ -27,8 +27,7 @@ class CommentSubmitted extends CommentEvent {
 class CommentReplySubmitted extends CommentEvent {
   final String commentId;
   final String content;
-  const CommentReplySubmitted(
-      {required this.commentId, required this.content});
+  const CommentReplySubmitted({required this.commentId, required this.content});
 
   @override
   List<Object?> get props => [commentId, content];
@@ -63,8 +62,7 @@ class CommentReplyEdited extends CommentEvent {
 class CommentReplyDeleted extends CommentEvent {
   final String replyId;
   final String commentId;
-  const CommentReplyDeleted(
-      {required this.replyId, required this.commentId});
+  const CommentReplyDeleted({required this.replyId, required this.commentId});
 
   @override
   List<Object?> get props => [replyId, commentId];

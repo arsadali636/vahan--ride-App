@@ -29,13 +29,13 @@ class DoctorExperience extends Equatable {
 
   @override
   List<Object?> get props => [
-        id,
-        role,
-        hospitalName,
-        location,
-        startDate,
-        endDate,
-        isCurrent,
-        description,
-      ];
+    id,
+    role,
+    hospitalName,
+    location,
+    startDate,
+    endDate,
+    isCurrent,
+    description,
+  ];
 }

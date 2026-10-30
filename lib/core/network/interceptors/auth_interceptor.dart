@@ -4,15 +4,7 @@ import '../../constants/api_constants.dart';
 import '../../constants/api_endpoints.dart';
 import '../../storage/session_service.dart';
 
-/// Attaches the bearer access token to outgoing requests.
-///
-/// Reads the token from [SessionService] so repositories never have to manage
-/// `Authorization` headers manually. Requests that already carry an
-/// Authorization header (e.g. a basic auth upload) are left untouched. The
-/// token refresh request is never given an access token — it authenticates
-/// with the refresh token in its body. Requests marked public via
-/// `ApiConstants.requiresAuthExtraKey` (see [ApiClient.requiresAuth]) are also
-/// left without an Authorization header.
+/// Attaches bearer access token and Django sessionid cookie to outgoing requests.
 class AuthInterceptor extends Interceptor {
   AuthInterceptor(this._sessionService);
 
@@ -24,20 +16,64 @@ class AuthInterceptor extends Interceptor {
     RequestInterceptorHandler handler,
   ) async {
     try {
-      final isRefreshRequest =
-          options.path == ApiEndpoints.authRefresh;
+      final isRefreshRequest = options.path == ApiEndpoints.authRefresh;
       final isPublic =
           options.extra[ApiConstants.requiresAuthExtraKey] == false;
+      final isRetry = options.extra['refresh_retried'] == true;
       final hasAuthHeader = options.headers.containsKey('Authorization');
-      if (!hasAuthHeader && !isRefreshRequest && !isPublic) {
+      if ((!hasAuthHeader || isRetry) && !isRefreshRequest && !isPublic) {
         final accessToken = await _sessionService.getAccessToken();
         if (accessToken != null && accessToken.isNotEmpty) {
           options.headers['Authorization'] = 'Bearer $accessToken';
         }
       }
+      final sessionId = await _sessionService.getSessionId();
+      if (sessionId != null && sessionId.isNotEmpty) {
+        final existingCookie = options.headers['Cookie'] as String?;
+        if (existingCookie != null && existingCookie.isNotEmpty) {
+          if (isRetry && existingCookie.contains('sessionid=')) {
+            options.headers['Cookie'] = existingCookie.replaceAll(
+              RegExp(r'sessionid=[^;]+'),
+              'sessionid=$sessionId',
+            );
+          } else if (!existingCookie.contains('sessionid=')) {
+            options.headers['Cookie'] = '$existingCookie; sessionid=$sessionId';
+          }
+        } else {
+          options.headers['Cookie'] = 'sessionid=$sessionId';
+        }
+      }
     } catch (_) {
-      // Never block a request because of storage errors — let it fail later.
+      // Storage safety
     }
     handler.next(options);
+  }
+
+  @override
+  Future<void> onResponse(
+    Response response,
+    ResponseInterceptorHandler handler,
+  ) async {
+    await _extractAndSaveSessionId(response);
+    handler.next(response);
+  }
+
+  Future<void> _extractAndSaveSessionId(Response response) async {
+    try {
+      final cookies = response.headers['set-cookie'];
+      if (cookies != null) {
+        for (final cookie in cookies) {
+          if (cookie.contains('sessionid=')) {
+            final match = RegExp(r'sessionid=([^;]+)').firstMatch(cookie);
+            if (match != null) {
+              final sessionId = match.group(1);
+              if (sessionId != null && sessionId.isNotEmpty) {
+                await _sessionService.saveSessionId(sessionId);
+              }
+            }
+          }
+        }
+      }
+    } catch (_) {}
   }
 }

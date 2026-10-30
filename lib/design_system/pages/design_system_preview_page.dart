@@ -43,7 +43,12 @@ class DesignSystemPreviewPage extends StatelessWidget {
         appBar: AppAppBar(
           title: 'Design System',
           bottom: const AppTabBar(
-            tabs: ['Tokens', 'Buttons & Inputs', 'Cards & Avatars', 'States & Overlays'],
+            tabs: [
+              'Tokens',
+              'Buttons & Inputs',
+              'Cards & Avatars',
+              'States & Overlays',
+            ],
           ),
         ),
         body: const TabBarView(
@@ -85,7 +90,10 @@ class _PreviewRow extends StatelessWidget {
   final List<Widget> children;
   final MainAxisAlignment alignment;
 
-  const _PreviewRow({required this.children, this.alignment = MainAxisAlignment.start});
+  const _PreviewRow({
+    required this.children,
+    this.alignment = MainAxisAlignment.start,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -164,7 +172,10 @@ class _TokensTab extends StatelessWidget {
             child: Wrap(
               spacing: AppSpacing.md,
               runSpacing: AppSpacing.md,
-              children: [for (final (name, color) in _colors) _Swatch(color: color, name: name)],
+              children: [
+                for (final (name, color) in _colors)
+                  _Swatch(color: color, name: name),
+              ],
             ),
           ),
           _PreviewSection(
@@ -316,24 +327,61 @@ class _ButtonsAndInputsTab extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const _PreviewRow(children: [
-                  PrimaryButton(label: 'Primary', onPressed: null),
-                  SecondaryButton(label: 'Secondary', onPressed: null),
-                  OutlineButton(label: 'Outline', onPressed: null),
-                ]),
-                const _PreviewRow(children: [
-                  PrimaryButton(label: 'Primary', onPressed: _noop, isLoading: true),
-                  SecondaryButton(label: 'Secondary', onPressed: _noop, isLoading: true),
-                  OutlineButton(label: 'Outline', onPressed: _noop, isLoading: true),
-                ]),
-                const _PreviewRow(children: [
-                  PrimaryButton(label: 'Primary', onPressed: _noop, size: AppButtonSize.small),
-                  PrimaryButton(label: 'Primary', onPressed: _noop, size: AppButtonSize.medium),
-                  PrimaryButton(label: 'Primary', onPressed: _noop, size: AppButtonSize.large),
-                ]),
-                const _PreviewRow(children: [
-                  PrimaryButton(label: 'Full width', onPressed: _noop, icon: Icons.add_rounded, fullWidth: true),
-                ]),
+                const _PreviewRow(
+                  children: [
+                    PrimaryButton(label: 'Primary', onPressed: null),
+                    SecondaryButton(label: 'Secondary', onPressed: null),
+                    OutlineButton(label: 'Outline', onPressed: null),
+                  ],
+                ),
+                const _PreviewRow(
+                  children: [
+                    PrimaryButton(
+                      label: 'Primary',
+                      onPressed: _noop,
+                      isLoading: true,
+                    ),
+                    SecondaryButton(
+                      label: 'Secondary',
+                      onPressed: _noop,
+                      isLoading: true,
+                    ),
+                    OutlineButton(
+                      label: 'Outline',
+                      onPressed: _noop,
+                      isLoading: true,
+                    ),
+                  ],
+                ),
+                const _PreviewRow(
+                  children: [
+                    PrimaryButton(
+                      label: 'Primary',
+                      onPressed: _noop,
+                      size: AppButtonSize.small,
+                    ),
+                    PrimaryButton(
+                      label: 'Primary',
+                      onPressed: _noop,
+                      size: AppButtonSize.medium,
+                    ),
+                    PrimaryButton(
+                      label: 'Primary',
+                      onPressed: _noop,
+                      size: AppButtonSize.large,
+                    ),
+                  ],
+                ),
+                const _PreviewRow(
+                  children: [
+                    PrimaryButton(
+                      label: 'Full width',
+                      onPressed: _noop,
+                      icon: Icons.add_rounded,
+                      fullWidth: true,
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
@@ -351,20 +399,19 @@ class _ButtonsAndInputsTab extends StatelessWidget {
           ),
           _PreviewSection(
             title: 'Text Field (obscured)',
-            child: const AppTextField(
-              label: 'Password',
-              obscureText: true,
-            ),
+            child: const AppTextField(label: 'Password', obscureText: true),
           ),
-          _PreviewSection(
-            title: 'Search Field',
-            child: const SearchField(),
-          ),
+          _PreviewSection(title: 'Search Field', child: const SearchField()),
           _PreviewSection(
             title: 'Dropdown',
             child: AppDropdown<String>(
               label: 'Speciality',
-              items: const ['Cardiology', 'Neurology', 'Dentistry', 'Dermatology'],
+              items: const [
+                'Cardiology',
+                'Neurology',
+                'Dentistry',
+                'Dermatology',
+              ],
               initialValue: 'Cardiology',
               onChanged: _noop2,
             ),
@@ -395,7 +442,9 @@ class _CardsAndAvatarsTab extends StatelessWidget {
                   const SizedBox(height: AppSpacing.xs),
                   Text(
                     'Surface container with border and rounded corners.',
-                    style: AppTypography.bodyMedium.copyWith(color: AppColors.textSecondary),
+                    style: AppTypography.bodyMedium.copyWith(
+                      color: AppColors.textSecondary,
+                    ),
                   ),
                 ],
               ),
@@ -424,10 +473,12 @@ class _CardsAndAvatarsTab extends StatelessWidget {
           ),
           _PreviewSection(
             title: 'Badges',
-            child: const _PreviewRow(children: [
-              VerificationBadge(label: 'Verified'),
-              AvailabilityBadge(label: 'Available'),
-            ]),
+            child: const _PreviewRow(
+              children: [
+                VerificationBadge(label: 'Verified'),
+                AvailabilityBadge(label: 'Available'),
+              ],
+            ),
           ),
           _PreviewSection(
             title: 'Avatars',
@@ -435,8 +486,18 @@ class _CardsAndAvatarsTab extends StatelessWidget {
               alignment: MainAxisAlignment.spaceBetween,
               children: [
                 DoctorAvatar(firstName: 'Aarav', lastName: 'Sharma', size: 40),
-                DoctorAvatar(firstName: 'Neha', lastName: 'Patel', size: 48, verified: true),
-                DoctorAvatar(firstName: 'Rohan', lastName: 'Mehta', size: 56, verified: true),
+                DoctorAvatar(
+                  firstName: 'Neha',
+                  lastName: 'Patel',
+                  size: 48,
+                  verified: true,
+                ),
+                DoctorAvatar(
+                  firstName: 'Rohan',
+                  lastName: 'Mehta',
+                  size: 56,
+                  verified: true,
+                ),
                 HospitalAvatar(hospitalName: 'Apollo', size: 48),
                 HospitalAvatar(hospitalName: 'Fortis', size: 56),
               ],
@@ -460,7 +521,10 @@ class _StatesAndOverlaysTab extends StatelessWidget {
         children: [
           _PreviewSection(
             title: 'Loader',
-            child: const SizedBox(height: 72, child: AppLoader(label: 'Loading jobs...')),
+            child: const SizedBox(
+              height: 72,
+              child: AppLoader(label: 'Loading jobs...'),
+            ),
           ),
           _PreviewSection(
             title: 'Error view',
@@ -487,10 +551,7 @@ class _StatesAndOverlaysTab extends StatelessWidget {
             child: Builder(
               builder: (context) {
                 return const _PreviewRow(
-                  children: [
-                    _ShowSheetButton(),
-                    _ShowDialogButton(),
-                  ],
+                  children: [_ShowSheetButton(), _ShowDialogButton()],
                 );
               },
             ),

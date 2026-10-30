@@ -19,7 +19,8 @@ class FeedPage extends StatelessWidget {
       appBar: AppBar(title: const Text('Professional feed')),
       body: const AppEmptyView(
         title: 'Professional feed is not available yet',
-        message: 'The feed endpoints are not published in the backend '
+        message:
+            'The feed endpoints are not published in the backend '
             'contract yet. Posts, comments and reactions will appear here '
             'once the feed API is available.',
         icon: Icons.article_outlined,

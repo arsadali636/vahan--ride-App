@@ -30,7 +30,10 @@ void main() {
     test('masks nested sensitive keys', () {
       final sanitized = LogSanitizer.sanitizeJson(const {
         'user': {
-          'profile': {'email': 'doctor@example.com', 'medical_document': 'file.pdf'},
+          'profile': {
+            'email': 'doctor@example.com',
+            'medical_document': 'file.pdf',
+          },
         },
         'data': {'token': 'jwt-value', 'private_message': 'hello'},
       });
@@ -85,8 +88,13 @@ void main() {
     });
 
     test('masks other sensitive headers entirely', () {
+      expect(LogSanitizer.maskHeaderValue('x-api-key', 'abc123'), '********');
       expect(
-        LogSanitizer.maskHeaderValue('x-api-key', 'abc123'),
+        LogSanitizer.maskHeaderValue('Cookie', 'sessionid=abc; csrftoken=def'),
+        '********',
+      );
+      expect(
+        LogSanitizer.maskHeaderValue('set-cookie', 'sessionid=abc; Path=/'),
         '********',
       );
     });
@@ -99,12 +107,36 @@ void main() {
     });
   });
 
+  group('LogSanitizer.sanitizeHeaders', () {
+    test('masks sensitive headers while preserving non-sensitive ones', () {
+      final headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer super-secret-jwt',
+        'Cookie': 'sessionid=secret-session; csrftoken=secret-csrf',
+        'Set-Cookie': 'sessionid=secret-session; Path=/',
+      };
+      final sanitized = LogSanitizer.sanitizeHeaders(headers);
+
+      expect(sanitized, contains('Content-Type: application/json'));
+      expect(sanitized, contains('Authorization: Bearer ********'));
+      expect(sanitized, contains('Cookie: ********'));
+      expect(sanitized, contains('Set-Cookie: ********'));
+      expect(sanitized, isNot(contains('super-secret-jwt')));
+      expect(sanitized, isNot(contains('secret-session')));
+      expect(sanitized, isNot(contains('secret-csrf')));
+    });
+  });
+
   group('LogSanitizer.isSensitiveKey', () {
     test('matches keys case-insensitively', () {
       expect(LogSanitizer.isSensitiveKey('Password'), isTrue);
       expect(LogSanitizer.isSensitiveKey('ACCESS_TOKEN'), isTrue);
       expect(LogSanitizer.isSensitiveKey('access_token'), isTrue);
       expect(LogSanitizer.isSensitiveKey('medical_document'), isTrue);
+      expect(LogSanitizer.isSensitiveKey('cookie'), isTrue);
+      expect(LogSanitizer.isSensitiveKey('sessionid'), isTrue);
+      expect(LogSanitizer.isSensitiveKey('csrftoken'), isTrue);
+      expect(LogSanitizer.isSensitiveKey('otp'), isTrue);
       expect(LogSanitizer.isSensitiveKey('name'), isFalse);
     });
   });

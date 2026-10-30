@@ -38,10 +38,12 @@ Future<DoctorProfileState> _awaitStatus(
   void Function() trigger,
 ) async {
   final done = bloc.stream
-      .firstWhere((s) =>
-          s.status == DoctorProfileStatus.loaded ||
-          s.status == DoctorProfileStatus.success ||
-          s.status == DoctorProfileStatus.failure)
+      .firstWhere(
+        (s) =>
+            s.status == DoctorProfileStatus.loaded ||
+            s.status == DoctorProfileStatus.success ||
+            s.status == DoctorProfileStatus.failure,
+      )
       .timeout(const Duration(seconds: 5));
   trigger();
   return done;
@@ -225,9 +227,15 @@ void main() {
 
       final state = await _awaitStatus(
         bloc,
-        () => bloc.add(const DoctorProfilePhotoUploadRequested(
-          DoctorPhoto(bytes: [1], filename: 'a.png', contentType: 'image/png'),
-        )),
+        () => bloc.add(
+          const DoctorProfilePhotoUploadRequested(
+            DoctorPhoto(
+              bytes: [1],
+              filename: 'a.png',
+              contentType: 'image/png',
+            ),
+          ),
+        ),
       );
 
       expect(state.status, DoctorProfileStatus.failure);
@@ -239,13 +247,15 @@ void main() {
     test('addQualification refreshes the list', () async {
       final state = await _awaitStatus(
         bloc,
-        () => bloc.add(const AddQualificationRequested(
-          DoctorQualificationDraft(
-            degree: 'MBBS',
-            institution: 'GMC',
-            year: 2012,
+        () => bloc.add(
+          const AddQualificationRequested(
+            DoctorQualificationDraft(
+              degree: 'MBBS',
+              institution: 'GMC',
+              year: 2012,
+            ),
           ),
-        )),
+        ),
       );
 
       expect(repository.addQualificationCalls, 1);
@@ -267,13 +277,15 @@ void main() {
     test('addRegistration refreshes the list', () async {
       final state = await _awaitStatus(
         bloc,
-        () => bloc.add(const AddRegistrationRequested(
-          DoctorRegistrationDraft(
-            councilId: 'MCI',
-            registrationNumber: 'MCI-1',
-            registrationYear: 2013,
+        () => bloc.add(
+          const AddRegistrationRequested(
+            DoctorRegistrationDraft(
+              councilId: 'MCI',
+              registrationNumber: 'MCI-1',
+              registrationYear: 2013,
+            ),
           ),
-        )),
+        ),
       );
 
       expect(repository.addRegistrationCalls, 1);
@@ -284,12 +296,14 @@ void main() {
     test('addExperience refreshes the list', () async {
       final state = await _awaitStatus(
         bloc,
-        () => bloc.add(const AddExperienceRequested(
-          DoctorExperienceDraft(
-            role: 'Resident',
-            hospitalName: 'City Hospital',
+        () => bloc.add(
+          const AddExperienceRequested(
+            DoctorExperienceDraft(
+              role: 'Resident',
+              hospitalName: 'City Hospital',
+            ),
           ),
-        )),
+        ),
       );
 
       expect(repository.addExperienceCalls, 1);
@@ -332,30 +346,34 @@ void main() {
     test('needsCompletion is false once a profile exists', () {
       expect(bloc.state.needsCompletion, isTrue);
 
-      bloc.emit(const DoctorProfileState(
-        profile: DoctorProfile(
-          id: 'p-1',
-          userId: 'u-1',
-          firstName: 'Ada',
-          lastName: 'Lovelace',
-          fullName: 'Ada Lovelace',
+      bloc.emit(
+        const DoctorProfileState(
+          profile: DoctorProfile(
+            id: 'p-1',
+            userId: 'u-1',
+            firstName: 'Ada',
+            lastName: 'Lovelace',
+            fullName: 'Ada Lovelace',
+          ),
         ),
-      ));
+      );
 
       expect(bloc.state.needsCompletion, isFalse);
     });
 
     test('hasProfile requires a non-empty first name', () {
       expect(
-        const DoctorProfileState().copyWith(
-          profile: const DoctorProfile(
-            id: 'p-1',
-            userId: 'u-1',
-            firstName: '',
-            lastName: '',
-            fullName: '',
-          ),
-        ).hasProfile,
+        const DoctorProfileState()
+            .copyWith(
+              profile: const DoctorProfile(
+                id: 'p-1',
+                userId: 'u-1',
+                firstName: '',
+                lastName: '',
+                fullName: '',
+              ),
+            )
+            .hasProfile,
         isFalse,
       );
     });

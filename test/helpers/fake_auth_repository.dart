@@ -7,7 +7,11 @@ import 'package:doc_connect_app/features/auth/domain/repositories/auth_repositor
 
 /// Configurable in-memory [AuthRepository] for usecase/bloc/widget tests.
 class FakeAuthRepository implements AuthRepository {
-  FakeAuthRepository({this.sendOtpResult, this.registerResult, this.loginResult});
+  FakeAuthRepository({
+    this.sendOtpResult,
+    this.registerResult,
+    this.loginResult,
+  });
 
   SendOtpResult? sendOtpResult;
   AuthSession? registerResult;
@@ -52,6 +56,7 @@ class FakeAuthRepository implements AuthRepository {
   Future<AuthSession> passwordLogin({
     required String phone,
     required String password,
+    UserRole? userType,
     String? deviceId,
   }) async {
     lastPhone = phone;
@@ -63,6 +68,7 @@ class FakeAuthRepository implements AuthRepository {
             accessToken: 'access',
             refreshToken: 'refresh',
           ),
+          userRole: userType,
         );
   }
 

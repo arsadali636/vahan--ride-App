@@ -5,8 +5,9 @@ import 'package:doc_connect_app/features/communities/presentation/pages/communit
 
 void main() {
   group('CommunitiesPage', () {
-    testWidgets('renders the communities chrome with an honest state',
-        (tester) async {
+    testWidgets('renders the communities chrome with an honest state', (
+      tester,
+    ) async {
       await tester.pumpWidget(const MaterialApp(home: CommunitiesPage()));
 
       expect(find.text('Communities'), findsOneWidget);

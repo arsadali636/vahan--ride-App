@@ -7,11 +7,13 @@ class FakeSessionService implements SessionService {
   FakeSessionService({this.session});
 
   SessionData? session;
+  String? _sessionId;
   bool? _profileCreated;
 
   @override
   Future<void> clearSession() async {
     session = null;
+    _sessionId = null;
     _profileCreated = null;
   }
 
@@ -25,6 +27,14 @@ class FakeSessionService implements SessionService {
   Future<String?> getRefreshToken() async {
     final token = session?.tokens.refreshToken;
     return (token == null || token.isEmpty) ? null : token;
+  }
+
+  @override
+  Future<String?> getSessionId() async => _sessionId;
+
+  @override
+  Future<void> saveSessionId(String sessionId) async {
+    _sessionId = sessionId;
   }
 
   @override

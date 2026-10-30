@@ -10,11 +10,7 @@ class VerificationBadge extends StatelessWidget {
   final String? label;
   final double size;
 
-  const VerificationBadge({
-    super.key,
-    this.label,
-    this.size = 16,
-  });
+  const VerificationBadge({super.key, this.label, this.size = 16});
 
   @override
   Widget build(BuildContext context) {

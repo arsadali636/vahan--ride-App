@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 
+import '../../../../core/enums/user_role.dart';
 import '../entities/auth_session.dart';
 import '../repositories/auth_repository.dart';
 
@@ -15,6 +16,7 @@ class PasswordLogin {
     return repository.passwordLogin(
       phone: params.phone,
       password: params.password,
+      userType: params.userType,
       deviceId: params.deviceId,
     );
   }
@@ -23,14 +25,16 @@ class PasswordLogin {
 class PasswordLoginParams extends Equatable {
   final String phone;
   final String password;
+  final UserRole? userType;
   final String? deviceId;
 
   const PasswordLoginParams({
     required this.phone,
     required this.password,
+    this.userType,
     this.deviceId,
   });
 
   @override
-  List<Object?> get props => [phone, password, deviceId];
+  List<Object?> get props => [phone, password, userType, deviceId];
 }

@@ -68,9 +68,7 @@ class _DoctorProfileBodyState extends State<_DoctorProfileBody> {
               state.hasProfile) {
             ScaffoldMessenger.of(context)
               ..hideCurrentSnackBar()
-              ..showSnackBar(
-                SnackBar(content: Text(state.failure!.message)),
-              );
+              ..showSnackBar(SnackBar(content: Text(state.failure!.message)));
           }
         },
         builder: (context, state) {
@@ -78,8 +76,9 @@ class _DoctorProfileBodyState extends State<_DoctorProfileBody> {
             return AppErrorView(
               title: 'Could not load your profile',
               message: state.failure?.message,
-              onRetry: () =>
-                  context.read<DoctorProfileBloc>().add(const DoctorProfileLoadRequested()),
+              onRetry: () => context.read<DoctorProfileBloc>().add(
+                const DoctorProfileLoadRequested(),
+              ),
             );
           }
           return DoctorProfileView(state: state);

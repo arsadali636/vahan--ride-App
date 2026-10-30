@@ -24,10 +24,7 @@ class AuthTokenPair extends Equatable {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'access_token': accessToken,
-      'refresh_token': refreshToken,
-    };
+    return {'access_token': accessToken, 'refresh_token': refreshToken};
   }
 
   @override
@@ -51,7 +48,13 @@ class SessionData extends Equatable {
   });
 
   @override
-  List<Object?> get props => [tokens, userId, userRole, profile, profileCreated];
+  List<Object?> get props => [
+    tokens,
+    userId,
+    userRole,
+    profile,
+    profileCreated,
+  ];
 }
 
 /// Centralized access to the authenticated session.
@@ -75,6 +78,10 @@ abstract class SessionService {
   Future<String?> getAccessToken();
 
   Future<String?> getRefreshToken();
+
+  Future<String?> getSessionId();
+
+  Future<void> saveSessionId(String sessionId);
 
   Future<String?> getUserId();
 
@@ -108,7 +115,9 @@ class SessionServiceImpl implements SessionService {
   }) async {
     await saveTokens(tokens);
     if (userId != null) await _storage.write(StorageKeys.userId, userId);
-    if (userRole != null) await _storage.write(StorageKeys.userRole, userRole.name);
+    if (userRole != null) {
+      await _storage.write(StorageKeys.userRole, userRole.name);
+    }
     if (profile != null) {
       await _storage.write(
         StorageKeys.userProfile,
@@ -173,6 +182,13 @@ class SessionServiceImpl implements SessionService {
 
   @override
   Future<String?> getRefreshToken() => _storage.read(StorageKeys.refreshToken);
+
+  @override
+  Future<String?> getSessionId() => _storage.read(StorageKeys.sessionId);
+
+  @override
+  Future<void> saveSessionId(String sessionId) =>
+      _storage.write(StorageKeys.sessionId, sessionId);
 
   @override
   Future<String?> getUserId() => _storage.read(StorageKeys.userId);

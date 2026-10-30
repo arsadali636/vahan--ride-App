@@ -10,11 +10,7 @@ class ApiException implements Exception {
   /// Extra error context extracted from the backend response body.
   final Map<String, dynamic>? details;
 
-  const ApiException({
-    required this.message,
-    this.statusCode,
-    this.details,
-  });
+  const ApiException({required this.message, this.statusCode, this.details});
 
   @override
   String toString() =>

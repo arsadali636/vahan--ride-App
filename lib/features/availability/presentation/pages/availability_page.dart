@@ -6,12 +6,8 @@ class AvailabilityPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Availability'),
-      ),
-      body: Center(
-        child: Text('Availability Feature Page'),
-      ),
+      appBar: AppBar(title: const Text('Availability')),
+      body: Center(child: Text('Availability Feature Page')),
     );
   }
 }

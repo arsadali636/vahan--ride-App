@@ -25,6 +25,7 @@ abstract class AuthRepository {
   Future<AuthSession> passwordLogin({
     required String phone,
     required String password,
+    UserRole? userType,
     String? deviceId,
   });
 

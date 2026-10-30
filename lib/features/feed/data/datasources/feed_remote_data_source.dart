@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -81,13 +82,20 @@ class FeedRemoteDataSourceImpl implements FeedRemoteDataSource {
   }) async {
     final data = await apiClient.get(
       ApiEndpoints.feed,
-      queryParameters: {
-        'page': page,
-        'page_size': pageSize,
-      },
+      queryParameters: {'page': page, 'page_size': pageSize},
     );
-    return FeedResponseModel.fromJson(
-      (data as Map).cast<String, dynamic>(),
+    if (data is Map) {
+      return FeedResponseModel.fromJson(data.cast<String, dynamic>());
+    }
+    if (data is String && data.trim().startsWith('{')) {
+      final parsed = jsonDecode(data) as Map<String, dynamic>;
+      return FeedResponseModel.fromJson(parsed);
+    }
+    return const FeedResponseModel(
+      posts: [],
+      page: 1,
+      pageSize: 10,
+      hasMore: false,
     );
   }
 
@@ -103,6 +111,10 @@ class FeedRemoteDataSourceImpl implements FeedRemoteDataSource {
       'post_type': postType,
       'is_anonymous': isAnonymous.toString(),
     };
+
+    if (postType == 'CASE') {
+      formData['patient_privacy_confirmed'] = 'true';
+    }
 
     if (imageFile != null) {
       final fileName = imageFile.path.split('/').last;
@@ -159,10 +171,7 @@ class FeedRemoteDataSourceImpl implements FeedRemoteDataSource {
         'remove_image': removeImage,
       });
     }
-    final data = await apiClient.patch(
-      url,
-      data: formData,
-    );
+    final data = await apiClient.patch(url, data: formData);
     return EditPostResponseModel.fromJson(
       (data as Map).cast<String, dynamic>(),
     );
@@ -179,9 +188,7 @@ class FeedRemoteDataSourceImpl implements FeedRemoteDataSource {
   }
 
   @override
-  Future<GetCommentsResponseModel> getComments({
-    required String postId,
-  }) async {
+  Future<GetCommentsResponseModel> getComments({required String postId}) async {
     final url = '${ApiEndpoints.getComments}/$postId/comments/';
     final data = await apiClient.get(url);
     return GetCommentsResponseModel.fromJson(

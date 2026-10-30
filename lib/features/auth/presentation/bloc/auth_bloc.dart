@@ -32,15 +32,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     required SendOtpUseCase sendOtp,
     required VerifyOtp verifyOtp,
     required Logout logout,
-  })  : _sessionService = sessionService,
-        _authGate = authGate,
-        _restoreSession = restoreSession,
-        _registerUser = registerUser,
-        _passwordLogin = passwordLogin,
-        _sendOtp = sendOtp,
-        _verifyOtp = verifyOtp,
-        _logout = logout,
-        super(const AuthLoading()) {
+  }) : _sessionService = sessionService,
+       _authGate = authGate,
+       _restoreSession = restoreSession,
+       _registerUser = registerUser,
+       _passwordLogin = passwordLogin,
+       _sendOtp = sendOtp,
+       _verifyOtp = verifyOtp,
+       _logout = logout,
+       super(const AuthLoading()) {
     on<SessionRestoreRequested>(_onRestoreRequested);
     on<SessionExpired>(_onSessionExpired);
     on<RegisterSubmitted>(_onRegisterSubmitted);
@@ -70,10 +70,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     try {
       final session = await _restoreSession();
       if (session != null) {
-        emit(AuthAuthenticated(
-          user: session.profile,
-          profileCreated: session.profileCreated,
-        ));
+        emit(
+          AuthAuthenticated(
+            user: session.profile,
+            profileCreated: session.profileCreated,
+          ),
+        );
         _authGate.value = AuthStatus.authenticated;
       } else {
         emit(const AuthGuest());
@@ -170,10 +172,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       userRole: session.userRole,
       profileCreated: session.profileCreated,
     );
-    emit(AuthAuthenticated(
-      user: null,
-      profileCreated: session.profileCreated,
-    ));
+    emit(AuthAuthenticated(user: null, profileCreated: session.profileCreated));
     _authGate.value = AuthStatus.authenticated;
   }
 

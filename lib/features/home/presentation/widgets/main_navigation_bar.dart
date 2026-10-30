@@ -2,18 +2,16 @@ import 'package:flutter/material.dart';
 
 import '../../../../design_system/colors/app_colors.dart';
 import '../../../../design_system/radius/app_radius.dart';
-import '../../../../design_system/shadows/app_shadows.dart';
 import '../../../../design_system/spacing/app_spacing.dart';
 import '../../../../design_system/typography/app_typography.dart';
 
 /// Identifies one slot of the main [MainNavigationBar].
 enum MainTab { home, network, jobs, account }
 
-/// LinkedIn-style bottom navigation with a centered, raised Post button.
+/// Premium Floating 3D Bottom Navigation Bar for DocConnect Pro.
 ///
-/// The four regular tabs (Home, Network, Jobs, Me) are evenly spaced with the
-/// highlighted Post action pinned in the middle. The selected tab is tinted
-/// with the brand color; the Post button is always the primary call to action.
+/// Features a rounded floating white container, centered elevated blue `+`
+/// create button, active blue indicator line, and clean typography.
 class MainNavigationBar extends StatelessWidget {
   final MainTab selected;
   final ValueChanged<MainTab> onTabSelected;
@@ -28,57 +26,109 @@ class MainNavigationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        border: const Border(top: BorderSide(color: AppColors.border)),
-        boxShadow: AppShadows.sm,
-      ),
-      child: SafeArea(
-        top: false,
-        child: SizedBox(
-          height: 58,
-          child: Row(
-            children: [
-              Expanded(
-                child: _TabButton(
-                  label: 'Home',
-                  icon: Icons.home_outlined,
-                  selectedIcon: Icons.home_rounded,
-                  selected: selected == MainTab.home,
-                  onTap: () => onTabSelected(MainTab.home),
+    return SafeArea(
+      top: false,
+      child: Container(
+        margin: const EdgeInsets.fromLTRB(
+          AppSpacing.md,
+          0,
+          AppSpacing.md,
+          AppSpacing.xs,
+        ),
+        height: 66,
+        child: Stack(
+          alignment: Alignment.center,
+          clipBehavior: Clip.none,
+          children: [
+            // ── Floating White Navigation Bar ──────────────────────────
+            Container(
+              height: 60,
+              decoration: BoxDecoration(
+                color: AppColors.surface,
+                borderRadius: BorderRadius.circular(30),
+                border: Border.all(color: AppColors.border, width: 1),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.08),
+                    blurRadius: 16,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: _TabButton(
+                      label: 'Home',
+                      icon: Icons.home_rounded,
+                      selectedIcon: Icons.home_rounded,
+                      selected: selected == MainTab.home,
+                      onTap: () => onTabSelected(MainTab.home),
+                    ),
+                  ),
+                  Expanded(
+                    child: _TabButton(
+                      label: 'Network',
+                      icon: Icons.people_outline_rounded,
+                      selectedIcon: Icons.people_rounded,
+                      selected: selected == MainTab.network,
+                      onTap: () => onTabSelected(MainTab.network),
+                    ),
+                  ),
+                  const SizedBox(width: 64), // Space for centered Create button
+                  Expanded(
+                    child: _TabButton(
+                      label: 'Jobs',
+                      icon: Icons.work_outline_rounded,
+                      selectedIcon: Icons.work_rounded,
+                      selected: selected == MainTab.jobs,
+                      onTap: () => onTabSelected(MainTab.jobs),
+                    ),
+                  ),
+                  Expanded(
+                    child: _TabButton(
+                      label: 'Profile',
+                      icon: Icons.person_outline_rounded,
+                      selectedIcon: Icons.person_rounded,
+                      selected: selected == MainTab.account,
+                      onTap: () => onTabSelected(MainTab.account),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            // ── Centered Elevated Blue '+' Create Button ──────────────
+            Positioned(
+              top: -12,
+              child: Tooltip(
+                message: 'Create a post',
+                child: GestureDetector(
+                  onTap: onPostPressed,
+                  child: Container(
+                    width: 54,
+                    height: 54,
+                    decoration: BoxDecoration(
+                      color: AppColors.primary,
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppColors.primary.withValues(alpha: 0.35),
+                          blurRadius: 12,
+                          offset: const Offset(0, 6),
+                        ),
+                      ],
+                    ),
+                    child: const Icon(
+                      Icons.add_rounded,
+                      size: 32,
+                      color: Colors.white,
+                    ),
+                  ),
                 ),
               ),
-              Expanded(
-                child: _TabButton(
-                  label: 'Network',
-                  icon: Icons.people_alt_outlined,
-                  selectedIcon: Icons.people_alt_rounded,
-                  selected: selected == MainTab.network,
-                  onTap: () => onTabSelected(MainTab.network),
-                ),
-              ),
-              SizedBox(width: 72, child: _PostButton(onPressed: onPostPressed)),
-              Expanded(
-                child: _TabButton(
-                  label: 'Jobs',
-                  icon: Icons.work_outline_rounded,
-                  selectedIcon: Icons.work_rounded,
-                  selected: selected == MainTab.jobs,
-                  onTap: () => onTabSelected(MainTab.jobs),
-                ),
-              ),
-              Expanded(
-                child: _TabButton(
-                  label: 'Me',
-                  icon: Icons.person_outline_rounded,
-                  selectedIcon: Icons.person_rounded,
-                  selected: selected == MainTab.account,
-                  onTap: () => onTabSelected(MainTab.account),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -102,61 +152,39 @@ class _TabButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = selected ? AppColors.primary : AppColors.textSecondary;
+    final activeColor = AppColors.navActive;
+    final inactiveColor = AppColors.navInactive;
+    final color = selected ? activeColor : inactiveColor;
 
     return InkWell(
       onTap: onTap,
-      borderRadius: AppRadius.borderMd,
+      borderRadius: AppRadius.borderCircular,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(selected ? selectedIcon : icon, size: 24, color: color),
-          const SizedBox(height: AppSpacing.xxs),
+          Icon(selected ? selectedIcon : icon, size: 22, color: color),
+          const SizedBox(height: 2),
           Text(
             label,
             style: AppTypography.labelSmall.copyWith(
               color: color,
-              fontWeight: selected ? AppTypography.wSemiBold : AppTypography.wMedium,
+              fontSize: 11,
+              fontWeight: selected
+                  ? AppTypography.wSemiBold
+                  : AppTypography.wMedium,
             ),
           ),
-        ],
-      ),
-    );
-  }
-}
-
-/// The raised circular "+" action that opens the post composer.
-class _PostButton extends StatelessWidget {
-  final VoidCallback onPressed;
-
-  const _PostButton({required this.onPressed});
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Transform.translate(
-        offset: const Offset(0, -10),
-        child: Tooltip(
-          message: 'Create a post',
-          child: InkWell(
-            onTap: onPressed,
-            customBorder: const CircleBorder(),
-            child: Container(
-              width: 46,
-              height: 46,
+          if (selected)
+            Container(
+              margin: const EdgeInsets.only(top: 2),
+              width: 16,
+              height: 2.5,
               decoration: BoxDecoration(
-                color: AppColors.primary,
-                shape: BoxShape.circle,
-                boxShadow: AppShadows.md,
-              ),
-              child: const Icon(
-                Icons.add_rounded,
-                size: 30,
-                color: AppColors.textOnPrimary,
+                color: activeColor,
+                borderRadius: BorderRadius.circular(2),
               ),
             ),
-          ),
-        ),
+        ],
       ),
     );
   }

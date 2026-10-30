@@ -16,12 +16,12 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
     required ReplyComment replyComment,
     required EditComment editComment,
     required DeleteComment deleteComment,
-  })  : _getComments = getComments,
-        _postComment = postComment,
-        _replyComment = replyComment,
-        _editComment = editComment,
-        _deleteComment = deleteComment,
-        super(const CommentState()) {
+  }) : _getComments = getComments,
+       _postComment = postComment,
+       _replyComment = replyComment,
+       _editComment = editComment,
+       _deleteComment = deleteComment,
+       super(const CommentState()) {
     on<CommentStarted>(_onStarted);
     on<CommentSubmitted>(_onSubmitted);
     on<CommentReplySubmitted>(_onReplySubmitted);
@@ -42,21 +42,12 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
     CommentStarted event,
     Emitter<CommentState> emit,
   ) async {
-    emit(state.copyWith(
-      status: CommentStatus.loading,
-      clearError: true,
-    ));
+    emit(state.copyWith(status: CommentStatus.loading, clearError: true));
     try {
       final comments = await _getComments(postId: event.postId);
-      emit(state.copyWith(
-        status: CommentStatus.loaded,
-        comments: comments,
-      ));
+      emit(state.copyWith(status: CommentStatus.loaded, comments: comments));
     } on Failure catch (e) {
-      emit(state.copyWith(
-        status: CommentStatus.failure,
-        error: e,
-      ));
+      emit(state.copyWith(status: CommentStatus.failure, error: e));
     }
   }
 
@@ -71,15 +62,9 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
         content: event.content,
       );
       final updated = [...state.comments, newComment];
-      emit(state.copyWith(
-        status: CommentStatus.loaded,
-        comments: updated,
-      ));
+      emit(state.copyWith(status: CommentStatus.loaded, comments: updated));
     } on Failure catch (e) {
-      emit(state.copyWith(
-        status: CommentStatus.failure,
-        error: e,
-      ));
+      emit(state.copyWith(status: CommentStatus.failure, error: e));
     }
   }
 
@@ -107,15 +92,9 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
           replies: [...comment.replies, reply],
         );
       }).toList();
-      emit(state.copyWith(
-        status: CommentStatus.loaded,
-        comments: updated,
-      ));
+      emit(state.copyWith(status: CommentStatus.loaded, comments: updated));
     } on Failure catch (e) {
-      emit(state.copyWith(
-        status: CommentStatus.failure,
-        error: e,
-      ));
+      emit(state.copyWith(status: CommentStatus.failure, error: e));
     }
   }
 
@@ -140,15 +119,9 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
     emit(state.copyWith(comments: updated));
 
     try {
-      await _editComment(
-        commentId: event.commentId,
-        content: event.content,
-      );
+      await _editComment(commentId: event.commentId, content: event.content);
     } on Failure catch (e) {
-      emit(state.copyWith(
-        status: CommentStatus.failure,
-        error: e,
-      ));
+      emit(state.copyWith(status: CommentStatus.failure, error: e));
     }
   }
 
@@ -164,10 +137,7 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
     try {
       await _deleteComment(commentId: event.commentId);
     } on Failure catch (e) {
-      emit(state.copyWith(
-        status: CommentStatus.failure,
-        error: e,
-      ));
+      emit(state.copyWith(status: CommentStatus.failure, error: e));
     }
   }
 
@@ -219,9 +189,7 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
         content: comment.content,
         createdAt: comment.createdAt,
         isMine: comment.isMine,
-        replies: comment.replies
-            .where((r) => r.id != event.replyId)
-            .toList(),
+        replies: comment.replies.where((r) => r.id != event.replyId).toList(),
       );
     }).toList();
     emit(state.copyWith(comments: updated));

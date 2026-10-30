@@ -51,51 +51,55 @@ void main() {
     expect(await service.restoreSession(), isNull);
   });
 
-  test('saveSession then restoreSession round-trips the full session',
-      () async {
-    await service.saveSession(
-      tokens: tokens,
-      userId: 'u-1',
-      userRole: UserRole.doctor,
-      profile: profile,
-    );
+  test(
+    'saveSession then restoreSession round-trips the full session',
+    () async {
+      await service.saveSession(
+        tokens: tokens,
+        userId: 'u-1',
+        userRole: UserRole.doctor,
+        profile: profile,
+      );
 
-    final restored = await service.restoreSession();
-    expect(restored, isNotNull);
-    expect(restored!.tokens, tokens);
-    expect(restored.userId, 'u-1');
-    expect(restored.userRole, UserRole.doctor);
-    expect(restored.profile, profile);
+      final restored = await service.restoreSession();
+      expect(restored, isNotNull);
+      expect(restored!.tokens, tokens);
+      expect(restored.userId, 'u-1');
+      expect(restored.userRole, UserRole.doctor);
+      expect(restored.profile, profile);
 
-    expect(await service.isLoggedIn(), isTrue);
-    expect(await service.getAccessToken(), 'access-token');
-    expect(await service.getRefreshToken(), 'refresh-token');
-    expect(await service.getUserId(), 'u-1');
-    expect(await service.getUserRole(), UserRole.doctor);
-    expect(await service.getCurrentUser(), profile);
-  });
+      expect(await service.isLoggedIn(), isTrue);
+      expect(await service.getAccessToken(), 'access-token');
+      expect(await service.getRefreshToken(), 'refresh-token');
+      expect(await service.getUserId(), 'u-1');
+      expect(await service.getUserRole(), UserRole.doctor);
+      expect(await service.getCurrentUser(), profile);
+    },
+  );
 
-  test('saveTokens updates tokens without touching the rest of the session',
-      () async {
-    await service.saveSession(
-      tokens: tokens,
-      userId: 'u-1',
-      userRole: UserRole.doctor,
-      profile: profile,
-    );
-    const rotated = AuthTokenPair(
-      accessToken: 'new-access',
-      refreshToken: 'new-refresh',
-    );
+  test(
+    'saveTokens updates tokens without touching the rest of the session',
+    () async {
+      await service.saveSession(
+        tokens: tokens,
+        userId: 'u-1',
+        userRole: UserRole.doctor,
+        profile: profile,
+      );
+      const rotated = AuthTokenPair(
+        accessToken: 'new-access',
+        refreshToken: 'new-refresh',
+      );
 
-    await service.saveTokens(rotated);
+      await service.saveTokens(rotated);
 
-    final restored = await service.restoreSession();
-    expect(restored!.tokens, rotated);
-    expect(restored.userId, 'u-1');
-    expect(restored.userRole, UserRole.doctor);
-    expect(restored.profile, profile);
-  });
+      final restored = await service.restoreSession();
+      expect(restored!.tokens, rotated);
+      expect(restored.userId, 'u-1');
+      expect(restored.userRole, UserRole.doctor);
+      expect(restored.profile, profile);
+    },
+  );
 
   test('clearSession wipes every persisted key', () async {
     await service.saveSession(

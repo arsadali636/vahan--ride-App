@@ -20,26 +20,28 @@ class DesignSystemTheme {
   static ThemeData _build(Brightness brightness) {
     final isDark = brightness == Brightness.dark;
 
-    final colorScheme = ColorScheme.fromSeed(
-      seedColor: AppColors.primary,
-      brightness: brightness,
-    ).copyWith(
-      primary: AppColors.primary,
-      onPrimary: AppColors.textOnPrimary,
-      primaryContainer: AppColors.primary.withValues(alpha: 0.14),
-      onPrimaryContainer: AppColors.primaryDark,
-      secondary: AppColors.secondary,
-      onSecondary: AppColors.textOnPrimary,
-      surface: isDark ? AppColors.surfaceDark : AppColors.surface,
-      onSurface: isDark ? AppColors.textPrimaryDark : AppColors.textPrimary,
-      onSurfaceVariant:
-          isDark ? AppColors.textSecondaryDark : AppColors.textSecondary,
-      error: AppColors.error,
-      onError: AppColors.textOnPrimary,
-      outline: AppColors.border,
-      outlineVariant: AppColors.border,
-      scrim: AppColors.scrim,
-    );
+    final colorScheme =
+        ColorScheme.fromSeed(
+          seedColor: AppColors.primary,
+          brightness: brightness,
+        ).copyWith(
+          primary: AppColors.primary,
+          onPrimary: AppColors.textOnPrimary,
+          primaryContainer: AppColors.primary.withValues(alpha: 0.14),
+          onPrimaryContainer: AppColors.primaryDark,
+          secondary: AppColors.secondary,
+          onSecondary: AppColors.textOnPrimary,
+          surface: isDark ? AppColors.surfaceDark : AppColors.surface,
+          onSurface: isDark ? AppColors.textPrimaryDark : AppColors.textPrimary,
+          onSurfaceVariant: isDark
+              ? AppColors.textSecondaryDark
+              : AppColors.textSecondary,
+          error: AppColors.error,
+          onError: AppColors.textOnPrimary,
+          outline: AppColors.border,
+          outlineVariant: AppColors.border,
+          scrim: AppColors.scrim,
+        );
 
     final baseTextTheme = TextTheme(
       displayLarge: AppTypography.displayLarge,
@@ -60,17 +62,20 @@ class DesignSystemTheme {
     return ThemeData(
       useMaterial3: true,
       colorScheme: colorScheme,
-      scaffoldBackgroundColor:
-          isDark ? AppColors.backgroundDark : AppColors.background,
+      scaffoldBackgroundColor: isDark
+          ? AppColors.backgroundDark
+          : AppColors.background,
       textTheme: baseTextTheme,
       splashColor: AppColors.primary.withValues(alpha: 0.08),
       highlightColor: AppColors.primary.withValues(alpha: 0.04),
 
       appBarTheme: AppBarTheme(
-        backgroundColor:
-            isDark ? AppColors.backgroundDark : AppColors.background,
-        foregroundColor:
-            isDark ? AppColors.textPrimaryDark : AppColors.textPrimary,
+        backgroundColor: isDark
+            ? AppColors.backgroundDark
+            : AppColors.background,
+        foregroundColor: isDark
+            ? AppColors.textPrimaryDark
+            : AppColors.textPrimary,
         elevation: 0,
         scrolledUnderElevation: 0,
         centerTitle: false,
@@ -83,7 +88,9 @@ class DesignSystemTheme {
           backgroundColor: AppColors.primary,
           foregroundColor: AppColors.textOnPrimary,
           disabledBackgroundColor: AppColors.primary.withValues(alpha: 0.4),
-          disabledForegroundColor: AppColors.textOnPrimary.withValues(alpha: 0.7),
+          disabledForegroundColor: AppColors.textOnPrimary.withValues(
+            alpha: 0.7,
+          ),
           elevation: 0,
           shadowColor: Colors.transparent,
           padding: const EdgeInsets.symmetric(
@@ -135,12 +142,15 @@ class DesignSystemTheme {
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: isDark ? AppColors.surfaceDarkMuted : AppColors.surface,
-        hintStyle: AppTypography.bodyMedium
-            .copyWith(color: isDark ? AppColors.textSecondaryDark : AppColors.textDisabled),
-        labelStyle: AppTypography.bodyMedium
-            .copyWith(color: AppColors.textSecondary),
-        floatingLabelStyle: AppTypography.labelMedium
-            .copyWith(color: AppColors.primary),
+        hintStyle: AppTypography.bodyMedium.copyWith(
+          color: isDark ? AppColors.textSecondaryDark : AppColors.textDisabled,
+        ),
+        labelStyle: AppTypography.bodyMedium.copyWith(
+          color: AppColors.textSecondary,
+        ),
+        floatingLabelStyle: AppTypography.labelMedium.copyWith(
+          color: AppColors.primary,
+        ),
         helperStyle: AppTypography.bodySmall,
         errorStyle: AppTypography.bodySmall.copyWith(color: AppColors.error),
         prefixIconColor: AppColors.textSecondary,
@@ -183,8 +193,9 @@ class DesignSystemTheme {
       ),
 
       chipTheme: ChipThemeData(
-        backgroundColor:
-            isDark ? AppColors.surfaceDarkMuted : AppColors.surfaceMuted,
+        backgroundColor: isDark
+            ? AppColors.surfaceDarkMuted
+            : AppColors.surfaceMuted,
         disabledColor: AppColors.surfaceMuted,
         selectedColor: AppColors.primary.withValues(alpha: 0.12),
         secondarySelectedColor: AppColors.primary,
@@ -193,9 +204,7 @@ class DesignSystemTheme {
         ),
         padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm),
         side: const BorderSide(color: AppColors.border),
-        shape: RoundedRectangleBorder(
-          borderRadius: AppRadius.borderCircular,
-        ),
+        shape: RoundedRectangleBorder(borderRadius: AppRadius.borderCircular),
       ),
 
       dividerTheme: DividerThemeData(
@@ -205,14 +214,14 @@ class DesignSystemTheme {
       ),
 
       bottomSheetTheme: BottomSheetThemeData(
-        backgroundColor:
-            isDark ? AppColors.surfaceDark : AppColors.surface,
+        backgroundColor: isDark ? AppColors.surfaceDark : AppColors.surface,
         surfaceTintColor: Colors.transparent,
         shape: const RoundedRectangleBorder(
           borderRadius: AppRadius.topSheetRadius,
         ),
-        modalBackgroundColor:
-            isDark ? AppColors.surfaceDark : AppColors.surface,
+        modalBackgroundColor: isDark
+            ? AppColors.surfaceDark
+            : AppColors.surface,
         modalBarrierColor: AppColors.scrim,
         showDragHandle: true,
         dragHandleColor: AppColors.borderStrong,
@@ -221,9 +230,7 @@ class DesignSystemTheme {
       dialogTheme: DialogThemeData(
         backgroundColor: isDark ? AppColors.surfaceDark : AppColors.surface,
         surfaceTintColor: Colors.transparent,
-        shape: RoundedRectangleBorder(
-          borderRadius: AppRadius.borderLg,
-        ),
+        shape: RoundedRectangleBorder(borderRadius: AppRadius.borderLg),
         titleTextStyle: AppTypography.titleLarge,
         contentTextStyle: AppTypography.bodyMedium,
         actionsPadding: const EdgeInsets.fromLTRB(
@@ -236,8 +243,9 @@ class DesignSystemTheme {
 
       tabBarTheme: TabBarThemeData(
         labelColor: AppColors.primary,
-        unselectedLabelColor:
-            isDark ? AppColors.textSecondaryDark : AppColors.textSecondary,
+        unselectedLabelColor: isDark
+            ? AppColors.textSecondaryDark
+            : AppColors.textSecondary,
         labelStyle: AppTypography.labelLarge,
         unselectedLabelStyle: AppTypography.labelLarge,
         indicatorColor: AppColors.primary,
@@ -255,7 +263,9 @@ class DesignSystemTheme {
       ),
 
       snackBarTheme: SnackBarThemeData(
-        backgroundColor: isDark ? AppColors.surfaceDarkMuted : AppColors.textPrimary,
+        backgroundColor: isDark
+            ? AppColors.surfaceDarkMuted
+            : AppColors.textPrimary,
         contentTextStyle: AppTypography.bodyMedium.copyWith(
           color: isDark ? AppColors.textPrimaryDark : AppColors.surface,
         ),

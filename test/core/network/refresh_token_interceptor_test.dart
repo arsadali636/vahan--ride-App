@@ -4,23 +4,23 @@ import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:doc_connect_app/core/network/interceptors/auth_interceptor.dart';
 import 'package:doc_connect_app/core/network/interceptors/refresh_token_interceptor.dart';
 import 'package:doc_connect_app/core/storage/session_service.dart';
 
 import '../../helpers/fake_session_service.dart';
+
 /// Adapter that returns 401 for protected requests until a refresh happens,
 /// then succeeds. The refresh endpoint responds 200 unless [failRefresh].
 class _FakeAdapter implements HttpClientAdapter {
-  _FakeAdapter({
-    this.failRefresh = false,
-    this.protectedStatus = 401,
-  });
+  _FakeAdapter({this.failRefresh = false, this.protectedStatus = 401});
 
   final bool failRefresh;
   final int protectedStatus;
 
   int protectedCalls = 0;
   int refreshCalls = 0;
+  final List<String?> sentAuthHeaders = [];
 
   bool _refreshed = false;
 
@@ -35,10 +35,7 @@ class _FakeAdapter implements HttpClientAdapter {
     if (options.path == refreshPath) {
       refreshCalls++;
       if (failRefresh) {
-        return _body(
-          '{"detail":"refresh token expired"}',
-          401,
-        );
+        return _body('{"detail":"refresh token expired"}', 401);
       }
       _refreshed = true;
       return _body(
@@ -47,6 +44,7 @@ class _FakeAdapter implements HttpClientAdapter {
       );
     }
     protectedCalls++;
+    sentAuthHeaders.add(options.headers['Authorization'] as String?);
     if (!_refreshed) {
       return _body('{"detail":"expired"}', protectedStatus);
     }
@@ -57,7 +55,9 @@ class _FakeAdapter implements HttpClientAdapter {
     return ResponseBody.fromString(
       json,
       status,
-      headers: {Headers.contentTypeHeader: ['application/json']},
+      headers: {
+        Headers.contentTypeHeader: ['application/json'],
+      },
     );
   }
 
@@ -80,11 +80,12 @@ void main() {
       ),
     );
     adapter = _FakeAdapter();
-    dio = Dio(BaseOptions(baseUrl: 'http://test'))
-      ..httpClientAdapter = adapter;
+    dio = Dio(BaseOptions(baseUrl: 'http://test'))..httpClientAdapter = adapter;
   });
 
-  RefreshTokenInterceptor buildInterceptor({Future<void> Function()? onExpired}) {
+  RefreshTokenInterceptor buildInterceptor({
+    Future<void> Function()? onExpired,
+  }) {
     return RefreshTokenInterceptor(
       dio: dio,
       sessionService: session,
@@ -113,11 +114,30 @@ void main() {
     expect(session.session!.tokens.refreshToken, 'new-refresh');
   });
 
+  test(
+    'retried request uses the newly refreshed access token even with pre-existing header',
+    () async {
+      dio.interceptors.addAll([AuthInterceptor(session), buildInterceptor()]);
+
+      final response = await dio.get<dynamic>('/protected');
+
+      expect(response.statusCode, 200);
+      expect(adapter.refreshCalls, 1);
+      expect(adapter.protectedCalls, 2);
+      expect(adapter.sentAuthHeaders, [
+        'Bearer old-access',
+        'Bearer new-access',
+      ]);
+    },
+  );
+
   test('concurrent 401s trigger a single refresh', () async {
     dio.interceptors.add(buildInterceptor());
 
-    final results =
-        await Future.wait<Response<dynamic>>([dio.get('/a'), dio.get('/b')]);
+    final results = await Future.wait<Response<dynamic>>([
+      dio.get('/a'),
+      dio.get('/b'),
+    ]);
 
     expect(results.every((r) => r.statusCode == 200), isTrue);
     expect(adapter.refreshCalls, 1);

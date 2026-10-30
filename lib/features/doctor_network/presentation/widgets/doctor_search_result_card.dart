@@ -54,12 +54,8 @@ class DoctorSearchResultCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  result.displayName,
-                  style: AppTypography.titleSmall,
-                ),
-                if (result.headline != null &&
-                    result.headline!.isNotEmpty) ...[
+                Text(result.displayName, style: AppTypography.titleSmall),
+                if (result.headline != null && result.headline!.isNotEmpty) ...[
                   const SizedBox(height: AppSpacing.xxs),
                   Text(
                     result.headline!,
@@ -115,9 +111,7 @@ class _ExperienceLabel extends StatelessWidget {
         : '$years';
     return Text(
       '$yearsLabel yrs experience',
-      style: AppTypography.labelSmall.copyWith(
-        color: AppColors.textSecondary,
-      ),
+      style: AppTypography.labelSmall.copyWith(color: AppColors.textSecondary),
     );
   }
 }

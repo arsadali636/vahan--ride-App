@@ -4,14 +4,10 @@ import 'package:equatable/equatable.dart';
 class DeleteResponseModel extends Equatable {
   final bool success;
 
-  const DeleteResponseModel({
-    required this.success,
-  });
+  const DeleteResponseModel({required this.success});
 
   factory DeleteResponseModel.fromJson(Map<String, dynamic> json) {
-    return DeleteResponseModel(
-      success: json['success'] as bool? ?? false,
-    );
+    return DeleteResponseModel(success: json['success'] as bool? ?? false);
   }
 
   @override

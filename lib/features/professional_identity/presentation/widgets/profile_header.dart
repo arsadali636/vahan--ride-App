@@ -28,14 +28,8 @@ class ProfileHeader extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: isDark
-              ? [
-                  primary.withValues(alpha: 0.28),
-                  AppColors.surfaceDark,
-                ]
-              : [
-                  primary.withValues(alpha: 0.10),
-                  AppColors.surface,
-                ],
+              ? [primary.withValues(alpha: 0.28), AppColors.surfaceDark]
+              : [primary.withValues(alpha: 0.10), AppColors.surface],
         ),
         borderRadius: AppRadius.borderXl,
         border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
@@ -54,13 +48,11 @@ class ProfileHeader extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  profile.displayName,
-                  style: AppTypography.headingMedium,
-                ),
+                Text(profile.displayName, style: AppTypography.headingMedium),
                 const SizedBox(height: AppSpacing.sm),
                 VerificationStatusChip(status: profile.verificationStatus),
-                if (profile.headline != null && profile.headline!.isNotEmpty) ...[
+                if (profile.headline != null &&
+                    profile.headline!.isNotEmpty) ...[
                   const SizedBox(height: AppSpacing.sm),
                   Text(
                     profile.headline!,

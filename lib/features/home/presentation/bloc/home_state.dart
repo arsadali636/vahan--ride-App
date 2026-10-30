@@ -10,11 +10,7 @@ class HomeState extends Equatable {
   final HomeData? data;
   final Failure? error;
 
-  const HomeState({
-    this.status = HomeStatus.initial,
-    this.data,
-    this.error,
-  });
+  const HomeState({this.status = HomeStatus.initial, this.data, this.error});
 
   HomeState copyWith({
     HomeStatus? status,

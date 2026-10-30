@@ -8,11 +8,7 @@ import 'app_theme.dart';
 
 /// Root widget of the MedNexus application.
 class MedNexusApp extends StatelessWidget {
-  const MedNexusApp({
-    super.key,
-    required this.router,
-    required this.authBloc,
-  });
+  const MedNexusApp({super.key, required this.router, required this.authBloc});
 
   final GoRouter router;
   final AuthBloc authBloc;

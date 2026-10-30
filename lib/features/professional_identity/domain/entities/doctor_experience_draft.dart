@@ -23,12 +23,12 @@ class DoctorExperienceDraft extends Equatable {
 
   @override
   List<Object?> get props => [
-        role,
-        hospitalName,
-        location,
-        startDate,
-        endDate,
-        isCurrent,
-        description,
-      ];
+    role,
+    hospitalName,
+    location,
+    startDate,
+    endDate,
+    isCurrent,
+    description,
+  ];
 }

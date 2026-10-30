@@ -70,9 +70,7 @@ class _EditProfileBodyState extends State<_EditProfileBody> {
             state.failure != null) {
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
-            ..showSnackBar(
-              SnackBar(content: Text(state.failure!.message)),
-            );
+            ..showSnackBar(SnackBar(content: Text(state.failure!.message)));
         }
       },
       builder: (context, state) {

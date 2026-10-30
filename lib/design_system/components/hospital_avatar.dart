@@ -28,10 +28,7 @@ class HospitalAvatar extends StatelessWidget {
         color: AppColors.secondary,
         borderRadius: BorderRadius.circular(radius),
         image: hasLogo
-            ? DecorationImage(
-                image: NetworkImage(logoUrl!),
-                fit: BoxFit.cover,
-              )
+            ? DecorationImage(image: NetworkImage(logoUrl!), fit: BoxFit.cover)
             : null,
       ),
       alignment: Alignment.center,

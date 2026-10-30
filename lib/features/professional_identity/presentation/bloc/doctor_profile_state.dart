@@ -93,13 +93,13 @@ class DoctorProfileState extends Equatable {
 
   @override
   List<Object?> get props => [
-        status,
-        profile,
-        failure,
-        qualifications,
-        registrations,
-        experiences,
-        profileCreated,
-        message,
-      ];
+    status,
+    profile,
+    failure,
+    qualifications,
+    registrations,
+    experiences,
+    profileCreated,
+    message,
+  ];
 }

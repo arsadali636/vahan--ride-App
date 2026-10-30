@@ -338,7 +338,10 @@ void main() {
       startDate: '2013-06-01',
     );
 
-    expect(repository.calls.single, {'op': 'addExperience', 'role': 'Resident'});
+    expect(repository.calls.single, {
+      'op': 'addExperience',
+      'role': 'Resident',
+    });
     expect(item.startDate, '2013-06-01');
   });
 

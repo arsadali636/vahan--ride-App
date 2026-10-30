@@ -6,12 +6,8 @@ class JobsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Jobs'),
-      ),
-      body: Center(
-        child: Text('Jobs Feature Page'),
-      ),
+      appBar: AppBar(title: const Text('Jobs')),
+      body: Center(child: Text('Jobs Feature Page')),
     );
   }
 }

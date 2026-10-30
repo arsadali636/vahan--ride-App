@@ -40,10 +40,7 @@ class DoctorAvatar extends StatelessWidget {
         color: AppColors.primary,
         shape: BoxShape.circle,
         image: hasPhoto
-            ? DecorationImage(
-                image: NetworkImage(photoUrl!),
-                fit: BoxFit.cover,
-              )
+            ? DecorationImage(image: NetworkImage(photoUrl!), fit: BoxFit.cover)
             : null,
       ),
       alignment: Alignment.center,

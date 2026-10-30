@@ -58,17 +58,13 @@ class _ProfileCompletionBodyState extends State<_ProfileCompletionBody> {
         if (state.status == DoctorProfileStatus.success) {
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
-            ..showSnackBar(
-              const SnackBar(content: Text('Profile created')),
-            );
+            ..showSnackBar(const SnackBar(content: Text('Profile created')));
           context.go(AppRouter.profileRoute);
         } else if (state.status == DoctorProfileStatus.failure &&
             state.failure != null) {
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
-            ..showSnackBar(
-              SnackBar(content: Text(state.failure!.message)),
-            );
+            ..showSnackBar(SnackBar(content: Text(state.failure!.message)));
         }
       },
       builder: (context, state) {

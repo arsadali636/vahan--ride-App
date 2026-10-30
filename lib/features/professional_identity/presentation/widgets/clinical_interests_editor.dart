@@ -90,11 +90,7 @@ class _ClinicalInterestsEditorState extends State<ClinicalInterestsEditor> {
               ),
             ),
             const SizedBox(width: AppSpacing.sm),
-            OutlineButton(
-              label: 'Add',
-              icon: Icons.add,
-              onPressed: _add,
-            ),
+            OutlineButton(label: 'Add', icon: Icons.add, onPressed: _add),
           ],
         ),
       ],

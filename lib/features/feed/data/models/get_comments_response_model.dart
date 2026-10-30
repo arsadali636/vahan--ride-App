@@ -7,16 +7,13 @@ import 'comment_model.dart';
 class GetCommentsResponseModel extends Equatable {
   final List<CommentModel> comments;
 
-  const GetCommentsResponseModel({
-    required this.comments,
-  });
+  const GetCommentsResponseModel({required this.comments});
 
   factory GetCommentsResponseModel.fromJson(Map<String, dynamic> json) {
     return GetCommentsResponseModel(
       comments: (json['comments'] as List? ?? const [])
           .whereType<Map>()
-          .map((e) =>
-              CommentModel.fromJson(e.cast<String, dynamic>()))
+          .map((e) => CommentModel.fromJson(e.cast<String, dynamic>()))
           .toList(),
     );
   }

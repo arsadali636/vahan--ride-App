@@ -5,8 +5,6 @@ class MessagingWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SizedBox(
-      child: Text('Messaging Widget'),
-    );
+    return const SizedBox(child: Text('Messaging Widget'));
   }
 }

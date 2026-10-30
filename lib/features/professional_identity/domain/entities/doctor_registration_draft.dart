@@ -15,5 +15,10 @@ class DoctorRegistrationDraft extends Equatable {
   });
 
   @override
-  List<Object?> get props => [councilId, registrationNumber, registrationYear, isPrimary];
+  List<Object?> get props => [
+    councilId,
+    registrationNumber,
+    registrationYear,
+    isPrimary,
+  ];
 }

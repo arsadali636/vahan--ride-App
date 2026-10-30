@@ -12,9 +12,7 @@ abstract class DoctorNetworkRemoteDataSource {
   /// Searches discoverable doctors.
   ///
   /// Path: `GET /api/v1/doctors/search/` (authenticated).
-  Future<DoctorSearchResponseModel> searchDoctors(
-    DoctorSearchQueryModel query,
-  );
+  Future<DoctorSearchResponseModel> searchDoctors(DoctorSearchQueryModel query);
 
   /// Fetches a doctor's public profile.
   ///
@@ -22,7 +20,8 @@ abstract class DoctorNetworkRemoteDataSource {
   Future<PublicDoctorProfileModel> getDoctorProfile(String doctorId);
 }
 
-class DoctorNetworkRemoteDataSourceImpl implements DoctorNetworkRemoteDataSource {
+class DoctorNetworkRemoteDataSourceImpl
+    implements DoctorNetworkRemoteDataSource {
   DoctorNetworkRemoteDataSourceImpl({required this.apiClient});
 
   final ApiClient apiClient;
@@ -42,9 +41,7 @@ class DoctorNetworkRemoteDataSourceImpl implements DoctorNetworkRemoteDataSource
 
   @override
   Future<PublicDoctorProfileModel> getDoctorProfile(String doctorId) async {
-    final data = await apiClient.get(
-      ApiEndpoints.doctorProfileById(doctorId),
-    );
+    final data = await apiClient.get(ApiEndpoints.doctorProfileById(doctorId));
     return PublicDoctorProfileModel.fromJson(
       (data as Map).cast<String, dynamic>(),
     );

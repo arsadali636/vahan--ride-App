@@ -53,9 +53,7 @@ void main() {
   test('does not attach a token to public endpoints', () async {
     await request(
       '/public',
-      options: Options(
-        extra: {ApiConstants.requiresAuthExtraKey: false},
-      ),
+      options: Options(extra: {ApiConstants.requiresAuthExtraKey: false}),
     );
 
     expect(sentAuthorization(), isNull);
@@ -67,12 +65,45 @@ void main() {
     expect(sentAuthorization(), isNull);
   });
 
-  test('leaves an existing Authorization header untouched', () async {
+  test(
+    'leaves an existing Authorization header untouched on initial requests',
+    () async {
+      await request(
+        '/basic',
+        options: Options(headers: {'Authorization': 'Basic dXNlcjpwYXNz'}),
+      );
+
+      expect(sentAuthorization(), 'Basic dXNlcjpwYXNz');
+    },
+  );
+
+  test(
+    'replaces an expired Authorization header with the new token on retry',
+    () async {
+      await request(
+        '/secure',
+        options: Options(
+          headers: {'Authorization': 'Bearer expired-token'},
+          extra: {'refresh_retried': true},
+        ),
+      );
+
+      expect(sentAuthorization(), 'Bearer secret-access-token');
+    },
+  );
+
+  test('updates sessionid cookie on retry when already present', () async {
+    await session.saveSessionId('updated-session-id');
+
     await request(
-      '/basic',
-      options: Options(headers: {'Authorization': 'Basic dXNlcjpwYXNz'}),
+      '/secure',
+      options: Options(
+        headers: {'Cookie': 'sessionid=old-session-id; csrftoken=abc'},
+        extra: {'refresh_retried': true},
+      ),
     );
 
-    expect(sentAuthorization(), 'Basic dXNlcjpwYXNz');
+    final sentCookie = adapter.captured.single.headers['Cookie'] as String?;
+    expect(sentCookie, 'sessionid=updated-session-id; csrftoken=abc');
   });
 }

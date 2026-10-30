@@ -52,10 +52,7 @@ class AppEmptyView extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
         ],
-        if (action != null) ...[
-          const SizedBox(height: AppSpacing.lg),
-          action!,
-        ],
+        if (action != null) ...[const SizedBox(height: AppSpacing.lg), action!],
       ],
     );
 

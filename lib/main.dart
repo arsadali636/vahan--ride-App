@@ -10,9 +10,7 @@ import 'features/auth/presentation/bloc/auth_bloc.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  AppConfig.initialize(
-    environmentConfig: EnvironmentConfig.fromDartDefines(),
-  );
+  AppConfig.initialize(environmentConfig: EnvironmentConfig.fromDartDefines());
 
   await DependencyInjection.init();
 

@@ -52,8 +52,9 @@ class _AddExperienceDialogState extends State<AddExperienceDialog> {
         role: _role.text.trim(),
         hospitalName: _hospitalName.text.trim(),
         location: _location.text.trim().isEmpty ? null : _location.text.trim(),
-        startDate:
-            _startDate.text.trim().isEmpty ? null : _startDate.text.trim(),
+        startDate: _startDate.text.trim().isEmpty
+            ? null
+            : _startDate.text.trim(),
         endDate: _isCurrent || _endDate.text.trim().isEmpty
             ? null
             : _endDate.text.trim(),
@@ -123,10 +124,7 @@ class _AddExperienceDialogState extends State<AddExperienceDialog> {
                 onPressed: () => Navigator.of(context).pop(),
               ),
               const SizedBox(width: AppSpacing.sm),
-              PrimaryButton(
-                label: 'Save',
-                onPressed: _submit,
-              ),
+              PrimaryButton(label: 'Save', onPressed: _submit),
             ],
           ),
         ],
@@ -137,9 +135,7 @@ class _AddExperienceDialogState extends State<AddExperienceDialog> {
 
 /// Shows the dialog and resolves the [DoctorExperienceDraft] (or null if
 /// dismissed).
-Future<DoctorExperienceDraft?> showAddExperienceDialog(
-  BuildContext context,
-) {
+Future<DoctorExperienceDraft?> showAddExperienceDialog(BuildContext context) {
   return AppDialog.show<DoctorExperienceDraft>(
     context: context,
     title: 'Add experience',

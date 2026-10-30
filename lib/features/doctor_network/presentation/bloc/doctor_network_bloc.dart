@@ -25,14 +25,13 @@ import 'doctor_network_state.dart';
 /// - `DoctorSearchLoadMoreRequested` is ignored while a page is already being
 ///   fetched or after the end of the list has been reached.
 /// - Pull-to-refresh replaces results (never appends).
-class DoctorNetworkBloc
-    extends Bloc<DoctorNetworkEvent, DoctorNetworkState> {
+class DoctorNetworkBloc extends Bloc<DoctorNetworkEvent, DoctorNetworkState> {
   DoctorNetworkBloc({
     required SearchDoctors searchDoctors,
     required GetPublicDoctorProfile getDoctorProfile,
-  })  : _searchDoctors = searchDoctors,
-        _getDoctorProfile = getDoctorProfile,
-        super(const DoctorNetworkState()) {
+  }) : _searchDoctors = searchDoctors,
+       _getDoctorProfile = getDoctorProfile,
+       super(const DoctorNetworkState()) {
     on<DoctorSearchStarted>(_onSearchStarted);
     on<DoctorSearchQueryChanged>(_onSearchQueryChanged);
     on<DoctorSearchFiltersChanged>(_onSearchFiltersChanged);
@@ -123,22 +122,28 @@ class DoctorNetworkBloc
     DoctorProfileRequested event,
     Emitter<DoctorNetworkState> emit,
   ) async {
-    emit(state.copyWith(
-      profileStatus: DoctorNetworkProfileStatus.loading,
-      clearProfileError: true,
-    ));
+    emit(
+      state.copyWith(
+        profileStatus: DoctorNetworkProfileStatus.loading,
+        clearProfileError: true,
+      ),
+    );
     try {
       final profile = await _getDoctorProfile(event.doctorId);
-      emit(state.copyWith(
-        profile: profile,
-        profileStatus: DoctorNetworkProfileStatus.loaded,
-        clearProfileError: true,
-      ));
+      emit(
+        state.copyWith(
+          profile: profile,
+          profileStatus: DoctorNetworkProfileStatus.loaded,
+          clearProfileError: true,
+        ),
+      );
     } on Failure catch (e) {
-      emit(state.copyWith(
-        profileStatus: DoctorNetworkProfileStatus.failure,
-        profileError: e,
-      ));
+      emit(
+        state.copyWith(
+          profileStatus: DoctorNetworkProfileStatus.failure,
+          profileError: e,
+        ),
+      );
     }
   }
 
@@ -152,10 +157,9 @@ class DoctorNetworkBloc
     required int page,
   }) async {
     if (page == 1 && state.status != DoctorNetworkStatus.refreshing) {
-      emit(state.copyWith(
-        status: DoctorNetworkStatus.loading,
-        clearError: true,
-      ));
+      emit(
+        state.copyWith(status: DoctorNetworkStatus.loading, clearError: true),
+      );
     }
     final query = DoctorSearchQuery(
       search: state.query.trim().isEmpty ? null : state.query.trim(),
@@ -172,16 +176,10 @@ class DoctorNetworkBloc
       _applySearchResult(emit, result, page: page);
     } on Failure catch (e) {
       if (page == 1) {
-        emit(state.copyWith(
-          status: DoctorNetworkStatus.failure,
-          error: e,
-        ));
+        emit(state.copyWith(status: DoctorNetworkStatus.failure, error: e));
       } else {
         // Keep the current list; allow a later retry by the user scrolling.
-        emit(state.copyWith(
-          status: DoctorNetworkStatus.loaded,
-          error: e,
-        ));
+        emit(state.copyWith(status: DoctorNetworkStatus.loaded, error: e));
       }
     }
   }
@@ -197,18 +195,20 @@ class DoctorNetworkBloc
         : [...state.results, ...result.items];
     final reachedEnd = results.length >= result.total;
 
-    emit(state.copyWith(
-      status: isFirstPage
-          ? (result.items.isEmpty
-              ? DoctorNetworkStatus.empty
-              : DoctorNetworkStatus.loaded)
-          : DoctorNetworkStatus.loaded,
-      results: results,
-      page: result.page,
-      total: result.total,
-      hasReachedEnd: reachedEnd,
-      clearError: true,
-    ));
+    emit(
+      state.copyWith(
+        status: isFirstPage
+            ? (result.items.isEmpty
+                  ? DoctorNetworkStatus.empty
+                  : DoctorNetworkStatus.loaded)
+            : DoctorNetworkStatus.loaded,
+        results: results,
+        page: result.page,
+        total: result.total,
+        hasReachedEnd: reachedEnd,
+        clearError: true,
+      ),
+    );
   }
 
   @override

@@ -31,13 +31,11 @@ void main() {
       baseUrl: 'http://test',
       sessionService: FakeSessionService(),
       refreshHandler: (_) async => null,
+      enableLogging: true,
     );
 
     expect(dio.interceptors.whereType<AuthInterceptor>(), hasLength(1));
-    expect(
-      dio.interceptors.whereType<RefreshTokenInterceptor>(),
-      hasLength(1),
-    );
+    expect(dio.interceptors.whereType<RefreshTokenInterceptor>(), hasLength(1));
     expect(dio.interceptors.whereType<DebugDioLogger>(), hasLength(1));
     expect(dio.interceptors.whereType<ApiErrorInterceptor>(), hasLength(1));
 
@@ -56,10 +54,6 @@ void main() {
       enableLogging: false,
     );
 
-    expect(dio.interceptors.whereType<DebugDioLogger>(), hasLength(1));
-    final logger = dio.interceptors
-        .whereType<DebugDioLogger>()
-        .single;
-    expect(logger.enabled, isFalse);
+    expect(dio.interceptors.whereType<DebugDioLogger>(), hasLength(0));
   });
 }

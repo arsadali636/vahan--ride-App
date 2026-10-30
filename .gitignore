@@ -43,3 +43,11 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+/android/build/
+
+# Sensitive session and cookie dumps
+cookies.txt
+*.cookie
+*.cookies
+*.session
+

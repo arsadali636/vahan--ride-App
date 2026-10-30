@@ -34,18 +34,18 @@ class UrgentJob extends Equatable {
 
   @override
   List<Object?> get props => [
-        id,
-        title,
-        hospitalName,
-        hospitalLogo,
-        jobType,
-        jobTypeDisplay,
-        location,
-        salaryMin,
-        salaryMax,
-        salaryVisibility,
-        experienceMinYears,
-        isUrgent,
-        postedAt,
-      ];
+    id,
+    title,
+    hospitalName,
+    hospitalLogo,
+    jobType,
+    jobTypeDisplay,
+    location,
+    salaryMin,
+    salaryMax,
+    salaryVisibility,
+    experienceMinYears,
+    isUrgent,
+    postedAt,
+  ];
 }

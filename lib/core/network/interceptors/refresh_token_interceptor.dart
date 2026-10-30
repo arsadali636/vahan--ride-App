@@ -24,11 +24,11 @@ class RefreshTokenInterceptor extends Interceptor {
     required TokenRefreshHandler refreshHandler,
     NetworkInfo? networkInfo,
     Future<void> Function()? onSessionExpired,
-  })  : _dio = dio,
-        _sessionService = sessionService,
-        _refreshHandler = refreshHandler,
-        _networkInfo = networkInfo,
-        _onSessionExpired = onSessionExpired;
+  }) : _dio = dio,
+       _sessionService = sessionService,
+       _refreshHandler = refreshHandler,
+       _networkInfo = networkInfo,
+       _onSessionExpired = onSessionExpired;
 
   final Dio _dio;
   final SessionService _sessionService;
@@ -124,6 +124,5 @@ class RefreshTokenInterceptor extends Interceptor {
 /// Receives the current refresh token and returns the new [AuthTokenPair], or
 /// `null` when the refresh token is invalid/expired. Returned tokens are
 /// persisted automatically by the interceptor.
-typedef TokenRefreshHandler = Future<AuthTokenPair?> Function(
-  String refreshToken,
-);
+typedef TokenRefreshHandler =
+    Future<AuthTokenPair?> Function(String refreshToken);

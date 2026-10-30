@@ -44,20 +44,20 @@ class DoctorProfileBloc extends Bloc<DoctorProfileEvent, DoctorProfileState> {
     required ListExperiences listExperiences,
     required AddExperience addExperience,
     required DeleteExperience deleteExperience,
-  })  : _sessionService = sessionService,
-        _getDoctorProfile = getDoctorProfile,
-        _createDoctorProfile = createDoctorProfile,
-        _updateDoctorProfile = updateDoctorProfile,
-        _uploadProfilePhoto = uploadProfilePhoto,
-        _listQualifications = listQualifications,
-        _addQualification = addQualification,
-        _deleteQualification = deleteQualification,
-        _listRegistrations = listRegistrations,
-        _addRegistration = addRegistration,
-        _listExperiences = listExperiences,
-        _addExperience = addExperience,
-        _deleteExperience = deleteExperience,
-        super(const DoctorProfileState()) {
+  }) : _sessionService = sessionService,
+       _getDoctorProfile = getDoctorProfile,
+       _createDoctorProfile = createDoctorProfile,
+       _updateDoctorProfile = updateDoctorProfile,
+       _uploadProfilePhoto = uploadProfilePhoto,
+       _listQualifications = listQualifications,
+       _addQualification = addQualification,
+       _deleteQualification = deleteQualification,
+       _listRegistrations = listRegistrations,
+       _addRegistration = addRegistration,
+       _listExperiences = listExperiences,
+       _addExperience = addExperience,
+       _deleteExperience = deleteExperience,
+       super(const DoctorProfileState()) {
     on<DoctorProfileLoadRequested>(_onLoadRequested);
     on<DoctorProfileRefreshRequested>(_onRefreshRequested);
     on<DoctorProfileCreateRequested>(_onCreateRequested);
@@ -89,11 +89,13 @@ class DoctorProfileBloc extends Bloc<DoctorProfileEvent, DoctorProfileState> {
     Emitter<DoctorProfileState> emit,
   ) async {
     final profileCreated = await _sessionService.getProfileCreated();
-    emit(state.copyWith(
-      profileCreated: profileCreated,
-      status: DoctorProfileStatus.loading,
-      clearFailure: true,
-    ));
+    emit(
+      state.copyWith(
+        profileCreated: profileCreated,
+        status: DoctorProfileStatus.loading,
+        clearFailure: true,
+      ),
+    );
     await _loadProfileAndResources(emit);
   }
 
@@ -101,33 +103,41 @@ class DoctorProfileBloc extends Bloc<DoctorProfileEvent, DoctorProfileState> {
     DoctorProfileRefreshRequested event,
     Emitter<DoctorProfileState> emit,
   ) async {
-    emit(state.copyWith(
-      status: DoctorProfileStatus.refreshing,
-      clearFailure: true,
-    ));
+    emit(
+      state.copyWith(
+        status: DoctorProfileStatus.refreshing,
+        clearFailure: true,
+      ),
+    );
     await _loadProfileAndResources(emit);
   }
 
   /// Loads the profile and every sub-resource, preserving existing data on
   /// failure so the screen can render stale content with an error banner.
-  Future<void> _loadProfileAndResources(Emitter<DoctorProfileState> emit) async {
+  Future<void> _loadProfileAndResources(
+    Emitter<DoctorProfileState> emit,
+  ) async {
     DoctorProfile? profile;
     try {
       profile = await _getDoctorProfile();
     } on NotFoundFailure {
       // No profile yet — profileCreated=false keeps the completion flow active.
-      emit(state.copyWith(
-        profile: null,
-        status: DoctorProfileStatus.loaded,
-        message: null,
-      ));
+      emit(
+        state.copyWith(
+          profile: null,
+          status: DoctorProfileStatus.loaded,
+          message: null,
+        ),
+      );
       return;
     } on Failure catch (e) {
-      emit(state.copyWith(
-        status: DoctorProfileStatus.failure,
-        failure: e,
-        message: null,
-      ));
+      emit(
+        state.copyWith(
+          status: DoctorProfileStatus.failure,
+          failure: e,
+          message: null,
+        ),
+      );
       return;
     }
 
@@ -135,24 +145,25 @@ class DoctorProfileBloc extends Bloc<DoctorProfileEvent, DoctorProfileState> {
     final registrations = await _safeGetRegistrations();
     final experiences = await _safeGetExperiences();
 
-    emit(state.copyWith(
-      profile: profile,
-      status: DoctorProfileStatus.loaded,
-      qualifications: qualifications,
-      registrations: registrations,
-      experiences: experiences,
-      message: null,
-    ));
+    emit(
+      state.copyWith(
+        profile: profile,
+        status: DoctorProfileStatus.loaded,
+        qualifications: qualifications,
+        registrations: registrations,
+        experiences: experiences,
+        message: null,
+      ),
+    );
   }
 
   Future<void> _onCreateRequested(
     DoctorProfileCreateRequested event,
     Emitter<DoctorProfileState> emit,
   ) async {
-    emit(state.copyWith(
-      status: DoctorProfileStatus.creating,
-      clearFailure: true,
-    ));
+    emit(
+      state.copyWith(status: DoctorProfileStatus.creating, clearFailure: true),
+    );
     try {
       final profile = await _createDoctorProfile(
         firstName: event.draft.firstName,
@@ -168,22 +179,26 @@ class DoctorProfileBloc extends Bloc<DoctorProfileEvent, DoctorProfileState> {
       final qualifications = await _safeGetQualifications();
       final registrations = await _safeGetRegistrations();
       final experiences = await _safeGetExperiences();
-      emit(state.copyWith(
-        profile: profile,
-        profileCreated: true,
-        status: DoctorProfileStatus.success,
-        qualifications: qualifications,
-        registrations: registrations,
-        experiences: experiences,
-        message: 'Profile created',
-        clearFailure: true,
-      ));
+      emit(
+        state.copyWith(
+          profile: profile,
+          profileCreated: true,
+          status: DoctorProfileStatus.success,
+          qualifications: qualifications,
+          registrations: registrations,
+          experiences: experiences,
+          message: 'Profile created',
+          clearFailure: true,
+        ),
+      );
     } on Failure catch (e) {
-      emit(state.copyWith(
-        status: DoctorProfileStatus.failure,
-        failure: e,
-        message: null,
-      ));
+      emit(
+        state.copyWith(
+          status: DoctorProfileStatus.failure,
+          failure: e,
+          message: null,
+        ),
+      );
     }
   }
 
@@ -191,10 +206,9 @@ class DoctorProfileBloc extends Bloc<DoctorProfileEvent, DoctorProfileState> {
     DoctorProfileUpdateRequested event,
     Emitter<DoctorProfileState> emit,
   ) async {
-    emit(state.copyWith(
-      status: DoctorProfileStatus.updating,
-      clearFailure: true,
-    ));
+    emit(
+      state.copyWith(status: DoctorProfileStatus.updating, clearFailure: true),
+    );
     try {
       final profile = await _updateDoctorProfile(
         firstName: event.draft.firstName,
@@ -207,18 +221,22 @@ class DoctorProfileBloc extends Bloc<DoctorProfileEvent, DoctorProfileState> {
         experienceYears: event.draft.experienceYears,
         openToOpportunities: event.draft.openToOpportunities,
       );
-      emit(state.copyWith(
-        profile: profile,
-        status: DoctorProfileStatus.success,
-        message: 'Profile updated',
-        clearFailure: true,
-      ));
+      emit(
+        state.copyWith(
+          profile: profile,
+          status: DoctorProfileStatus.success,
+          message: 'Profile updated',
+          clearFailure: true,
+        ),
+      );
     } on Failure catch (e) {
-      emit(state.copyWith(
-        status: DoctorProfileStatus.failure,
-        failure: e,
-        message: null,
-      ));
+      emit(
+        state.copyWith(
+          status: DoctorProfileStatus.failure,
+          failure: e,
+          message: null,
+        ),
+      );
     }
   }
 
@@ -226,10 +244,12 @@ class DoctorProfileBloc extends Bloc<DoctorProfileEvent, DoctorProfileState> {
     DoctorProfilePhotoUploadRequested event,
     Emitter<DoctorProfileState> emit,
   ) async {
-    emit(state.copyWith(
-      status: DoctorProfileStatus.uploadingPhoto,
-      clearFailure: true,
-    ));
+    emit(
+      state.copyWith(
+        status: DoctorProfileStatus.uploadingPhoto,
+        clearFailure: true,
+      ),
+    );
     try {
       await _uploadProfilePhoto(
         bytes: event.photo.bytes,
@@ -238,18 +258,22 @@ class DoctorProfileBloc extends Bloc<DoctorProfileEvent, DoctorProfileState> {
       );
       // Refresh so the photo file id reflects on the profile.
       final profile = await _getDoctorProfile();
-      emit(state.copyWith(
-        profile: profile,
-        status: DoctorProfileStatus.success,
-        message: 'Photo uploaded',
-        clearFailure: true,
-      ));
+      emit(
+        state.copyWith(
+          profile: profile,
+          status: DoctorProfileStatus.success,
+          message: 'Photo uploaded',
+          clearFailure: true,
+        ),
+      );
     } on Failure catch (e) {
-      emit(state.copyWith(
-        status: DoctorProfileStatus.failure,
-        failure: e,
-        message: null,
-      ));
+      emit(
+        state.copyWith(
+          status: DoctorProfileStatus.failure,
+          failure: e,
+          message: null,
+        ),
+      );
     }
   }
 
@@ -265,18 +289,22 @@ class DoctorProfileBloc extends Bloc<DoctorProfileEvent, DoctorProfileState> {
         specialization: event.draft.specialization,
       );
       final qualifications = await _safeGetQualifications();
-      emit(state.copyWith(
-        qualifications: qualifications,
-        status: DoctorProfileStatus.success,
-        message: 'Qualification added',
-        clearFailure: true,
-      ));
+      emit(
+        state.copyWith(
+          qualifications: qualifications,
+          status: DoctorProfileStatus.success,
+          message: 'Qualification added',
+          clearFailure: true,
+        ),
+      );
     } on Failure catch (e) {
-      emit(state.copyWith(
-        status: DoctorProfileStatus.failure,
-        failure: e,
-        message: null,
-      ));
+      emit(
+        state.copyWith(
+          status: DoctorProfileStatus.failure,
+          failure: e,
+          message: null,
+        ),
+      );
     }
   }
 
@@ -287,18 +315,22 @@ class DoctorProfileBloc extends Bloc<DoctorProfileEvent, DoctorProfileState> {
     try {
       await _deleteQualification(event.qualificationId);
       final qualifications = await _safeGetQualifications();
-      emit(state.copyWith(
-        qualifications: qualifications,
-        status: DoctorProfileStatus.success,
-        message: 'Qualification removed',
-        clearFailure: true,
-      ));
+      emit(
+        state.copyWith(
+          qualifications: qualifications,
+          status: DoctorProfileStatus.success,
+          message: 'Qualification removed',
+          clearFailure: true,
+        ),
+      );
     } on Failure catch (e) {
-      emit(state.copyWith(
-        status: DoctorProfileStatus.failure,
-        failure: e,
-        message: null,
-      ));
+      emit(
+        state.copyWith(
+          status: DoctorProfileStatus.failure,
+          failure: e,
+          message: null,
+        ),
+      );
     }
   }
 
@@ -314,18 +346,22 @@ class DoctorProfileBloc extends Bloc<DoctorProfileEvent, DoctorProfileState> {
         isPrimary: event.draft.isPrimary,
       );
       final registrations = await _safeGetRegistrations();
-      emit(state.copyWith(
-        registrations: registrations,
-        status: DoctorProfileStatus.success,
-        message: 'Registration added',
-        clearFailure: true,
-      ));
+      emit(
+        state.copyWith(
+          registrations: registrations,
+          status: DoctorProfileStatus.success,
+          message: 'Registration added',
+          clearFailure: true,
+        ),
+      );
     } on Failure catch (e) {
-      emit(state.copyWith(
-        status: DoctorProfileStatus.failure,
-        failure: e,
-        message: null,
-      ));
+      emit(
+        state.copyWith(
+          status: DoctorProfileStatus.failure,
+          failure: e,
+          message: null,
+        ),
+      );
     }
   }
 
@@ -344,18 +380,22 @@ class DoctorProfileBloc extends Bloc<DoctorProfileEvent, DoctorProfileState> {
         description: event.draft.description,
       );
       final experiences = await _safeGetExperiences();
-      emit(state.copyWith(
-        experiences: experiences,
-        status: DoctorProfileStatus.success,
-        message: 'Experience added',
-        clearFailure: true,
-      ));
+      emit(
+        state.copyWith(
+          experiences: experiences,
+          status: DoctorProfileStatus.success,
+          message: 'Experience added',
+          clearFailure: true,
+        ),
+      );
     } on Failure catch (e) {
-      emit(state.copyWith(
-        status: DoctorProfileStatus.failure,
-        failure: e,
-        message: null,
-      ));
+      emit(
+        state.copyWith(
+          status: DoctorProfileStatus.failure,
+          failure: e,
+          message: null,
+        ),
+      );
     }
   }
 
@@ -366,18 +406,22 @@ class DoctorProfileBloc extends Bloc<DoctorProfileEvent, DoctorProfileState> {
     try {
       await _deleteExperience(event.experienceId);
       final experiences = await _safeGetExperiences();
-      emit(state.copyWith(
-        experiences: experiences,
-        status: DoctorProfileStatus.success,
-        message: 'Experience removed',
-        clearFailure: true,
-      ));
+      emit(
+        state.copyWith(
+          experiences: experiences,
+          status: DoctorProfileStatus.success,
+          message: 'Experience removed',
+          clearFailure: true,
+        ),
+      );
     } on Failure catch (e) {
-      emit(state.copyWith(
-        status: DoctorProfileStatus.failure,
-        failure: e,
-        message: null,
-      ));
+      emit(
+        state.copyWith(
+          status: DoctorProfileStatus.failure,
+          failure: e,
+          message: null,
+        ),
+      );
     }
   }
 

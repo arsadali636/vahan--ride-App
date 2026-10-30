@@ -43,12 +43,23 @@ class SuggestedDoctorModel extends Equatable {
       location: json['location'] is Map
           ? Map<String, dynamic>.from(json['location'] as Map)
           : const {},
-      experienceYears: json['experience_years'] as int? ?? 0,
+      experienceYears: _parseInt(json['experience_years']),
       verificationStatus: json['verification_status'] as String? ?? '',
       connectionStatus: json['connection_status'] as String? ?? '',
       connectionId: json['connection_id'] as String?,
       connectionDirection: json['connection_direction'] as String?,
     );
+  }
+
+  static int _parseInt(dynamic value, [int defaultValue = 0]) {
+    if (value is int) return value;
+    if (value is num) return value.toInt();
+    if (value is String) {
+      return int.tryParse(value) ??
+          double.tryParse(value)?.toInt() ??
+          defaultValue;
+    }
+    return defaultValue;
   }
 
   SuggestedDoctor toEntity() {
@@ -70,17 +81,17 @@ class SuggestedDoctorModel extends Equatable {
 
   @override
   List<Object?> get props => [
-        id,
-        fullName,
-        headline,
-        photo,
-        initials,
-        color,
-        location,
-        experienceYears,
-        verificationStatus,
-        connectionStatus,
-        connectionId,
-        connectionDirection,
-      ];
+    id,
+    fullName,
+    headline,
+    photo,
+    initials,
+    color,
+    location,
+    experienceYears,
+    verificationStatus,
+    connectionStatus,
+    connectionId,
+    connectionDirection,
+  ];
 }

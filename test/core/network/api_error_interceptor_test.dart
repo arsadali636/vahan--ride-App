@@ -41,8 +41,7 @@ void main() {
     }
   });
 
-  test('maps 422 validation responses via the FastAPI detail shape',
-      () async {
+  test('maps 422 validation responses via the FastAPI detail shape', () async {
     adapter
       ..statusCode = 422
       ..body =

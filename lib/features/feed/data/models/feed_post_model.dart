@@ -19,6 +19,7 @@ class FeedPostModel extends Equatable {
   final int commentCount;
   final bool liked;
   final bool isMine;
+  final bool piiFlagged;
   final String createdAt;
 
   const FeedPostModel({
@@ -37,6 +38,7 @@ class FeedPostModel extends Equatable {
     required this.commentCount,
     required this.liked,
     required this.isMine,
+    required this.piiFlagged,
     required this.createdAt,
   });
 
@@ -57,6 +59,7 @@ class FeedPostModel extends Equatable {
       commentCount: json['comment_count'] as int? ?? 0,
       liked: json['liked'] as bool? ?? false,
       isMine: json['is_mine'] as bool? ?? false,
+      piiFlagged: json['pii_flagged'] as bool? ?? false,
       createdAt: json['created_at'] as String? ?? '',
     );
   }
@@ -78,27 +81,29 @@ class FeedPostModel extends Equatable {
       commentCount: commentCount,
       liked: liked,
       isMine: isMine,
+      piiFlagged: piiFlagged,
       createdAt: createdAt,
     );
   }
 
   @override
   List<Object?> get props => [
-        id,
-        author,
-        authorId,
-        headline,
-        initials,
-        color,
-        photo,
-        postType,
-        postTypeDisplay,
-        content,
-        image,
-        likeCount,
-        commentCount,
-        liked,
-        isMine,
-        createdAt,
-      ];
+    id,
+    author,
+    authorId,
+    headline,
+    initials,
+    color,
+    photo,
+    postType,
+    postTypeDisplay,
+    content,
+    image,
+    likeCount,
+    commentCount,
+    liked,
+    isMine,
+    piiFlagged,
+    createdAt,
+  ];
 }

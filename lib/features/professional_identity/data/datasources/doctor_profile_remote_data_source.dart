@@ -88,7 +88,8 @@ abstract class DoctorProfileRemoteDataSource {
   Future<void> deleteExperience(String experienceId);
 }
 
-class DoctorProfileRemoteDataSourceImpl implements DoctorProfileRemoteDataSource {
+class DoctorProfileRemoteDataSourceImpl
+    implements DoctorProfileRemoteDataSource {
   DoctorProfileRemoteDataSourceImpl({required this.apiClient});
 
   final ApiClient apiClient;
@@ -128,7 +129,9 @@ class DoctorProfileRemoteDataSourceImpl implements DoctorProfileRemoteDataSource
   }
 
   @override
-  Future<DoctorProfileResponseModel> getDoctorProfileById(String doctorId) async {
+  Future<DoctorProfileResponseModel> getDoctorProfileById(
+    String doctorId,
+  ) async {
     final data = await apiClient.get(ApiEndpoints.doctorProfileById(doctorId));
     return DoctorProfileResponseModel.fromJson(
       (data as Map).cast<String, dynamic>(),
@@ -162,9 +165,11 @@ class DoctorProfileRemoteDataSourceImpl implements DoctorProfileRemoteDataSource
   Future<List<DoctorQualificationModel>> listQualifications() async {
     final data = await apiClient.get(ApiEndpoints.doctorQualifications);
     return (data as List? ?? const [])
-        .map((e) => DoctorQualificationModel.fromJson(
-              (e as Map).cast<String, dynamic>(),
-            ))
+        .map(
+          (e) => DoctorQualificationModel.fromJson(
+            (e as Map).cast<String, dynamic>(),
+          ),
+        )
         .toList();
   }
 
@@ -192,9 +197,11 @@ class DoctorProfileRemoteDataSourceImpl implements DoctorProfileRemoteDataSource
   Future<List<DoctorRegistrationModel>> listRegistrations() async {
     final data = await apiClient.get(ApiEndpoints.doctorRegistrations);
     return (data as List? ?? const [])
-        .map((e) => DoctorRegistrationModel.fromJson(
-              (e as Map).cast<String, dynamic>(),
-            ))
+        .map(
+          (e) => DoctorRegistrationModel.fromJson(
+            (e as Map).cast<String, dynamic>(),
+          ),
+        )
         .toList();
   }
 
@@ -215,9 +222,11 @@ class DoctorProfileRemoteDataSourceImpl implements DoctorProfileRemoteDataSource
   Future<List<DoctorExperienceModel>> listExperiences() async {
     final data = await apiClient.get(ApiEndpoints.doctorExperiences);
     return (data as List? ?? const [])
-        .map((e) => DoctorExperienceModel.fromJson(
-              (e as Map).cast<String, dynamic>(),
-            ))
+        .map(
+          (e) => DoctorExperienceModel.fromJson(
+            (e as Map).cast<String, dynamic>(),
+          ),
+        )
         .toList();
   }
 
@@ -236,8 +245,6 @@ class DoctorProfileRemoteDataSourceImpl implements DoctorProfileRemoteDataSource
 
   @override
   Future<void> deleteExperience(String experienceId) async {
-    await apiClient.delete(
-      ApiEndpoints.doctorExperienceById(experienceId),
-    );
+    await apiClient.delete(ApiEndpoints.doctorExperienceById(experienceId));
   }
 }

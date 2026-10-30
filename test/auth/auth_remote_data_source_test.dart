@@ -14,7 +14,7 @@ import '../helpers/fake_http_client_adapter.dart';
 /// Records outgoing calls and returns a canned body per endpoint.
 class _RecordingApiClient extends ApiClient {
   _RecordingApiClient(this.canned)
-      : super(Dio(BaseOptions(baseUrl: 'http://test')));
+    : super(Dio(BaseOptions(baseUrl: 'http://test')));
 
   final Map<String, dynamic> canned;
   final List<({String path, Object? data, bool requiresAuth})> posts = [];
@@ -84,13 +84,9 @@ void main() {
     expect(response.profileCreated, isTrue);
   });
 
-  test('passwordLogin posts to the login path as a public request',
-      () async {
+  test('passwordLogin posts to the login path as a public request', () async {
     final pair = await dataSource.passwordLogin(
-      const PasswordLoginRequestModel(
-        phone: '9876543210',
-        password: 'pass',
-      ),
+      const PasswordLoginRequestModel(phone: '9876543210', password: 'pass'),
     );
 
     final call = apiClient.posts.single;
@@ -122,8 +118,7 @@ void main() {
     expect(pair.accessToken, 'at-3');
   });
 
-  test('logout posts to the logout path as an authenticated request',
-      () async {
+  test('logout posts to the logout path as an authenticated request', () async {
     await dataSource.logout();
 
     final call = apiClient.posts.single;

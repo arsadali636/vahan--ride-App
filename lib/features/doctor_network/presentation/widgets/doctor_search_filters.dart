@@ -34,11 +34,11 @@ class DoctorSearchFilterBar extends StatelessWidget {
   });
 
   int get _activeCount => [
-        if (filters.specialty != null && filters.specialty!.isNotEmpty) 1,
-        if (filters.city != null && filters.city!.isNotEmpty) 1,
-        if (filters.experienceMin != null) 1,
-        if (filters.openToOpportunities != null) 1,
-      ].length;
+    if (filters.specialty != null && filters.specialty!.isNotEmpty) 1,
+    if (filters.city != null && filters.city!.isNotEmpty) 1,
+    if (filters.experienceMin != null) 1,
+    if (filters.openToOpportunities != null) 1,
+  ].length;
 
   Future<void> _open(BuildContext context) async {
     final result = await AppBottomSheet.show<DoctorSearchFilterResult>(
@@ -124,11 +124,7 @@ class _DoctorSearchFiltersSheetState extends State<_DoctorSearchFiltersSheet> {
           hint: 'e.g. Cardiology',
         ),
         const SizedBox(height: AppSpacing.md),
-        AppTextField(
-          controller: _city,
-          label: 'City',
-          hint: 'e.g. Mumbai',
-        ),
+        AppTextField(controller: _city, label: 'City', hint: 'e.g. Mumbai'),
         const SizedBox(height: AppSpacing.md),
         AppTextField(
           controller: _experience,
@@ -142,14 +138,10 @@ class _DoctorSearchFiltersSheetState extends State<_DoctorSearchFiltersSheet> {
         const SizedBox(height: AppSpacing.sm),
         SwitchListTile(
           contentPadding: EdgeInsets.zero,
-          title: Text(
-            'Open to opportunities',
-            style: AppTypography.bodyLarge,
-          ),
+          title: Text('Open to opportunities', style: AppTypography.bodyLarge),
           subtitle: const Text('Only show doctors actively seeking roles'),
           value: _openToOpportunities,
-          onChanged: (value) =>
-              setState(() => _openToOpportunities = value),
+          onChanged: (value) => setState(() => _openToOpportunities = value),
         ),
         const SizedBox(height: AppSpacing.lg),
         Row(
@@ -158,11 +150,12 @@ class _DoctorSearchFiltersSheetState extends State<_DoctorSearchFiltersSheet> {
               child: OutlineButton(
                 label: 'Clear all',
                 color: AppColors.textSecondary,
-                onPressed: () =>
-                    Navigator.of(context).pop(const DoctorSearchFilterResult(
-                  DoctorNetworkFilters(),
-                  clearedAll: true,
-                )),
+                onPressed: () => Navigator.of(context).pop(
+                  const DoctorSearchFilterResult(
+                    DoctorNetworkFilters(),
+                    clearedAll: true,
+                  ),
+                ),
               ),
             ),
             const SizedBox(width: AppSpacing.sm),

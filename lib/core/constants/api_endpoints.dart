@@ -50,7 +50,8 @@ class ApiEndpoints {
 
   /// `GET`/`POST /api/v1/doctors/profile/me/qualifications/` — list/add
   /// qualifications (authenticated).
-  static const String doctorQualifications = '/api/v1/doctors/profile/me/qualifications/';
+  static const String doctorQualifications =
+      '/api/v1/doctors/profile/me/qualifications/';
 
   /// `DELETE /api/v1/doctors/profile/me/qualifications/{qualification_id}/`
   /// (authenticated). 404 is expected when the id does not exist.
@@ -59,11 +60,13 @@ class ApiEndpoints {
 
   /// `GET`/`POST /api/v1/doctors/profile/me/registrations/` — list/add
   /// registrations (authenticated).
-  static const String doctorRegistrations = '/api/v1/doctors/profile/me/registrations/';
+  static const String doctorRegistrations =
+      '/api/v1/doctors/profile/me/registrations/';
 
   /// `GET`/`POST /api/v1/doctors/profile/me/experiences/` — list/add work
   /// experience entries (authenticated).
-  static const String doctorExperiences = '/api/v1/doctors/profile/me/experiences/';
+  static const String doctorExperiences =
+      '/api/v1/doctors/profile/me/experiences/';
 
   /// `DELETE /api/v1/doctors/profile/me/experiences/{exp_id}/` (authenticated,
   /// 204 on success).

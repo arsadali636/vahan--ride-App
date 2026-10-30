@@ -110,8 +110,7 @@ class AppRouter {
   static const String doctorPublicProfileRoute = '/doctor/:doctorId';
 
   /// Builds the public-profile route for a given [doctorId].
-  static String doctorPublicProfilePath(String doctorId) =>
-      '/doctor/$doctorId';
+  static String doctorPublicProfilePath(String doctorId) => '/doctor/$doctorId';
 
   /// Doctor-only professional feed (backend contract pending — see FeedPage).
   static const String feedRoute = '/feed';

@@ -30,29 +30,19 @@ class DoctorProfileHeader extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                profile.displayName,
-                style: AppTypography.headingMedium,
-              ),
+              Text(profile.displayName, style: AppTypography.headingMedium),
               const SizedBox(height: AppSpacing.xxs),
               VerificationStatusChip(status: profile.verificationStatus),
-              if (profile.headline != null &&
-                  profile.headline!.isNotEmpty) ...[
+              if (profile.headline != null && profile.headline!.isNotEmpty) ...[
                 const SizedBox(height: AppSpacing.xs),
-                Text(
-                  profile.headline!,
-                  style: AppTypography.bodyMedium,
-                ),
+                Text(profile.headline!, style: AppTypography.bodyMedium),
               ],
               if (profile.locationLabel != null &&
                   profile.locationLabel!.isNotEmpty) ...[
                 const SizedBox(height: AppSpacing.xs),
                 Row(
                   children: [
-                    const Icon(
-                      Icons.location_on_outlined,
-                      size: 16,
-                    ),
+                    const Icon(Icons.location_on_outlined, size: 16),
                     const SizedBox(width: AppSpacing.xxs),
                     Flexible(
                       child: Text(

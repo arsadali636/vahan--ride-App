@@ -10,11 +10,11 @@ import 'package:doc_connect_app/features/doctor_network/data/models/doctor_searc
 /// Records outgoing calls and returns a canned body for every call.
 class _RecordingApiClient extends ApiClient {
   _RecordingApiClient(this.canned)
-      : super(Dio(BaseOptions(baseUrl: 'http://test')));
+    : super(Dio(BaseOptions(baseUrl: 'http://test')));
 
   final Map<String, dynamic> canned;
   final List<({String path, Map<String, dynamic>? query, bool requiresAuth})>
-      calls = [];
+  calls = [];
 
   @override
   Future<dynamic> get(
@@ -24,11 +24,7 @@ class _RecordingApiClient extends ApiClient {
     CancelToken? cancelToken,
     bool requiresAuth = true,
   }) async {
-    calls.add((
-      path: path,
-      query: queryParameters,
-      requiresAuth: requiresAuth,
-    ));
+    calls.add((path: path, query: queryParameters, requiresAuth: requiresAuth));
     if (canned[path] is Function) {
       throw (canned[path] as Function)();
     }
@@ -44,10 +40,7 @@ final _resultItem = {
   'headline': 'Senior Consultant',
   'photo_file_id': null,
   'primary_specialization_id': 'Cardiology',
-  'professional_location': {
-    'city': 'Mumbai',
-    'state': 'Maharashtra',
-  },
+  'professional_location': {'city': 'Mumbai', 'state': 'Maharashtra'},
   'experience_years': 12.0,
   'open_to_opportunities': true,
   'verification_status': 'UNVERIFIED',
@@ -111,19 +104,20 @@ void main() {
     test('propagates the typed ApiException', () async {
       dataSource = DoctorNetworkRemoteDataSourceImpl(
         apiClient: _RecordingApiClient({
-          ApiEndpoints.doctorSearch: () => const ServerException(
-            message: 'backend exploded',
-          ),
+          ApiEndpoints.doctorSearch: () =>
+              const ServerException(message: 'backend exploded'),
         }),
       );
 
       await expectLater(
         dataSource.searchDoctors(const DoctorSearchQueryModel()),
-        throwsA(isA<ServerException>().having(
-          (e) => e.message,
-          'message',
-          'backend exploded',
-        )),
+        throwsA(
+          isA<ServerException>().having(
+            (e) => e.message,
+            'message',
+            'backend exploded',
+          ),
+        ),
       );
     });
   });
@@ -169,11 +163,13 @@ void main() {
 
       await expectLater(
         dataSource.getDoctorProfile('missing'),
-        throwsA(isA<NotFoundException>().having(
-          (e) => e.message,
-          'message',
-          'Doctor not found',
-        )),
+        throwsA(
+          isA<NotFoundException>().having(
+            (e) => e.message,
+            'message',
+            'Doctor not found',
+          ),
+        ),
       );
     });
   });

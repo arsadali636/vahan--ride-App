@@ -17,7 +17,11 @@ class NotFoundScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(Icons.search_off, size: 64, color: AppColors.textSecondary),
+              const Icon(
+                Icons.search_off,
+                size: 64,
+                color: AppColors.textSecondary,
+              ),
               const SizedBox(height: AppSpacing.md),
               Text('Page not found', style: AppTypography.headingMedium),
               const SizedBox(height: AppSpacing.sm),

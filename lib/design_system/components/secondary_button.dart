@@ -53,7 +53,9 @@ class SecondaryButton extends StatelessWidget {
               context: context,
               label: label,
               icon: icon,
-              textStyle: style.textStyle.copyWith(color: AppColors.textOnPrimary),
+              textStyle: style.textStyle.copyWith(
+                color: AppColors.textOnPrimary,
+              ),
             ),
     );
 

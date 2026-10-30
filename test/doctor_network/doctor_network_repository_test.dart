@@ -82,24 +82,22 @@ void main() {
     });
 
     test('maps a ServerException to ServerFailure', () async {
-      dataSource.searchError = const ServerException(
-        message: 'search is down',
-      );
+      dataSource.searchError = const ServerException(message: 'search is down');
 
       await expectLater(
         repository.searchDoctors(const DoctorSearchQuery()),
-        throwsA(isA<ServerFailure>().having(
-          (e) => e.message,
-          'message',
-          'search is down',
-        )),
+        throwsA(
+          isA<ServerFailure>().having(
+            (e) => e.message,
+            'message',
+            'search is down',
+          ),
+        ),
       );
     });
 
     test('maps a NotFoundException to NotFoundFailure', () async {
-      dataSource.searchError = const NotFoundException(
-        message: 'nothing here',
-      );
+      dataSource.searchError = const NotFoundException(message: 'nothing here');
 
       await expectLater(
         repository.searchDoctors(const DoctorSearchQuery()),
@@ -135,11 +133,13 @@ void main() {
 
       await expectLater(
         repository.getDoctorProfile('doc-9'),
-        throwsA(isA<UnauthorizedFailure>().having(
-          (e) => e.message,
-          'message',
-          'session expired',
-        )),
+        throwsA(
+          isA<UnauthorizedFailure>().having(
+            (e) => e.message,
+            'message',
+            'session expired',
+          ),
+        ),
       );
     });
   });

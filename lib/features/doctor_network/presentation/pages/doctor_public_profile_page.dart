@@ -25,11 +25,7 @@ class DoctorPublicProfilePage extends StatelessWidget {
   /// Optional override for tests; defaults to the DI-provided instance.
   final DoctorNetworkBloc? bloc;
 
-  const DoctorPublicProfilePage({
-    super.key,
-    required this.doctorId,
-    this.bloc,
-  });
+  const DoctorPublicProfilePage({super.key, required this.doctorId, this.bloc});
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +50,9 @@ class _DoctorPublicProfileBodyState extends State<_DoctorPublicProfileBody> {
   @override
   void initState() {
     super.initState();
-    context.read<DoctorNetworkBloc>().add(DoctorProfileRequested(widget.doctorId));
+    context.read<DoctorNetworkBloc>().add(
+      DoctorProfileRequested(widget.doctorId),
+    );
   }
 
   @override
@@ -81,9 +79,9 @@ class _DoctorPublicProfileBodyState extends State<_DoctorPublicProfileBody> {
               return AppErrorView(
                 title: 'Could not load this doctor',
                 message: state.profileError?.message,
-                onRetry: () => context
-                    .read<DoctorNetworkBloc>()
-                    .add(DoctorProfileRequested(widget.doctorId)),
+                onRetry: () => context.read<DoctorNetworkBloc>().add(
+                  DoctorProfileRequested(widget.doctorId),
+                ),
               );
             case DoctorNetworkProfileStatus.loaded:
               final profile = state.profile;

@@ -5,8 +5,6 @@ class HomeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SizedBox(
-      child: Text('Home Widget'),
-    );
+    return const SizedBox(child: Text('Home Widget'));
   }
 }

@@ -39,8 +39,7 @@ class CommentModel extends Equatable {
       isMine: json['is_mine'] as bool? ?? false,
       replies: (json['replies'] as List? ?? const [])
           .whereType<Map>()
-          .map((e) =>
-              CommentReplyModel.fromJson(e.cast<String, dynamic>()))
+          .map((e) => CommentReplyModel.fromJson(e.cast<String, dynamic>()))
           .toList(),
     );
   }
@@ -61,14 +60,14 @@ class CommentModel extends Equatable {
 
   @override
   List<Object?> get props => [
-        id,
-        author,
-        initials,
-        color,
-        photo,
-        content,
-        createdAt,
-        isMine,
-        replies,
-      ];
+    id,
+    author,
+    initials,
+    color,
+    photo,
+    content,
+    createdAt,
+    isMine,
+    replies,
+  ];
 }

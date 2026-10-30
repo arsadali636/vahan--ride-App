@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 import '../storage/session_service.dart';
 import 'interceptors/api_error_interceptor.dart';
 import 'interceptors/auth_interceptor.dart';
+import 'interceptors/debug_dio_logger.dart';
 import 'interceptors/refresh_token_interceptor.dart';
 import 'network_info.dart';
 
@@ -49,17 +49,7 @@ class DioFactory {
         networkInfo: networkInfo,
         onSessionExpired: onSessionExpired,
       ),
-      if (enableLogging)
-        PrettyDioLogger(
-          request: true,
-          requestHeader: true,
-          requestBody: true,
-          responseHeader: true,
-          responseBody: true,
-          error: true,
-          compact: false,
-          maxWidth: 90,
-        ),
+      if (enableLogging) DebugDioLogger(enabled: enableLogging),
       ApiErrorInterceptor(),
     ]);
 

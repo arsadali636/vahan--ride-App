@@ -5,8 +5,9 @@ import 'package:doc_connect_app/features/organizations/presentation/pages/organi
 
 void main() {
   group('OrganizationsPage', () {
-    testWidgets('renders the organizations chrome with an honest state',
-        (tester) async {
+    testWidgets('renders the organizations chrome with an honest state', (
+      tester,
+    ) async {
       await tester.pumpWidget(const MaterialApp(home: OrganizationsPage()));
 
       expect(find.text('Organizations'), findsOneWidget);

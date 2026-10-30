@@ -11,8 +11,8 @@ import 'post_composer_state.dart';
 
 class PostComposerBloc extends Bloc<PostComposerEvent, PostComposerState> {
   PostComposerBloc({required CreatePost createPost})
-      : _createPost = createPost,
-        super(const PostComposerState()) {
+    : _createPost = createPost,
+      super(const PostComposerState()) {
     on<PostTypeChanged>(_onPostTypeChanged);
     on<AnonymousToggled>(_onAnonymousToggled);
     on<PostImageSelected>(_onImageSelected);
@@ -26,10 +26,7 @@ class PostComposerBloc extends Bloc<PostComposerEvent, PostComposerState> {
     PostTypeChanged event,
     Emitter<PostComposerState> emit,
   ) {
-    emit(state.copyWith(
-      postType: event.postType,
-      clearError: true,
-    ));
+    emit(state.copyWith(postType: event.postType, clearError: true));
     // Reset anonymous when switching away from CASE
     if (event.postType != 'CASE' && state.isAnonymous) {
       emit(state.copyWith(isAnonymous: false));
@@ -47,10 +44,7 @@ class PostComposerBloc extends Bloc<PostComposerEvent, PostComposerState> {
     PostImageSelected event,
     Emitter<PostComposerState> emit,
   ) {
-    emit(state.copyWith(
-      imagePath: event.imagePath,
-      clearError: true,
-    ));
+    emit(state.copyWith(imagePath: event.imagePath, clearError: true));
   }
 
   void _onImageRemoved(
@@ -67,10 +61,9 @@ class PostComposerBloc extends Bloc<PostComposerEvent, PostComposerState> {
     final content = event.content.trim();
     if (content.isEmpty) return;
 
-    emit(state.copyWith(
-      status: PostComposerStatus.submitting,
-      clearError: true,
-    ));
+    emit(
+      state.copyWith(status: PostComposerStatus.submitting, clearError: true),
+    );
 
     try {
       File? imageFile;
@@ -87,10 +80,7 @@ class PostComposerBloc extends Bloc<PostComposerEvent, PostComposerState> {
 
       emit(state.copyWith(status: PostComposerStatus.success));
     } on Failure catch (e) {
-      emit(state.copyWith(
-        status: PostComposerStatus.failure,
-        error: e,
-      ));
+      emit(state.copyWith(status: PostComposerStatus.failure, error: e));
     }
   }
 }

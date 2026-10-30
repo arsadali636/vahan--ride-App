@@ -32,17 +32,17 @@ class SuggestedDoctor extends Equatable {
 
   @override
   List<Object?> get props => [
-        id,
-        fullName,
-        headline,
-        photo,
-        initials,
-        color,
-        location,
-        experienceYears,
-        verificationStatus,
-        connectionStatus,
-        connectionId,
-        connectionDirection,
-      ];
+    id,
+    fullName,
+    headline,
+    photo,
+    initials,
+    color,
+    location,
+    experienceYears,
+    verificationStatus,
+    connectionStatus,
+    connectionId,
+    connectionDirection,
+  ];
 }

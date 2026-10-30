@@ -34,9 +34,9 @@ class HomeResponseModel extends Equatable {
         : const <String, dynamic>{};
 
     return HomeResponseModel(
-      doctorCount: stats['doctors'] as int? ?? 0,
-      hospitalCount: stats['hospitals'] as int? ?? 0,
-      jobCount: stats['jobs'] as int? ?? 0,
+      doctorCount: _parseInt(stats['doctors']),
+      hospitalCount: _parseInt(stats['hospitals']),
+      jobCount: _parseInt(stats['jobs']),
       urgentJobs: (json['urgent_jobs'] as List? ?? const [])
           .whereType<Map>()
           .map((e) => UrgentJobModel.fromJson(e.cast<String, dynamic>()))
@@ -45,10 +45,21 @@ class HomeResponseModel extends Equatable {
           .whereType<Map>()
           .map((e) => SuggestedDoctorModel.fromJson(e.cast<String, dynamic>()))
           .toList(),
-      unreadMessages: json['unread_messages'] as int? ?? 0,
-      unreadNotifications: json['unread_notifications'] as int? ?? 0,
-      pendingConnections: json['pending_connections'] as int? ?? 0,
+      unreadMessages: _parseInt(json['unread_messages']),
+      unreadNotifications: _parseInt(json['unread_notifications']),
+      pendingConnections: _parseInt(json['pending_connections']),
     );
+  }
+
+  static int _parseInt(dynamic value, [int defaultValue = 0]) {
+    if (value is int) return value;
+    if (value is num) return value.toInt();
+    if (value is String) {
+      return int.tryParse(value) ??
+          double.tryParse(value)?.toInt() ??
+          defaultValue;
+    }
+    return defaultValue;
   }
 
   HomeData toEntity() {
@@ -66,13 +77,13 @@ class HomeResponseModel extends Equatable {
 
   @override
   List<Object?> get props => [
-        doctorCount,
-        hospitalCount,
-        jobCount,
-        urgentJobs,
-        suggestedDoctors,
-        unreadMessages,
-        unreadNotifications,
-        pendingConnections,
-      ];
+    doctorCount,
+    hospitalCount,
+    jobCount,
+    urgentJobs,
+    suggestedDoctors,
+    unreadMessages,
+    unreadNotifications,
+    pendingConnections,
+  ];
 }

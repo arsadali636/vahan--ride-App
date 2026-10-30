@@ -26,10 +26,7 @@ class TokenResponseModel extends Equatable {
   }
 
   AuthTokenPair toTokenPair() {
-    return AuthTokenPair(
-      accessToken: accessToken,
-      refreshToken: refreshToken,
-    );
+    return AuthTokenPair(accessToken: accessToken, refreshToken: refreshToken);
   }
 
   @override

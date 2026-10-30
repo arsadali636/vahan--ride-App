@@ -28,14 +28,14 @@ class Comment extends Equatable {
 
   @override
   List<Object?> get props => [
-        id,
-        author,
-        initials,
-        color,
-        photo,
-        content,
-        createdAt,
-        isMine,
-        replies,
-      ];
+    id,
+    author,
+    initials,
+    color,
+    photo,
+    content,
+    createdAt,
+    isMine,
+    replies,
+  ];
 }

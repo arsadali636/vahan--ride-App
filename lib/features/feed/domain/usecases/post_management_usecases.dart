@@ -53,10 +53,7 @@ class PostComment {
 
   final FeedRepository _repository;
 
-  Future<Comment> call({
-    required String postId,
-    required String content,
-  }) {
+  Future<Comment> call({required String postId, required String content}) {
     return _repository.postComment(postId: postId, content: content);
   }
 }
@@ -71,8 +68,7 @@ class ReplyComment {
     required String commentId,
     required String content,
   }) {
-    return _repository.replyComment(
-        commentId: commentId, content: content);
+    return _repository.replyComment(commentId: commentId, content: content);
   }
 }
 
@@ -86,8 +82,7 @@ class EditComment {
     required String commentId,
     required String content,
   }) {
-    return _repository.editComment(
-        commentId: commentId, content: content);
+    return _repository.editComment(commentId: commentId, content: content);
   }
 }
 

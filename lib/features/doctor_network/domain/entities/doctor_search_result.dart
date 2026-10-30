@@ -45,17 +45,17 @@ class DoctorSearchResult extends Equatable {
 
   @override
   List<Object?> get props => [
-        id,
-        fullName,
-        firstName,
-        lastName,
-        headline,
-        photoFileId,
-        primarySpecializationId,
-        professionalLocation,
-        experienceYears,
-        openToOpportunities,
-        verificationStatus,
-        isVerified,
-      ];
+    id,
+    fullName,
+    firstName,
+    lastName,
+    headline,
+    photoFileId,
+    primarySpecializationId,
+    professionalLocation,
+    experienceYears,
+    openToOpportunities,
+    verificationStatus,
+    isVerified,
+  ];
 }

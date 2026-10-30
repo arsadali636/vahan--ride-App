@@ -36,6 +36,10 @@ class LogSanitizer {
     'prescription',
     'private_message',
     'privatemessage',
+    'cookie',
+    'set-cookie',
+    'sessionid',
+    'csrftoken',
   };
 
   /// Header names whose values are masked.

@@ -62,6 +62,7 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<AuthSession> passwordLogin({
     required String phone,
     required String password,
+    UserRole? userType,
     String? deviceId,
   }) async {
     try {
@@ -69,10 +70,11 @@ class AuthRepositoryImpl implements AuthRepository {
         PasswordLoginRequestModel(
           phone: phone,
           password: password,
+          userType: userType,
           deviceId: deviceId,
         ),
       );
-      return AuthSession(tokens: tokens);
+      return AuthSession(tokens: tokens, userRole: userType);
     } on ApiException catch (e) {
       throw FailureMapper.fromApiException(e);
     }

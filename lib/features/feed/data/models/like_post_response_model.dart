@@ -5,10 +5,7 @@ class LikePostResponseModel extends Equatable {
   final bool liked;
   final int count;
 
-  const LikePostResponseModel({
-    required this.liked,
-    required this.count,
-  });
+  const LikePostResponseModel({required this.liked, required this.count});
 
   factory LikePostResponseModel.fromJson(Map<String, dynamic> json) {
     return LikePostResponseModel(

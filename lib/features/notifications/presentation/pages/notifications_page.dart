@@ -6,12 +6,8 @@ class NotificationsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Notifications'),
-      ),
-      body: Center(
-        child: Text('Notifications Feature Page'),
-      ),
+      appBar: AppBar(title: const Text('Notifications')),
+      body: Center(child: Text('Notifications Feature Page')),
     );
   }
 }

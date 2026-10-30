@@ -36,13 +36,13 @@ class AppDropdown<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String displayLabel(T item) =>
-        labelBuilder?.call(item) ?? item.toString();
+    String displayLabel(T item) => labelBuilder?.call(item) ?? item.toString();
 
     return DropdownButtonFormField<T>(
       key: key,
-      initialValue:
-          items.isNotEmpty && items.contains(initialValue) ? initialValue : null,
+      initialValue: items.isNotEmpty && items.contains(initialValue)
+          ? initialValue
+          : null,
       isDense: isDense,
       isExpanded: isExpanded,
       style: AppTypography.bodyLarge,
@@ -57,7 +57,8 @@ class AppDropdown<T> extends StatelessWidget {
         for (final item in items)
           DropdownMenuItem<T>(
             value: item,
-            child: itemBuilder?.call(context, item) ??
+            child:
+                itemBuilder?.call(context, item) ??
                 Text(
                   displayLabel(item),
                   style: AppTypography.bodyLarge,

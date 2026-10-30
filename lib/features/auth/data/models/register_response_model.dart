@@ -50,6 +50,12 @@ class RegisterResponseModel extends Equatable {
   }
 
   @override
-  List<Object?> get props =>
-      [accessToken, refreshToken, tokenType, userId, userType, profileCreated];
+  List<Object?> get props => [
+    accessToken,
+    refreshToken,
+    tokenType,
+    userId,
+    userType,
+    profileCreated,
+  ];
 }

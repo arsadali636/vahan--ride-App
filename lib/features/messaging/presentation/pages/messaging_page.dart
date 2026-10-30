@@ -6,12 +6,8 @@ class MessagingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Messaging'),
-      ),
-      body: Center(
-        child: Text('Messaging Feature Page'),
-      ),
+      appBar: AppBar(title: const Text('Messaging')),
+      body: Center(child: Text('Messaging Feature Page')),
     );
   }
 }

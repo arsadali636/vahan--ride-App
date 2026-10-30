@@ -60,15 +60,13 @@ class DoctorProfileResponseModel extends Equatable {
       headline: json['headline'] as String?,
       about: json['about'] as String?,
       primarySpecializationId: json['primary_specialization_id'] as String?,
-      clinicalInterests:
-          (json['clinical_interests'] as List? ?? const [])
-              .map((e) => e as String)
-              .toList(),
+      clinicalInterests: (json['clinical_interests'] as List? ?? const [])
+          .map((e) => e as String)
+          .toList(),
       professionalLocation: LocationModel.fromMapOrNull(
         json['professional_location'],
       ),
-      experienceYears:
-          (json['experience_years'] as num? ?? 0).toDouble(),
+      experienceYears: (json['experience_years'] as num? ?? 0).toDouble(),
       openToOpportunities: json['open_to_opportunities'] as bool? ?? false,
       verificationStatus: DoctorVerificationStatus.fromWire(
         json['verification_status'] as String?,
@@ -103,22 +101,22 @@ class DoctorProfileResponseModel extends Equatable {
 
   @override
   List<Object?> get props => [
-        id,
-        userId,
-        firstName,
-        lastName,
-        fullName,
-        photoFileId,
-        headline,
-        about,
-        primarySpecializationId,
-        clinicalInterests,
-        professionalLocation,
-        experienceYears,
-        openToOpportunities,
-        verificationStatus,
-        isVerified,
-        createdAt,
-        updatedAt,
-      ];
+    id,
+    userId,
+    firstName,
+    lastName,
+    fullName,
+    photoFileId,
+    headline,
+    about,
+    primarySpecializationId,
+    clinicalInterests,
+    professionalLocation,
+    experienceYears,
+    openToOpportunities,
+    verificationStatus,
+    isVerified,
+    createdAt,
+    updatedAt,
+  ];
 }

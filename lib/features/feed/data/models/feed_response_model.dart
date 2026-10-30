@@ -21,8 +21,7 @@ class FeedResponseModel extends Equatable {
     return FeedResponseModel(
       posts: (json['posts'] as List? ?? const [])
           .whereType<Map>()
-          .map((e) =>
-              FeedPostModel.fromJson(e.cast<String, dynamic>()))
+          .map((e) => FeedPostModel.fromJson(e.cast<String, dynamic>()))
           .toList(),
       page: json['page'] as int? ?? 1,
       pageSize: json['page_size'] as int? ?? 10,

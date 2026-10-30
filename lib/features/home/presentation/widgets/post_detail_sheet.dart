@@ -103,29 +103,26 @@ class _PostDetailSheetState extends State<PostDetailSheet> {
 
     if (_editingCommentId != null) {
       context.read<CommentBloc>().add(
-            CommentEdited(commentId: _editingCommentId!, content: text),
-          );
+        CommentEdited(commentId: _editingCommentId!, content: text),
+      );
       _commentController.clear();
       _clearEditing();
     } else if (_editingReplyId != null) {
       context.read<CommentBloc>().add(
-            CommentReplyEdited(replyId: _editingReplyId!, content: text),
-          );
+        CommentReplyEdited(replyId: _editingReplyId!, content: text),
+      );
       _commentController.clear();
       _clearEditing();
     } else if (_replyToCommentId != null) {
       context.read<CommentBloc>().add(
-            CommentReplySubmitted(
-              commentId: _replyToCommentId!,
-              content: text,
-            ),
-          );
+        CommentReplySubmitted(commentId: _replyToCommentId!, content: text),
+      );
       _commentController.clear();
       _clearEditing();
     } else {
       context.read<CommentBloc>().add(
-            CommentSubmitted(postId: widget.post.id, content: text),
-          );
+        CommentSubmitted(postId: widget.post.id, content: text),
+      );
       _commentController.clear();
     }
   }
@@ -145,10 +142,13 @@ class _PostDetailSheetState extends State<PostDetailSheet> {
             onPressed: () {
               Navigator.pop(ctx);
               context.read<CommentBloc>().add(
-                    CommentDeleted(commentId: commentId),
-                  );
+                CommentDeleted(commentId: commentId),
+              );
             },
-            child: const Text('Delete', style: TextStyle(color: AppColors.error)),
+            child: const Text(
+              'Delete',
+              style: TextStyle(color: AppColors.error),
+            ),
           ),
         ],
       ),
@@ -170,13 +170,13 @@ class _PostDetailSheetState extends State<PostDetailSheet> {
             onPressed: () {
               Navigator.pop(ctx);
               context.read<CommentBloc>().add(
-                    CommentReplyDeleted(
-                      replyId: replyId,
-                      commentId: parentId,
-                    ),
-                  );
+                CommentReplyDeleted(replyId: replyId, commentId: parentId),
+              );
             },
-            child: const Text('Delete', style: TextStyle(color: AppColors.error)),
+            child: const Text(
+              'Delete',
+              style: TextStyle(color: AppColors.error),
+            ),
           ),
         ],
       ),
@@ -186,8 +186,9 @@ class _PostDetailSheetState extends State<PostDetailSheet> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => DependencyInjection.instance<CommentBloc>()
-        ..add(CommentStarted(postId: widget.post.id)),
+      create: (_) =>
+          DependencyInjection.instance<CommentBloc>()
+            ..add(CommentStarted(postId: widget.post.id)),
       child: BlocListener<CommentBloc, CommentState>(
         listener: (context, state) {
           if (state.error != null) {
@@ -229,10 +230,7 @@ class _PostDetailSheetState extends State<PostDetailSheet> {
                 ),
                 child: Row(
                   children: [
-                    Text(
-                      'Post',
-                      style: AppTypography.titleLarge,
-                    ),
+                    Text('Post', style: AppTypography.titleLarge),
                     const Spacer(),
                     IconButton(
                       onPressed: () => Navigator.pop(context),
@@ -249,9 +247,7 @@ class _PostDetailSheetState extends State<PostDetailSheet> {
                 child: CustomScrollView(
                   slivers: [
                     // ── Post card ──
-                    SliverToBoxAdapter(
-                      child: _PostHeader(post: widget.post),
-                    ),
+                    SliverToBoxAdapter(child: _PostHeader(post: widget.post)),
                     // ── Comments ──
                     BlocBuilder<CommentBloc, CommentState>(
                       builder: (context, state) {
@@ -294,34 +290,30 @@ class _PostDetailSheetState extends State<PostDetailSheet> {
                           );
                         }
                         return SliverList(
-                          delegate: SliverChildBuilderDelegate(
-                            (context, index) {
-                              final comment = state.comments[index];
-                              return _CommentTile(
-                                comment: comment,
-                                currentUserId: currentUserId,
-                                onReply: () => _startReply(
-                                  comment.id,
-                                  comment.author,
-                                ),
-                                onEdit: () => _startEditComment(
-                                  comment.id,
-                                  comment.content,
-                                ),
-                                onDelete: () => _deleteComment(comment.id),
-                                onReplyEdit: (reply) => _startEditReply(
-                                  reply.id,
-                                  comment.id,
-                                  reply.content,
-                                ),
-                                onReplyDelete: (reply) => _deleteReply(
-                                  reply.id,
-                                  comment.id,
-                                ),
-                              );
-                            },
-                            childCount: state.comments.length,
-                          ),
+                          delegate: SliverChildBuilderDelegate((
+                            context,
+                            index,
+                          ) {
+                            final comment = state.comments[index];
+                            return _CommentTile(
+                              comment: comment,
+                              currentUserId: currentUserId,
+                              onReply: () =>
+                                  _startReply(comment.id, comment.author),
+                              onEdit: () => _startEditComment(
+                                comment.id,
+                                comment.content,
+                              ),
+                              onDelete: () => _deleteComment(comment.id),
+                              onReplyEdit: (reply) => _startEditReply(
+                                reply.id,
+                                comment.id,
+                                reply.content,
+                              ),
+                              onReplyDelete: (reply) =>
+                                  _deleteReply(reply.id, comment.id),
+                            );
+                          }, childCount: state.comments.length),
                         );
                       },
                     ),
@@ -343,7 +335,9 @@ class _PostDetailSheetState extends State<PostDetailSheet> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    if (_replyToCommentId != null || _editingCommentId != null || _editingReplyId != null)
+                    if (_replyToCommentId != null ||
+                        _editingCommentId != null ||
+                        _editingReplyId != null)
                       Container(
                         padding: const EdgeInsets.symmetric(
                           horizontal: AppSpacing.md,
@@ -356,7 +350,8 @@ class _PostDetailSheetState extends State<PostDetailSheet> {
                         child: Row(
                           children: [
                             Icon(
-                              _editingCommentId != null || _editingReplyId != null
+                              _editingCommentId != null ||
+                                      _editingReplyId != null
                                   ? Icons.edit_rounded
                                   : Icons.reply_rounded,
                               size: 16,
@@ -368,8 +363,8 @@ class _PostDetailSheetState extends State<PostDetailSheet> {
                                 _editingCommentId != null
                                     ? 'Editing comment'
                                     : _editingReplyId != null
-                                        ? 'Editing reply'
-                                        : 'Replying to $_replyToAuthor',
+                                    ? 'Editing reply'
+                                    : 'Replying to $_replyToAuthor',
                                 style: AppTypography.bodySmall.copyWith(
                                   color: AppColors.textSecondary,
                                 ),
@@ -391,7 +386,9 @@ class _PostDetailSheetState extends State<PostDetailSheet> {
                             controller: _commentController,
                             focusNode: _commentFocusNode,
                             decoration: InputDecoration(
-                              hintText: _editingCommentId != null || _editingReplyId != null
+                              hintText:
+                                  _editingCommentId != null ||
+                                      _editingReplyId != null
                                   ? 'Edit your comment...'
                                   : 'Add a comment...',
                               hintStyle: AppTypography.bodyMedium.copyWith(
@@ -467,10 +464,7 @@ class _PostHeader extends StatelessWidget {
                   children: [
                     Text(post.author, style: AppTypography.titleSmall),
                     const SizedBox(height: AppSpacing.xxs),
-                    Text(
-                      post.headline,
-                      style: AppTypography.bodySmall,
-                    ),
+                    Text(post.headline, style: AppTypography.bodySmall),
                     const SizedBox(height: AppSpacing.xxs),
                     Text(
                       _formatTimeAgo(post.createdAt),
@@ -543,14 +537,8 @@ class _PostHeader extends StatelessWidget {
                 label: 'Comment',
                 onTap: () {},
               ),
-              _PostAction(
-                icon: Icons.reply_outlined,
-                label: 'Share',
-              ),
-              _PostAction(
-                icon: Icons.send_outlined,
-                label: 'Send',
-              ),
+              _PostAction(icon: Icons.reply_outlined, label: 'Share'),
+              _PostAction(icon: Icons.send_outlined, label: 'Send'),
             ],
           ),
         ),
@@ -637,14 +625,13 @@ class _CommentTile extends StatelessWidget {
                               if (value == 'delete') onDelete();
                             },
                             itemBuilder: (_) => const [
-                              PopupMenuItem(
-                                value: 'edit',
-                                child: Text('Edit'),
-                              ),
+                              PopupMenuItem(value: 'edit', child: Text('Edit')),
                               PopupMenuItem(
                                 value: 'delete',
-                                child: Text('Delete',
-                                    style: TextStyle(color: AppColors.error)),
+                                child: Text(
+                                  'Delete',
+                                  style: TextStyle(color: AppColors.error),
+                                ),
                               ),
                             ],
                           ),
@@ -733,9 +720,12 @@ class _CommentTile extends StatelessWidget {
                                         ),
                                         PopupMenuItem(
                                           value: 'delete',
-                                          child: Text('Delete',
-                                              style: TextStyle(
-                                                  color: AppColors.error)),
+                                          child: Text(
+                                            'Delete',
+                                            style: TextStyle(
+                                              color: AppColors.error,
+                                            ),
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -787,11 +777,7 @@ class _PostAction extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Icon(
-              icon,
-              size: 20,
-              color: color ?? AppColors.textSecondary,
-            ),
+            Icon(icon, size: 20, color: color ?? AppColors.textSecondary),
             const SizedBox(width: AppSpacing.xs),
             Text(
               label,
@@ -856,8 +842,18 @@ String _formatTimeAgo(String isoString) {
     if (diff.inHours < 24) return '${diff.inHours}h';
     if (diff.inDays < 7) return '${diff.inDays}d';
     final months = [
-      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
     ];
     return '${months[date.month - 1]} ${date.day}';
   } catch (_) {

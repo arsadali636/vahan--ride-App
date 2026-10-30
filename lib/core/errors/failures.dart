@@ -45,11 +45,15 @@ class NotFoundFailure extends Failure {
 }
 
 class ConflictFailure extends Failure {
-  const ConflictFailure([super.message = 'Request conflicts with server state']);
+  const ConflictFailure([
+    super.message = 'Request conflicts with server state',
+  ]);
 }
 
 class RateLimitFailure extends Failure {
-  const RateLimitFailure([super.message = 'Too many requests. Try again later']);
+  const RateLimitFailure([
+    super.message = 'Too many requests. Try again later',
+  ]);
 }
 
 class CancelledFailure extends Failure {

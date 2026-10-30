@@ -31,15 +31,13 @@ class DoctorProfileView extends StatelessWidget {
     final bloc = context.read<DoctorProfileBloc>();
     final done = Completer<void>();
     final sub = bloc.stream.listen((current) {
-      if (current.status != DoctorProfileStatus.refreshing && !done.isCompleted) {
+      if (current.status != DoctorProfileStatus.refreshing &&
+          !done.isCompleted) {
         done.complete();
       }
     });
     bloc.add(const DoctorProfileRefreshRequested());
-    await done.future.timeout(
-      const Duration(seconds: 10),
-      onTimeout: () {},
-    );
+    await done.future.timeout(const Duration(seconds: 10), onTimeout: () {});
     await sub.cancel();
   }
 
@@ -170,11 +168,7 @@ class _Metric extends StatelessWidget {
   final String value;
   final String label;
 
-  const _Metric({
-    required this.icon,
-    required this.value,
-    required this.label,
-  });
+  const _Metric({required this.icon, required this.value, required this.label});
 
   @override
   Widget build(BuildContext context) {
@@ -188,7 +182,11 @@ class _Metric extends StatelessWidget {
             color: AppColors.surfaceMuted,
             shape: BoxShape.circle,
           ),
-          child: Icon(icon, size: 20, color: Theme.of(context).colorScheme.primary),
+          child: Icon(
+            icon,
+            size: 20,
+            color: Theme.of(context).colorScheme.primary,
+          ),
         ),
         const SizedBox(width: AppSpacing.sm),
         Column(
@@ -230,7 +228,9 @@ class _LocationCard extends StatelessWidget {
         children: [
           Expanded(
             child: Text(
-              details.isNotEmpty ? '$details • ${location.label}' : location.label,
+              details.isNotEmpty
+                  ? '$details • ${location.label}'
+                  : location.label,
               style: AppTypography.bodyLarge,
             ),
           ),

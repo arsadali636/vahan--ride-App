@@ -79,7 +79,9 @@ class DependencyInjection {
     final config = AppConfig.instance.environmentConfig;
 
     _getIt
-      ..registerLazySingleton<SecureStorageService>(SecureStorageServiceImpl.new)
+      ..registerLazySingleton<SecureStorageService>(
+        SecureStorageServiceImpl.new,
+      )
       ..registerLazySingleton<SessionService>(
         () => SessionServiceImpl(_getIt<SecureStorageService>()),
       )
@@ -117,10 +119,7 @@ class DependencyInjection {
         () => VerifyOtp(_getIt<AuthRepository>()),
       )
       ..registerLazySingleton<Logout>(
-        () => Logout(
-          _getIt<AuthRepository>(),
-          _getIt<SessionService>(),
-        ),
+        () => Logout(_getIt<AuthRepository>(), _getIt<SessionService>()),
       )
       ..registerLazySingleton<RestoreSession>(
         () => RestoreSession(_getIt<SessionService>()),
@@ -141,9 +140,7 @@ class DependencyInjection {
         ),
       )
       ..registerLazySingleton<DoctorProfileRemoteDataSource>(
-        () => DoctorProfileRemoteDataSourceImpl(
-          apiClient: _getIt<ApiClient>(),
-        ),
+        () => DoctorProfileRemoteDataSourceImpl(apiClient: _getIt<ApiClient>()),
       )
       ..registerLazySingleton<DoctorProfileRepository>(
         () => DoctorProfileRepositoryImpl(
@@ -204,9 +201,7 @@ class DependencyInjection {
         ),
       )
       ..registerLazySingleton<DoctorNetworkRemoteDataSource>(
-        () => DoctorNetworkRemoteDataSourceImpl(
-          apiClient: _getIt<ApiClient>(),
-        ),
+        () => DoctorNetworkRemoteDataSourceImpl(apiClient: _getIt<ApiClient>()),
       )
       ..registerLazySingleton<DoctorNetworkRepository>(
         () => DoctorNetworkRepositoryImpl(

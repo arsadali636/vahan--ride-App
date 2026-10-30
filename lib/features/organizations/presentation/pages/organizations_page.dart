@@ -24,7 +24,8 @@ class OrganizationsPage extends StatelessWidget {
       appBar: AppBar(title: const Text('Organizations')),
       body: const AppEmptyView(
         title: 'Healthcare organizations are not available yet',
-        message: 'The doctor-facing organization endpoints are not published '
+        message:
+            'The doctor-facing organization endpoints are not published '
             'in the backend contract yet. Discovering and viewing healthcare '
             'organizations will appear here once the organizations API is '
             'available.',

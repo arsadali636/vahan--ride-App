@@ -34,10 +34,7 @@ void main() {
         const DoctorSearchQuery(),
       );
 
-      expect(model.toQueryParameters(), {
-        'page': 1,
-        'page_size': 20,
-      });
+      expect(model.toQueryParameters(), {'page': 1, 'page_size': 20});
     });
 
     test('omits empty-string filters', () {
@@ -50,10 +47,7 @@ void main() {
         ),
       );
 
-      expect(model.toQueryParameters(), {
-        'page': 2,
-        'page_size': 50,
-      });
+      expect(model.toQueryParameters(), {'page': 2, 'page_size': 50});
     });
 
     test('preserves experience_min of zero', () {

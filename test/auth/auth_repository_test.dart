@@ -105,8 +105,9 @@ void main() {
     });
 
     test('maps a backend ApiException to a Failure', () async {
-      dataSource.errorToThrow =
-          ValidationException(message: 'phone: Invalid value');
+      dataSource.errorToThrow = ValidationException(
+        message: 'phone: Invalid value',
+      );
 
       await expectLater(
         repository.register(
@@ -142,8 +143,9 @@ void main() {
     });
 
     test('maps a 401 to UnauthorizedFailure', () async {
-      dataSource.errorToThrow =
-          UnauthorizedException(message: 'Invalid credentials');
+      dataSource.errorToThrow = UnauthorizedException(
+        message: 'Invalid credentials',
+      );
 
       await expectLater(
         repository.passwordLogin(phone: '9876543210', password: 'wrong'),
@@ -206,12 +208,14 @@ void main() {
       expect(dataSource.logoutCalled, isTrue);
     });
 
-    test('swallows remote failures so the session can still be cleared',
-        () async {
-      dataSource.errorToThrow = UnauthorizedException(message: 'expired');
+    test(
+      'swallows remote failures so the session can still be cleared',
+      () async {
+        dataSource.errorToThrow = UnauthorizedException(message: 'expired');
 
-      await expectLater(repository.logout(), completes);
-      expect(dataSource.logoutCalled, isTrue);
-    });
+        await expectLater(repository.logout(), completes);
+        expect(dataSource.logoutCalled, isTrue);
+      },
+    );
   });
 }

@@ -16,12 +16,13 @@ abstract class SecureStorageService {
 
 class SecureStorageServiceImpl implements SecureStorageService {
   SecureStorageServiceImpl([FlutterSecureStorage? storage])
-      : _storage = storage ?? const FlutterSecureStorage();
+    : _storage = storage ?? const FlutterSecureStorage();
 
   final FlutterSecureStorage _storage;
 
   @override
-  Future<void> write(String key, String value) => _storage.write(key: key, value: value);
+  Future<void> write(String key, String value) =>
+      _storage.write(key: key, value: value);
 
   @override
   Future<String?> read(String key) => _storage.read(key: key);

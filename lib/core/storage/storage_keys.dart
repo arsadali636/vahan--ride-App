@@ -7,6 +7,7 @@ abstract class StorageKeys {
 
   static const String accessToken = 'session.access_token';
   static const String refreshToken = 'session.refresh_token';
+  static const String sessionId = 'session.session_id';
   static const String userId = 'session.user_id';
   static const String userRole = 'session.user_role';
   static const String userProfile = 'session.user_profile';

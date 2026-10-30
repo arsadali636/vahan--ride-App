@@ -21,22 +21,15 @@ import 'package:doc_connect_app/features/auth/presentation/bloc/auth_state.dart'
 import '../helpers/fake_auth_repository.dart';
 import '../helpers/fake_session_service.dart';
 
-Future<T> _awaitState<T>(
-  AuthBloc bloc,
-  void Function() trigger,
-) async {
+Future<T> _awaitState<T>(AuthBloc bloc, void Function() trigger) async {
   final done = bloc.stream.firstWhere((state) => state is T);
   trigger();
-  return done.then((state) => state as T).timeout(
-        const Duration(seconds: 5),
-      );
+  return done.then((state) => state as T).timeout(const Duration(seconds: 5));
 }
 
 Future<void> _settleRestore(AuthBloc bloc) async {
   await bloc.stream
-      .firstWhere(
-        (state) => state is AuthGuest || state is AuthAuthenticated,
-      )
+      .firstWhere((state) => state is AuthGuest || state is AuthAuthenticated)
       .timeout(const Duration(seconds: 5));
 }
 
@@ -79,10 +72,7 @@ void main() {
     test('restores an authenticated session on startup', () async {
       session = FakeSessionService(
         session: const SessionData(
-          tokens: AuthTokenPair(
-            accessToken: 'access',
-            refreshToken: 'refresh',
-          ),
+          tokens: AuthTokenPair(accessToken: 'access', refreshToken: 'refresh'),
           userId: 'u-1',
           userRole: UserRole.doctor,
           profile: UserModel(firstName: 'Ada', lastName: 'Lovelace'),
@@ -127,10 +117,8 @@ void main() {
       expect((bloc.state as AuthAuthenticated).profileCreated, isTrue);
     });
 
-    test('register failure emits AuthError with the failure message',
-        () async {
-      repository.errorToThrow =
-          const ValidationFailure('phone: Invalid value');
+    test('register failure emits AuthError with the failure message', () async {
+      repository.errorToThrow = const ValidationFailure('phone: Invalid value');
 
       await _awaitState<AuthError>(bloc, () {
         bloc.add(
@@ -241,43 +229,47 @@ void main() {
       expect(repository.logoutCalls, 1);
     });
 
-    test('logout clears the session even when the server call throws',
-        () async {
-      session = FakeSessionService(
-        session: const SessionData(
-          tokens: AuthTokenPair(accessToken: 'a', refreshToken: 'r'),
-        ),
-      );
-      repository.errorToThrow = const NetworkFailure('offline');
-      bloc = build();
-      await _settleRestore(bloc);
+    test(
+      'logout clears the session even when the server call throws',
+      () async {
+        session = FakeSessionService(
+          session: const SessionData(
+            tokens: AuthTokenPair(accessToken: 'a', refreshToken: 'r'),
+          ),
+        );
+        repository.errorToThrow = const NetworkFailure('offline');
+        bloc = build();
+        await _settleRestore(bloc);
 
-      await _awaitState<AuthGuest>(bloc, () {
-        bloc.add(const LogoutRequested());
-      });
+        await _awaitState<AuthGuest>(bloc, () {
+          bloc.add(const LogoutRequested());
+        });
 
-      expect(session.session, isNull);
-      expect(gate.value, AuthStatus.guest);
-    });
+        expect(session.session, isNull);
+        expect(gate.value, AuthStatus.guest);
+      },
+    );
 
-    test('handleSessionExpired clears the session without calling the server',
-        () async {
-      session = FakeSessionService(
-        session: const SessionData(
-          tokens: AuthTokenPair(accessToken: 'a', refreshToken: 'r'),
-        ),
-      );
-      bloc = build();
-      await _settleRestore(bloc);
+    test(
+      'handleSessionExpired clears the session without calling the server',
+      () async {
+        session = FakeSessionService(
+          session: const SessionData(
+            tokens: AuthTokenPair(accessToken: 'a', refreshToken: 'r'),
+          ),
+        );
+        bloc = build();
+        await _settleRestore(bloc);
 
-      await _awaitState<AuthGuest>(bloc, () {
-        bloc.handleSessionExpired();
-      });
+        await _awaitState<AuthGuest>(bloc, () {
+          bloc.handleSessionExpired();
+        });
 
-      expect(bloc.state, isA<AuthGuest>());
-      expect(gate.value, AuthStatus.guest);
-      expect(session.session, isNull);
-      expect(repository.logoutCalls, 0);
-    });
+        expect(bloc.state, isA<AuthGuest>());
+        expect(gate.value, AuthStatus.guest);
+        expect(session.session, isNull);
+        expect(repository.logoutCalls, 0);
+      },
+    );
   });
 }

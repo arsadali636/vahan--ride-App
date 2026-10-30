@@ -6,11 +6,7 @@ import '../typography/app_typography.dart';
 
 /// Button size presets shared by [PrimaryButton], [SecondaryButton] and
 /// [OutlineButton].
-enum AppButtonSize {
-  small,
-  medium,
-  large,
-}
+enum AppButtonSize { small, medium, large }
 
 /// Resolved visual metrics for a given [AppButtonSize].
 class AppButtonStyle {
@@ -87,11 +83,17 @@ class AppButtonShell {
   }) {
     final iconWidget = icon == null
         ? null
-        : Icon(icon, size: textStyle.fontSize != null
-            ? textStyle.fontSize! + 2
-            : 18);
+        : Icon(
+            icon,
+            size: textStyle.fontSize != null ? textStyle.fontSize! + 2 : 18,
+          );
     if (iconWidget == null) {
-      return Text(label, style: textStyle, maxLines: 1, overflow: TextOverflow.ellipsis);
+      return Text(
+        label,
+        style: textStyle,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      );
     }
     return Row(
       mainAxisSize: MainAxisSize.min,
@@ -99,7 +101,12 @@ class AppButtonShell {
         iconWidget,
         SizedBox(width: AppSpacing.xs),
         Flexible(
-          child: Text(label, style: textStyle, maxLines: 1, overflow: TextOverflow.ellipsis),
+          child: Text(
+            label,
+            style: textStyle,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
         ),
       ],
     );
@@ -114,10 +121,7 @@ class AppButtonShell {
     return SizedBox(
       height: (style.textStyle.fontSize ?? 14) - 2,
       width: (style.textStyle.fontSize ?? 14) - 2,
-      child: CircularProgressIndicator(
-        strokeWidth: 2,
-        color: color,
-      ),
+      child: CircularProgressIndicator(strokeWidth: 2, color: color),
     );
   }
 }

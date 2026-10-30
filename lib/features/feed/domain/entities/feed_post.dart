@@ -17,6 +17,7 @@ class FeedPost extends Equatable {
   final int commentCount;
   final bool liked;
   final bool isMine;
+  final bool piiFlagged;
   final String createdAt;
 
   const FeedPost({
@@ -35,6 +36,7 @@ class FeedPost extends Equatable {
     required this.commentCount,
     required this.liked,
     required this.isMine,
+    this.piiFlagged = false,
     required this.createdAt,
   });
 
@@ -56,6 +58,7 @@ class FeedPost extends Equatable {
     int? commentCount,
     bool? liked,
     bool? isMine,
+    bool? piiFlagged,
     String? createdAt,
   }) {
     return FeedPost(
@@ -74,27 +77,29 @@ class FeedPost extends Equatable {
       commentCount: commentCount ?? this.commentCount,
       liked: liked ?? this.liked,
       isMine: isMine ?? this.isMine,
+      piiFlagged: piiFlagged ?? this.piiFlagged,
       createdAt: createdAt ?? this.createdAt,
     );
   }
 
   @override
   List<Object?> get props => [
-        id,
-        author,
-        authorId,
-        headline,
-        initials,
-        color,
-        photo,
-        postType,
-        postTypeDisplay,
-        content,
-        image,
-        likeCount,
-        commentCount,
-        liked,
-        isMine,
-        createdAt,
-      ];
+    id,
+    author,
+    authorId,
+    headline,
+    initials,
+    color,
+    photo,
+    postType,
+    postTypeDisplay,
+    content,
+    image,
+    likeCount,
+    commentCount,
+    liked,
+    isMine,
+    piiFlagged,
+    createdAt,
+  ];
 }

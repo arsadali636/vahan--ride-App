@@ -9,10 +9,7 @@ class SendOtpRequestModel extends Equatable {
   final String phone;
   final OtpPurpose purpose;
 
-  const SendOtpRequestModel({
-    required this.phone,
-    required this.purpose,
-  });
+  const SendOtpRequestModel({required this.phone, required this.purpose});
 
   factory SendOtpRequestModel.fromJson(Map<String, dynamic> json) {
     return SendOtpRequestModel(
@@ -22,10 +19,7 @@ class SendOtpRequestModel extends Equatable {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'phone': phone,
-      'purpose': purpose.wire,
-    };
+    return {'phone': phone, 'purpose': purpose.wire};
   }
 
   @override

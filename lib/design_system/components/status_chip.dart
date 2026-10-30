@@ -6,22 +6,16 @@ import '../spacing/app_spacing.dart';
 import '../typography/app_typography.dart';
 
 /// Semantic status tone. Maps to central token colors.
-enum AppStatusTone {
-  success,
-  warning,
-  error,
-  info,
-  neutral,
-}
+enum AppStatusTone { success, warning, error, info, neutral }
 
 extension AppStatusToneColor on AppStatusTone {
   Color get color => switch (this) {
-        AppStatusTone.success => AppColors.success,
-        AppStatusTone.warning => AppColors.warning,
-        AppStatusTone.error => AppColors.error,
-        AppStatusTone.info => AppColors.secondary,
-        AppStatusTone.neutral => AppColors.textSecondary,
-      };
+    AppStatusTone.success => AppColors.success,
+    AppStatusTone.warning => AppColors.warning,
+    AppStatusTone.error => AppColors.error,
+    AppStatusTone.info => AppColors.secondary,
+    AppStatusTone.neutral => AppColors.textSecondary,
+  };
 }
 
 /// Small rounded status pill with an optional leading dot / icon.
@@ -66,10 +60,7 @@ class StatusChip extends StatelessWidget {
             Container(
               width: 6,
               height: 6,
-              decoration: BoxDecoration(
-                color: color,
-                shape: BoxShape.circle,
-              ),
+              decoration: BoxDecoration(color: color, shape: BoxShape.circle),
             ),
             const SizedBox(width: AppSpacing.xs),
           ],

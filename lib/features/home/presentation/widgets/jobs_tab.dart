@@ -2,15 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../app/dependency_injection.dart';
+import '../../../../core/api/api_client.dart';
+import '../../../../core/extensions/context_extensions.dart';
+import '../../../../design_system/colors/app_colors.dart';
 import '../../../../design_system/components/app_card.dart';
 import '../../../../design_system/components/hospital_avatar.dart';
 import '../../../../design_system/components/primary_button.dart';
 import '../../../../design_system/components/search_field.dart';
-import '../../../../design_system/colors/app_colors.dart';
 import '../../../../design_system/radius/app_radius.dart';
 import '../../../../design_system/spacing/app_spacing.dart';
 import '../../../../design_system/typography/app_typography.dart';
+import '../../data/datasources/home_remote_data_source.dart';
+import '../../data/repositories/home_repository_impl.dart';
 import '../../domain/entities/urgent_job.dart';
+import '../../domain/usecases/get_home_data_usecase.dart';
 import '../bloc/home_bloc.dart';
 import '../bloc/home_event.dart';
 import '../bloc/home_state.dart';
@@ -34,21 +39,41 @@ class _JobsTabState extends State<JobsTab> {
 
   @override
   Widget build(BuildContext context) {
+    if (context.readOrNull<HomeBloc>() != null) {
+      return _buildScaffold(context);
+    }
     return BlocProvider(
-      create: (context) => DependencyInjection.instance<HomeBloc>()
-        ..add(const HomeStarted()),
-      child: Scaffold(
-        appBar: AppBar(title: const Text('Opportunities')),
-        body: BlocBuilder<HomeBloc, HomeState>(
-          builder: (context, state) {
-            return RefreshIndicator(
-              onRefresh: () async {
-                context.read<HomeBloc>().add(const HomeRefreshRequested());
-              },
-              child: _buildBody(context, state),
-            );
-          },
-        ),
+      create: (context) {
+        if (DependencyInjection.instance.isRegistered<HomeBloc>()) {
+          return DependencyInjection.instance<HomeBloc>()
+            ..add(const HomeStarted());
+        }
+        return HomeBloc(
+          getHomeData: GetHomeData(
+            HomeRepositoryImpl(
+              remoteDataSource: HomeRemoteDataSourceImpl(
+                apiClient: DependencyInjection.instance<ApiClient>(),
+              ),
+            ),
+          ),
+        )..add(const HomeStarted());
+      },
+      child: Builder(builder: _buildScaffold),
+    );
+  }
+
+  Widget _buildScaffold(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Opportunities')),
+      body: BlocBuilder<HomeBloc, HomeState>(
+        builder: (context, state) {
+          return RefreshIndicator(
+            onRefresh: () async {
+              context.read<HomeBloc>().add(const HomeRefreshRequested());
+            },
+            child: _buildBody(context, state),
+          );
+        },
       ),
     );
   }
@@ -164,10 +189,7 @@ class _OpenToWorkCard extends StatelessWidget {
               style: AppTypography.bodySmall,
             ),
             const SizedBox(height: AppSpacing.sm),
-            TextButton(
-              onPressed: () {},
-              child: const Text('Add to profile'),
-            ),
+            TextButton(onPressed: () {}, child: const Text('Add to profile')),
           ],
         ),
       ),
@@ -186,8 +208,18 @@ String _formatPostedAt(String isoString) {
     if (diff.inHours < 24) return '${diff.inHours}h ago';
     if (diff.inDays < 7) return '${diff.inDays}d ago';
     final months = [
-      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
     ];
     return '${months[date.month - 1]} ${date.day}';
   } catch (_) {
@@ -286,10 +318,7 @@ class _JobCard extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                child: PrimaryButton(
-                  label: 'Apply',
-                  onPressed: () {},
-                ),
+                child: PrimaryButton(label: 'Apply', onPressed: () {}),
               ),
             ],
           ),

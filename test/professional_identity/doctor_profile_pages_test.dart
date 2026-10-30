@@ -63,7 +63,6 @@ void main() {
   group('DoctorProfilePage', () {
     late DoctorProfileBloc bloc;
 
-
     Future<void> pumpPage(WidgetTester tester) async {
       await tester.binding.setSurfaceSize(const Size(800, 2400));
       addTearDown(() => tester.binding.setSurfaceSize(null));
@@ -92,8 +91,9 @@ void main() {
       await pumpBloc(tester);
     });
 
-    testWidgets('shows the completion prompt when the profile is missing',
-        (tester) async {
+    testWidgets('shows the completion prompt when the profile is missing', (
+      tester,
+    ) async {
       repository.getFailure = NotFoundFailure('no profile');
 
       await pumpPage(tester);
@@ -144,7 +144,6 @@ void main() {
 
   group('ProfileCompletionPage', () {
     late DoctorProfileBloc bloc;
-
 
     Future<void> pumpPage(WidgetTester tester, {GoRouter? router}) async {
       await tester.binding.setSurfaceSize(const Size(800, 2400));
@@ -225,7 +224,6 @@ void main() {
   group('EditProfilePage', () {
     late DoctorProfileBloc bloc;
 
-
     GoRouter buildEditRouter() {
       return GoRouter(
         initialLocation: '/',
@@ -258,7 +256,9 @@ void main() {
       await tester.binding.setSurfaceSize(const Size(800, 2400));
       addTearDown(() => tester.binding.setSurfaceSize(null));
       bloc = buildBloc();
-      await tester.pumpWidget(MaterialApp.router(routerConfig: buildEditRouter()));
+      await tester.pumpWidget(
+        MaterialApp.router(routerConfig: buildEditRouter()),
+      );
       await tester.pump();
       await tester.tap(find.text('Open editor'));
       // Two frames: process the push, then render the pushed page.

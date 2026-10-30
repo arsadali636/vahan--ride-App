@@ -34,12 +34,12 @@ class CreatePostResponseModel extends Equatable {
 
   @override
   List<Object?> get props => [
-        success,
-        postId,
-        author,
-        postType,
-        content,
-        image,
-        createdAt,
-      ];
+    success,
+    postId,
+    author,
+    postType,
+    content,
+    image,
+    createdAt,
+  ];
 }

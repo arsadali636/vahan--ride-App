@@ -57,14 +57,14 @@ class DoctorProfileDraft extends Equatable {
 
   @override
   List<Object?> get props => [
-        firstName,
-        lastName,
-        headline,
-        about,
-        primarySpecializationId,
-        clinicalInterests,
-        location,
-        experienceYears,
-        openToOpportunities,
-      ];
+    firstName,
+    lastName,
+    headline,
+    about,
+    primarySpecializationId,
+    clinicalInterests,
+    location,
+    experienceYears,
+    openToOpportunities,
+  ];
 }

@@ -28,18 +28,17 @@ const _liveProfileJson = {
 
 void main() {
   group('DoctorProfileCreateModel', () {
-    test('serializes only the required fields when optional values are null',
-        () {
-      const model = DoctorProfileCreateModel(
-        firstName: 'Ada',
-        lastName: 'Lovelace',
-      );
+    test(
+      'serializes only the required fields when optional values are null',
+      () {
+        const model = DoctorProfileCreateModel(
+          firstName: 'Ada',
+          lastName: 'Lovelace',
+        );
 
-      expect(model.toJson(), {
-        'first_name': 'Ada',
-        'last_name': 'Lovelace',
-      });
-    });
+        expect(model.toJson(), {'first_name': 'Ada', 'last_name': 'Lovelace'});
+      },
+    );
 
     test('serializes every optional field when provided', () {
       const model = DoctorProfileCreateModel(
@@ -113,21 +112,23 @@ void main() {
       expect(entity.experienceYears, 0.0);
     });
 
-    test('maps a verified wire value and tolerates an empty professional_location',
-        () {
-      final model = DoctorProfileResponseModel.fromJson({
-        ..._liveProfileJson,
-        'verification_status': 'VERIFIED',
-        'is_verified': true,
-        'experience_years': 12.5,
-        'clinical_interests': ['cardiology'],
-      });
+    test(
+      'maps a verified wire value and tolerates an empty professional_location',
+      () {
+        final model = DoctorProfileResponseModel.fromJson({
+          ..._liveProfileJson,
+          'verification_status': 'VERIFIED',
+          'is_verified': true,
+          'experience_years': 12.5,
+          'clinical_interests': ['cardiology'],
+        });
 
-      expect(model.verificationStatus, DoctorVerificationStatus.verified);
-      expect(model.isVerified, isTrue);
-      expect(model.experienceYears, 12.5);
-      expect(model.clinicalInterests, ['cardiology']);
-    });
+        expect(model.verificationStatus, DoctorVerificationStatus.verified);
+        expect(model.isVerified, isTrue);
+        expect(model.experienceYears, 12.5);
+        expect(model.clinicalInterests, ['cardiology']);
+      },
+    );
 
     test('defaults missing fields to safe values', () {
       final model = DoctorProfileResponseModel.fromJson(const {

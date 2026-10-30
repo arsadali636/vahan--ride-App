@@ -5,8 +5,6 @@ class SearchWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SizedBox(
-      child: Text('Search Widget'),
-    );
+    return const SizedBox(child: Text('Search Widget'));
   }
 }

@@ -15,7 +15,7 @@ import 'package:doc_connect_app/features/professional_identity/data/models/docto
 /// Records outgoing calls and returns a canned body for every call.
 class _RecordingApiClient extends ApiClient {
   _RecordingApiClient(this.canned)
-      : super(Dio(BaseOptions(baseUrl: 'http://test')));
+    : super(Dio(BaseOptions(baseUrl: 'http://test')));
 
   final Map<String, dynamic> canned;
   final List<({String path, Object? data, bool requiresAuth})> calls = [];
@@ -100,57 +100,58 @@ void main() {
     apiClient = _RecordingApiClient(const {
       ApiEndpoints.doctorProfileCreate: _profileBody,
       ApiEndpoints.doctorProfileMe: _profileBody,
-      ApiEndpoints.doctorPhotoUpload: {
-        'photo_file_id': 'photo-1',
-      },
+      ApiEndpoints.doctorPhotoUpload: {'photo_file_id': 'photo-1'},
     });
     dataSource = DoctorProfileRemoteDataSourceImpl(apiClient: apiClient);
   });
 
-  test('create posts to the doctor profile path as an authenticated request',
-      () async {
-    final profile = await dataSource.create(
-      const DoctorProfileCreateModel(
-        firstName: 'Test',
-        lastName: 'Doctor',
-      ),
-    );
+  test(
+    'create posts to the doctor profile path as an authenticated request',
+    () async {
+      final profile = await dataSource.create(
+        const DoctorProfileCreateModel(firstName: 'Test', lastName: 'Doctor'),
+      );
 
-    final call = apiClient.calls.single;
-    expect(call.path, ApiEndpoints.doctorProfileCreate);
-    expect(call.requiresAuth, isTrue);
-    expect((call.data as Map)['first_name'], 'Test');
-    expect((call.data as Map)['last_name'], 'Doctor');
-    expect(profile.id, '787d19cd-1fcd-45c8-8471-351530aa81db');
-  });
+      final call = apiClient.calls.single;
+      expect(call.path, ApiEndpoints.doctorProfileCreate);
+      expect(call.requiresAuth, isTrue);
+      expect((call.data as Map)['first_name'], 'Test');
+      expect((call.data as Map)['last_name'], 'Doctor');
+      expect(profile.id, '787d19cd-1fcd-45c8-8471-351530aa81db');
+    },
+  );
 
-  test('getMyProfile gets the profile/me path as an authenticated request',
-      () async {
-    final profile = await dataSource.getMyProfile();
+  test(
+    'getMyProfile gets the profile/me path as an authenticated request',
+    () async {
+      final profile = await dataSource.getMyProfile();
 
-    final call = apiClient.calls.single;
-    expect(call.path, ApiEndpoints.doctorProfileMe);
-    expect(call.requiresAuth, isTrue);
-    expect(profile.firstName, 'Test');
-    expect(profile.fullName, 'Test Doctor');
-  });
+      final call = apiClient.calls.single;
+      expect(call.path, ApiEndpoints.doctorProfileMe);
+      expect(call.requiresAuth, isTrue);
+      expect(profile.firstName, 'Test');
+      expect(profile.fullName, 'Test Doctor');
+    },
+  );
 
-  test('update patches the profile/me path as an authenticated request',
-      () async {
-    final profile = await dataSource.update(
-      const DoctorProfileUpdateModel(
-        headline: 'Senior Consultant',
-        openToOpportunities: true,
-      ),
-    );
+  test(
+    'update patches the profile/me path as an authenticated request',
+    () async {
+      final profile = await dataSource.update(
+        const DoctorProfileUpdateModel(
+          headline: 'Senior Consultant',
+          openToOpportunities: true,
+        ),
+      );
 
-    final call = apiClient.calls.single;
-    expect(call.path, ApiEndpoints.doctorProfileMe);
-    expect(call.requiresAuth, isTrue);
-    expect((call.data as Map)['headline'], 'Senior Consultant');
-    expect((call.data as Map)['open_to_opportunities'], isTrue);
-    expect(profile.openToOpportunities, isFalse);
-  });
+      final call = apiClient.calls.single;
+      expect(call.path, ApiEndpoints.doctorProfileMe);
+      expect(call.requiresAuth, isTrue);
+      expect((call.data as Map)['headline'], 'Senior Consultant');
+      expect((call.data as Map)['open_to_opportunities'], isTrue);
+      expect(profile.openToOpportunities, isFalse);
+    },
+  );
 
   test('getDoctorProfileById hits the doctor id path', () async {
     apiClient = _RecordingApiClient({
@@ -180,21 +181,23 @@ void main() {
     expect(photoId, 'photo-1');
   });
 
-  test('uploadPhoto returns null when the backend does not echo a file id',
-      () async {
-    apiClient = _RecordingApiClient(const {
-      ApiEndpoints.doctorPhotoUpload: <String, dynamic>{},
-    });
-    dataSource = DoctorProfileRemoteDataSourceImpl(apiClient: apiClient);
+  test(
+    'uploadPhoto returns null when the backend does not echo a file id',
+    () async {
+      apiClient = _RecordingApiClient(const {
+        ApiEndpoints.doctorPhotoUpload: <String, dynamic>{},
+      });
+      dataSource = DoctorProfileRemoteDataSourceImpl(apiClient: apiClient);
 
-    final photoId = await dataSource.uploadPhoto(
-      bytes: Uint8List.fromList([1]),
-      filename: 'a.jpg',
-      contentType: 'image/jpeg',
-    );
+      final photoId = await dataSource.uploadPhoto(
+        bytes: Uint8List.fromList([1]),
+        filename: 'a.jpg',
+        contentType: 'image/jpeg',
+      );
 
-    expect(photoId, isNull);
-  });
+      expect(photoId, isNull);
+    },
+  );
 
   test('listQualifications maps the list response', () async {
     apiClient = _RecordingApiClient(const {
@@ -218,32 +221,34 @@ void main() {
     expect(list.single.specialization, 'Cardiology');
   });
 
-  test('addQualification posts the create body and parses the trimmed reply',
-      () async {
-    apiClient = _RecordingApiClient(const {
-      ApiEndpoints.doctorQualifications: {
-        'id': 'q-1',
-        'degree': 'MBBS',
-        'institution': 'GMC Mumbai',
-        'year': 2012,
-      },
-    });
-    dataSource = DoctorProfileRemoteDataSourceImpl(apiClient: apiClient);
+  test(
+    'addQualification posts the create body and parses the trimmed reply',
+    () async {
+      apiClient = _RecordingApiClient(const {
+        ApiEndpoints.doctorQualifications: {
+          'id': 'q-1',
+          'degree': 'MBBS',
+          'institution': 'GMC Mumbai',
+          'year': 2012,
+        },
+      });
+      dataSource = DoctorProfileRemoteDataSourceImpl(apiClient: apiClient);
 
-    final result = await dataSource.addQualification(
-      const DoctorQualificationModel(
-        degree: 'MBBS',
-        institution: 'GMC Mumbai',
-        year: 2012,
-      ),
-    );
+      final result = await dataSource.addQualification(
+        const DoctorQualificationModel(
+          degree: 'MBBS',
+          institution: 'GMC Mumbai',
+          year: 2012,
+        ),
+      );
 
-    final call = apiClient.calls.single;
-    expect(call.path, ApiEndpoints.doctorQualifications);
-    expect((call.data as Map)['year'], 2012);
-    expect(result.id, 'q-1');
-    expect(result.specialization, isNull);
-  });
+      final call = apiClient.calls.single;
+      expect(call.path, ApiEndpoints.doctorQualifications);
+      expect((call.data as Map)['year'], 2012);
+      expect(result.id, 'q-1');
+      expect(result.specialization, isNull);
+    },
+  );
 
   test('deleteQualification hits the qualification id path', () async {
     await dataSource.deleteQualification('q-1');
@@ -320,31 +325,33 @@ void main() {
     expect(list.single.startDate, '2013-06-01');
   });
 
-  test('addExperience posts the create body and parses the trimmed reply',
-      () async {
-    apiClient = _RecordingApiClient(const {
-      ApiEndpoints.doctorExperiences: {
-        'id': 'e-1',
-        'role': 'Resident Physician',
-        'hospital_name': 'City General Hospital',
-        'is_current': false,
-      },
-    });
-    dataSource = DoctorProfileRemoteDataSourceImpl(apiClient: apiClient);
+  test(
+    'addExperience posts the create body and parses the trimmed reply',
+    () async {
+      apiClient = _RecordingApiClient(const {
+        ApiEndpoints.doctorExperiences: {
+          'id': 'e-1',
+          'role': 'Resident Physician',
+          'hospital_name': 'City General Hospital',
+          'is_current': false,
+        },
+      });
+      dataSource = DoctorProfileRemoteDataSourceImpl(apiClient: apiClient);
 
-    final result = await dataSource.addExperience(
-      const DoctorExperienceModel(
-        role: 'Resident Physician',
-        hospitalName: 'City General Hospital',
-        startDate: '2013-06-01',
-      ),
-    );
+      final result = await dataSource.addExperience(
+        const DoctorExperienceModel(
+          role: 'Resident Physician',
+          hospitalName: 'City General Hospital',
+          startDate: '2013-06-01',
+        ),
+      );
 
-    final call = apiClient.calls.single;
-    expect((call.data as Map)['start_date'], '2013-06-01');
-    expect(result.id, 'e-1');
-    expect(result.location, isNull);
-  });
+      final call = apiClient.calls.single;
+      expect((call.data as Map)['start_date'], '2013-06-01');
+      expect(result.id, 'e-1');
+      expect(result.location, isNull);
+    },
+  );
 
   test('deleteExperience hits the experience id path', () async {
     await dataSource.deleteExperience('e-1');

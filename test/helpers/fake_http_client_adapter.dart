@@ -32,7 +32,9 @@ class RecordingHttpClientAdapter implements HttpClientAdapter {
     captured.add(options);
     if (throwError != null) throw throwError!;
     final responseHeaders = headers.isEmpty
-        ? {Headers.contentTypeHeader: ['application/json']}
+        ? {
+            Headers.contentTypeHeader: ['application/json'],
+          }
         : headers;
     return ResponseBody.fromString(body, statusCode, headers: responseHeaders);
   }

@@ -1,9 +1,12 @@
+import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get_it/get_it.dart';
 
 import 'package:doc_connect_app/app/app.dart';
 import 'package:doc_connect_app/app/app_config.dart';
 import 'package:doc_connect_app/app/app_router.dart';
 import 'package:doc_connect_app/app/environment_config.dart';
+import 'package:doc_connect_app/core/api/api_client.dart';
 import 'package:doc_connect_app/core/auth/auth_gate.dart';
 import 'package:doc_connect_app/core/enums/user_role.dart';
 import 'package:doc_connect_app/core/models/user_model.dart';
@@ -16,10 +19,57 @@ import 'package:doc_connect_app/features/auth/domain/usecases/send_otp_usecase.d
 import 'package:doc_connect_app/features/auth/domain/usecases/verify_otp_usecase.dart';
 import 'package:doc_connect_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:doc_connect_app/features/auth/presentation/pages/auth_page.dart';
+import 'package:doc_connect_app/features/feed/domain/repositories/feed_repository.dart';
+import 'package:doc_connect_app/features/feed/domain/usecases/get_feed_posts_usecase.dart';
+import 'package:doc_connect_app/features/feed/domain/usecases/post_management_usecases.dart';
+import 'package:doc_connect_app/features/feed/presentation/bloc/feed_bloc.dart';
+import 'package:doc_connect_app/features/feed/presentation/bloc/post_composer_bloc.dart';
+import 'package:doc_connect_app/features/home/domain/repositories/home_repository.dart';
+import 'package:doc_connect_app/features/home/domain/usecases/get_home_data_usecase.dart';
+import 'package:doc_connect_app/features/home/presentation/bloc/home_bloc.dart';
 import 'package:doc_connect_app/features/home/presentation/pages/home_page.dart';
 
 import 'helpers/fake_auth_repository.dart';
+import 'helpers/fake_feed_repository.dart';
+import 'helpers/fake_home_repository.dart';
 import 'helpers/fake_session_service.dart';
+
+void _setupTestInjection() {
+  final getIt = GetIt.instance;
+  getIt.reset();
+
+  final fakeHomeRepo = FakeHomeRepository();
+  final fakeFeedRepo = FakeFeedRepository();
+  final dio = Dio()..options.baseUrl = 'http://localhost';
+  final apiClient = ApiClient(dio);
+
+  getIt
+    ..registerLazySingleton<Dio>(() => dio)
+    ..registerLazySingleton<ApiClient>(() => apiClient)
+    ..registerLazySingleton<HomeRepository>(() => fakeHomeRepo)
+    ..registerLazySingleton<GetHomeData>(() => GetHomeData(fakeHomeRepo))
+    ..registerFactory<HomeBloc>(
+      () => HomeBloc(getHomeData: getIt<GetHomeData>()),
+    )
+    ..registerLazySingleton<FeedRepository>(() => fakeFeedRepo)
+    ..registerLazySingleton<GetFeedPosts>(() => GetFeedPosts(fakeFeedRepo))
+    ..registerLazySingleton<CreatePost>(() => CreatePost(fakeFeedRepo))
+    ..registerLazySingleton<LikePost>(() => LikePost(fakeFeedRepo))
+    ..registerLazySingleton<EditPost>(() => EditPost(fakeFeedRepo))
+    ..registerLazySingleton<DeletePost>(() => DeletePost(fakeFeedRepo))
+    ..registerFactory<FeedBloc>(
+      () => FeedBloc(
+        getFeedPosts: getIt<GetFeedPosts>(),
+        createPost: getIt<CreatePost>(),
+        likePost: getIt<LikePost>(),
+        editPost: getIt<EditPost>(),
+        deletePost: getIt<DeletePost>(),
+      ),
+    )
+    ..registerFactory<PostComposerBloc>(
+      () => PostComposerBloc(createPost: getIt<CreatePost>()),
+    );
+}
 
 AuthBloc _buildAuthBloc(AuthGate gate, FakeSessionService session) {
   final repository = FakeAuthRepository();
@@ -36,6 +86,10 @@ AuthBloc _buildAuthBloc(AuthGate gate, FakeSessionService session) {
 }
 
 void main() {
+  setUp(() {
+    _setupTestInjection();
+  });
+
   test('AppConfig can be initialized with a test environment', () {
     AppConfig.initialize(
       environmentConfig: const EnvironmentConfig.development(),

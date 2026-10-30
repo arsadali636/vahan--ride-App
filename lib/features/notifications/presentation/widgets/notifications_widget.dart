@@ -5,8 +5,6 @@ class NotificationsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SizedBox(
-      child: Text('Notifications Widget'),
-    );
+    return const SizedBox(child: Text('Notifications Widget'));
   }
 }

@@ -5,8 +5,6 @@ class ReportingWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SizedBox(
-      child: Text('Reporting Widget'),
-    );
+    return const SizedBox(child: Text('Reporting Widget'));
   }
 }

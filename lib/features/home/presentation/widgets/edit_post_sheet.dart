@@ -108,12 +108,14 @@ class _EditPostSheetState extends State<EditPostSheet> {
 
     setState(() => _isSubmitting = true);
 
-    context.read<FeedBloc>().add(FeedPostEdited(
-          postId: widget.post.id,
-          content: text,
-          removeImage: _removeExistingImage,
-          imageFile: _newImagePath != null ? File(_newImagePath!) : null,
-        ));
+    context.read<FeedBloc>().add(
+      FeedPostEdited(
+        postId: widget.post.id,
+        content: text,
+        removeImage: _removeExistingImage,
+        imageFile: _newImagePath != null ? File(_newImagePath!) : null,
+      ),
+    );
 
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context)
@@ -160,10 +162,7 @@ class _EditPostSheetState extends State<EditPostSheet> {
             ),
             child: Row(
               children: [
-                Text(
-                  'Edit post',
-                  style: AppTypography.titleLarge,
-                ),
+                Text('Edit post', style: AppTypography.titleLarge),
                 const Spacer(),
                 IconButton(
                   onPressed: () => Navigator.pop(context),
@@ -262,20 +261,21 @@ class _EditPostSheetState extends State<EditPostSheet> {
                             height: 200,
                             width: double.infinity,
                             fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) => Container(
-                              height: 120,
-                              decoration: BoxDecoration(
-                                color: AppColors.surfaceMuted,
-                                borderRadius: AppRadius.borderLg,
-                              ),
-                              child: Center(
-                                child: Icon(
-                                  Icons.broken_image_outlined,
-                                  size: 32,
-                                  color: AppColors.textSecondary,
+                            errorBuilder: (context, error, stackTrace) =>
+                                Container(
+                                  height: 120,
+                                  decoration: BoxDecoration(
+                                    color: AppColors.surfaceMuted,
+                                    borderRadius: AppRadius.borderLg,
+                                  ),
+                                  child: Center(
+                                    child: Icon(
+                                      Icons.broken_image_outlined,
+                                      size: 32,
+                                      color: AppColors.textSecondary,
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
                           ),
                         ),
                         Positioned(
@@ -283,7 +283,8 @@ class _EditPostSheetState extends State<EditPostSheet> {
                           right: AppSpacing.xs,
                           child: GestureDetector(
                             onTap: () => setState(
-                              () => _removeExistingImage = !_removeExistingImage,
+                              () =>
+                                  _removeExistingImage = !_removeExistingImage,
                             ),
                             child: Container(
                               padding: const EdgeInsets.all(AppSpacing.xs),
@@ -344,17 +345,19 @@ class _EditPostSheetState extends State<EditPostSheet> {
                   tooltip: 'Take photo',
                   icon: const Icon(Icons.camera_alt_outlined),
                   color: const Color(0xFF5F9B41),
-                  onPressed: (_hasImage) ? null : () async {
-                    final picked = await _imagePicker.pickImage(
-                      source: ImageSource.camera,
-                      maxWidth: 1920,
-                      maxHeight: 1920,
-                      imageQuality: 85,
-                    );
-                    if (picked != null && mounted) {
-                      setState(() => _newImagePath = picked.path);
-                    }
-                  },
+                  onPressed: (_hasImage)
+                      ? null
+                      : () async {
+                          final picked = await _imagePicker.pickImage(
+                            source: ImageSource.camera,
+                            maxWidth: 1920,
+                            maxHeight: 1920,
+                            imageQuality: 85,
+                          );
+                          if (picked != null && mounted) {
+                            setState(() => _newImagePath = picked.path);
+                          }
+                        },
                 ),
                 const Spacer(),
                 TextButton(
@@ -366,9 +369,7 @@ class _EditPostSheetState extends State<EditPostSheet> {
                   label: 'Update',
                   icon: Icons.check_rounded,
                   isLoading: _isSubmitting,
-                  onPressed: _controller.text.trim().isEmpty
-                      ? null
-                      : _submit,
+                  onPressed: _controller.text.trim().isEmpty ? null : _submit,
                 ),
               ],
             ),

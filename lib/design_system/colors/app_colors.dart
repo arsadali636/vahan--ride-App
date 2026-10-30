@@ -1,39 +1,51 @@
 import 'package:flutter/material.dart';
 
-/// Central color tokens.
+/// Central color tokens for DocConnect Pro design system.
 ///
-/// No feature screen, widget, or component may define colors manually — always
-/// reference these tokens or the Material `Theme`/`ColorScheme` derived from
-/// them. Changing a value here updates the entire app through
-/// `DesignSystemTheme`.
+/// Refreshed to match the DocConnect Pro redesign color specification:
+/// - Primary blue: #0066FF
+/// - Dark navy text: #101828
+/// - Secondary text: #667085
+/// - Main background: #F5F8FC
+/// - Card background: #FFFFFF
+/// - Border: #E4EAF2
+/// - Success green: #12B76A
+/// - Error red: #D92D20
+/// - Subtle divider: #EAECF0
+/// - Inactive Nav: #24344D
 class AppColors {
   AppColors._();
 
   // Brand
-  static const Color primary = Color(0xFF5B3CC4);
-  static const Color primaryDark = Color(0xFF3D267F);
-  static const Color secondary = Color(0xFF8B5CF6);
-  static const Color workforce = Color(0xFF20B486);
+  static const Color primary = Color(0xFF0066FF);
+  static const Color primaryDark = Color(0xFF0052CC);
+  static const Color secondary = Color(0xFF2563EB);
+  static const Color workforce = Color(0xFF12B76A);
 
   // Surfaces
-  static const Color background = Color(0xFFF8F7F5);
+  static const Color background = Color(0xFFF5F8FC);
   static const Color surface = Color(0xFFFFFFFF);
-  static const Color surfaceMuted = Color(0xFFF3F1F4);
+  static const Color surfaceMuted = Color(0xFFF0F4F9);
 
   // Text
-  static const Color textPrimary = Color(0xFF202124);
-  static const Color textSecondary = Color(0xFF6B6B73);
-  static const Color textDisabled = Color(0xFF9E9EA6);
+  static const Color textPrimary = Color(0xFF101828);
+  static const Color textSecondary = Color(0xFF667085);
+  static const Color textDisabled = Color(0xFF98A2B3);
   static const Color textOnPrimary = Color(0xFFFFFFFF);
 
+  // Navigation
+  static const Color navActive = Color(0xFF0066FF);
+  static const Color navInactive = Color(0xFF24344D);
+
   // Status
-  static const Color success = Color(0xFF16A673);
-  static const Color warning = Color(0xFFD99000);
-  static const Color error = Color(0xFFD94F4F);
+  static const Color success = Color(0xFF12B76A);
+  static const Color warning = Color(0xFFF59E0B);
+  static const Color error = Color(0xFFD92D20);
 
   // Borders / dividers
-  static const Color border = Color(0xFFE5E3E8);
-  static const Color borderStrong = Color(0xFFD2CFD6);
+  static const Color border = Color(0xFFE4EAF2);
+  static const Color borderStrong = Color(0xFFD0D5DD);
+  static const Color divider = Color(0xFFEAECF0);
 
   // Overlays
   static const Color scrim = Color(0x99000000);
@@ -47,7 +59,7 @@ class AppColors {
   static const Color textPrimaryDark = Color(0xFFF5F5F5);
   static const Color textSecondaryDark = Color(0xFFB0B0B0);
 
-  // Aliases (kept for readability and gradual migration)
+  // Aliases (kept for backward compatibility)
   static const Color primaryVariant = primaryDark;
   static const Color backgroundLight = background;
   static const Color surfaceLight = surface;

@@ -31,8 +31,7 @@ class AppBottomSheet {
               AppSpacing.lg,
               0,
               AppSpacing.lg,
-              AppSpacing.lg +
-                  MediaQuery.of(context).viewInsets.bottom,
+              AppSpacing.lg + MediaQuery.of(context).viewInsets.bottom,
             ),
             child: child,
           ),

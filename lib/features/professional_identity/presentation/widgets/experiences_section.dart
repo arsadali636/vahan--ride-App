@@ -47,9 +47,9 @@ class ExperiencesSection extends StatelessWidget {
     );
     if (!context.mounted) return;
     if (confirmed == true && item.id != null) {
-      context
-          .read<DoctorProfileBloc>()
-          .add(DeleteExperienceRequested(item.id!));
+      context.read<DoctorProfileBloc>().add(
+        DeleteExperienceRequested(item.id!),
+      );
     }
   }
 

@@ -35,11 +35,22 @@ class EnvironmentConfig {
   factory EnvironmentConfig.fromDartDefines() {
     final environment = _resolveEnvironment();
     const configuredBaseUrl = String.fromEnvironment('API_BASE_URL');
+    final baseUrl = configuredBaseUrl.isNotEmpty
+        ? configuredBaseUrl
+        : _defaultBaseUrl(environment);
+
+    if (environment == AppEnvironment.production &&
+        baseUrl.isNotEmpty &&
+        baseUrl.toLowerCase().startsWith('http://')) {
+      throw StateError(
+        'Insecure HTTP cleartext protocol is forbidden in production: $baseUrl. '
+        'HTTPS migration is required for production builds.',
+      );
+    }
+
     return EnvironmentConfig._(
       environment: environment,
-      apiBaseUrl: configuredBaseUrl.isNotEmpty
-          ? configuredBaseUrl
-          : _defaultBaseUrl(environment),
+      apiBaseUrl: baseUrl,
       apiBasePath: const String.fromEnvironment(
         'API_BASE_PATH',
         defaultValue: '/api/v1',
@@ -48,7 +59,7 @@ class EnvironmentConfig {
   }
 
   /// Project FastAPI backend for local development.
-  static const String kDevelopmentApiBaseUrl = 'http://65.1.134.1';
+  static const String kDevelopmentApiBaseUrl = 'http://3.111.58.158';
 
   static String _defaultBaseUrl(AppEnvironment environment) {
     switch (environment) {
@@ -92,6 +103,7 @@ class EnvironmentConfig {
   }
 
   @override
-  String toString() => 'EnvironmentConfig(environment: $environment, '
+  String toString() =>
+      'EnvironmentConfig(environment: $environment, '
       'apiBaseUrl: $apiBaseUrl, apiBasePath: $apiBasePath)';
 }

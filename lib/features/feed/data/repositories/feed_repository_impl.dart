@@ -77,7 +77,11 @@ class FeedRepositoryImpl implements FeedRepository {
         removeImage: removeImage,
         imageFile: imageFile,
       );
-      return (success: result.success, content: result.content, image: result.image);
+      return (
+        success: result.success,
+        content: result.content,
+        image: result.image,
+      );
     } on ApiException catch (e) {
       throw FailureMapper.fromApiException(e);
     }

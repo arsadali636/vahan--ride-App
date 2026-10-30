@@ -10,10 +10,7 @@ class SendOtpUseCase {
   SendOtpUseCase(this.repository);
 
   Future<SendOtpResult> call(SendOtpParams params) {
-    return repository.sendOtp(
-      phone: params.phone,
-      purpose: params.purpose,
-    );
+    return repository.sendOtp(phone: params.phone, purpose: params.purpose);
   }
 }
 

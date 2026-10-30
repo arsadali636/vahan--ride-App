@@ -51,19 +51,19 @@ class PublicDoctorProfile extends Equatable {
 
   @override
   List<Object?> get props => [
-        id,
-        fullName,
-        firstName,
-        lastName,
-        headline,
-        about,
-        photoFileId,
-        primarySpecializationId,
-        clinicalInterests,
-        professionalLocation,
-        experienceYears,
-        openToOpportunities,
-        verificationStatus,
-        isVerified,
-      ];
+    id,
+    fullName,
+    firstName,
+    lastName,
+    headline,
+    about,
+    photoFileId,
+    primarySpecializationId,
+    clinicalInterests,
+    professionalLocation,
+    experienceYears,
+    openToOpportunities,
+    verificationStatus,
+    isVerified,
+  ];
 }

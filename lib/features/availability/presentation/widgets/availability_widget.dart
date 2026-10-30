@@ -5,8 +5,6 @@ class AvailabilityWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SizedBox(
-      child: Text('Availability Widget'),
-    );
+    return const SizedBox(child: Text('Availability Widget'));
   }
 }

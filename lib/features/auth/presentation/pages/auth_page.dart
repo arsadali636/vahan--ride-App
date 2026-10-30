@@ -42,9 +42,7 @@ class AuthPage extends StatelessWidget {
                 if (state is AuthError) {
                   ScaffoldMessenger.of(context)
                     ..hideCurrentSnackBar()
-                    ..showSnackBar(
-                      SnackBar(content: Text(state.message)),
-                    );
+                    ..showSnackBar(SnackBar(content: Text(state.message)));
                 }
               },
               builder: (context, state) {
@@ -131,6 +129,7 @@ class _LoginFormState extends State<_LoginForm> {
   final _passwordController = TextEditingController();
   final _otpPhoneController = TextEditingController();
   final _otpController = TextEditingController();
+  UserRole _userType = UserRole.doctor;
   bool _signingIn = false;
   bool _otpMode = false;
   bool _sendingOtp = false;
@@ -159,21 +158,20 @@ class _LoginFormState extends State<_LoginForm> {
     if (!(_formKey.currentState?.validate() ?? false)) return;
     setState(() => _signingIn = true);
     context.read<AuthBloc>().add(
-          PasswordLoginSubmitted(
-            PasswordLoginParams(
-              phone: _phoneController.text.trim(),
-              password: _passwordController.text,
-            ),
-          ),
-        );
+      PasswordLoginSubmitted(
+        PasswordLoginParams(
+          phone: _phoneController.text.trim(),
+          password: _passwordController.text,
+          userType: _userType,
+        ),
+      ),
+    );
   }
 
   void _sendOtp() {
     final phone = _otpPhoneController.text.trim();
     if (!RegExp(widget.phonePattern).hasMatch(phone)) {
-      setState(
-        () => _otpPhoneError = 'Enter a valid 10-digit phone number',
-      );
+      setState(() => _otpPhoneError = 'Enter a valid 10-digit phone number');
       return;
     }
     setState(() {
@@ -182,13 +180,8 @@ class _LoginFormState extends State<_LoginForm> {
       _otpPhoneError = null;
     });
     context.read<AuthBloc>().add(
-          OtpRequested(
-            SendOtpParams(
-              phone: phone,
-              purpose: OtpPurpose.login,
-            ),
-          ),
-        );
+      OtpRequested(SendOtpParams(phone: phone, purpose: OtpPurpose.login)),
+    );
   }
 
   void _verifyOtp() {
@@ -196,13 +189,10 @@ class _LoginFormState extends State<_LoginForm> {
     if (otp.length != 6) return;
     setState(() => _verifyingOtp = true);
     context.read<AuthBloc>().add(
-          OtpVerificationSubmitted(
-            VerifyOtpParams(
-              phone: _otpPhoneController.text.trim(),
-              otp: otp,
-            ),
-          ),
-        );
+      OtpVerificationSubmitted(
+        VerifyOtpParams(phone: _otpPhoneController.text.trim(), otp: otp),
+      ),
+    );
   }
 
   @override
@@ -263,6 +253,16 @@ class _LoginFormState extends State<_LoginForm> {
           },
           onSubmitted: (_) => _signIn(),
         ),
+        const SizedBox(height: AppSpacing.md),
+        AppDropdown<UserRole>(
+          items: const [UserRole.doctor, UserRole.hospital],
+          initialValue: _userType,
+          label: 'Account type',
+          labelBuilder: (role) => role.displayName,
+          onChanged: (role) {
+            if (role != null) setState(() => _userType = role);
+          },
+        ),
         const SizedBox(height: AppSpacing.lg),
         PrimaryButton(
           label: 'Sign in',
@@ -309,8 +309,9 @@ class _LoginFormState extends State<_LoginForm> {
             padding: const EdgeInsets.only(bottom: AppSpacing.sm),
             child: Text(
               'Development build — your OTP is: $devHint',
-              style: AppTypography.bodySmall
-                  .copyWith(color: Theme.of(context).colorScheme.primary),
+              style: AppTypography.bodySmall.copyWith(
+                color: Theme.of(context).colorScheme.primary,
+              ),
             ),
           ),
         AppTextField(
@@ -389,19 +390,19 @@ class _RegisterFormState extends State<_RegisterForm> {
     if (!(_formKey.currentState?.validate() ?? false)) return;
     setState(() => _submitting = true);
     context.read<AuthBloc>().add(
-          RegisterSubmitted(
-            RegisterParams(
-              firstName: _firstNameController.text.trim(),
-              lastName: _lastNameController.text.trim(),
-              phone: _phoneController.text.trim(),
-              password: _passwordController.text,
-              email: _emailController.text.trim().isEmpty
-                  ? null
-                  : _emailController.text.trim(),
-              userType: _userType,
-            ),
-          ),
-        );
+      RegisterSubmitted(
+        RegisterParams(
+          firstName: _firstNameController.text.trim(),
+          lastName: _lastNameController.text.trim(),
+          phone: _phoneController.text.trim(),
+          password: _passwordController.text,
+          email: _emailController.text.trim().isEmpty
+              ? null
+              : _emailController.text.trim(),
+          userType: _userType,
+        ),
+      ),
+    );
   }
 
   @override
@@ -426,7 +427,8 @@ class _RegisterFormState extends State<_RegisterForm> {
                     controller: _firstNameController,
                     textCapitalization: TextCapitalization.words,
                     textInputAction: TextInputAction.next,
-                    validator: (value) => (value == null || value.trim().isEmpty)
+                    validator: (value) =>
+                        (value == null || value.trim().isEmpty)
                         ? 'Enter your first name'
                         : null,
                   ),
@@ -438,7 +440,8 @@ class _RegisterFormState extends State<_RegisterForm> {
                     controller: _lastNameController,
                     textCapitalization: TextCapitalization.words,
                     textInputAction: TextInputAction.next,
-                    validator: (value) => (value == null || value.trim().isEmpty)
+                    validator: (value) =>
+                        (value == null || value.trim().isEmpty)
                         ? 'Enter your last name'
                         : null,
                   ),
@@ -472,6 +475,19 @@ class _RegisterFormState extends State<_RegisterForm> {
               controller: _emailController,
               keyboardType: TextInputType.emailAddress,
               textInputAction: TextInputAction.next,
+              validator: (value) {
+                if (value == null || value.trim().isEmpty) return null;
+                final email = value.trim();
+                final emailRegex = RegExp(
+                  r'^[a-zA-Z0-9.!#$%&'
+                  "'"
+                  r'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$',
+                );
+                if (!emailRegex.hasMatch(email)) {
+                  return 'Enter a valid email address';
+                }
+                return null;
+              },
             ),
             const SizedBox(height: AppSpacing.md),
             AppTextField(

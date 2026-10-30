@@ -34,7 +34,7 @@ void main() {
   Dio buildDio() {
     return Dio(
       BaseOptions(
-        baseUrl: 'http://65.1.134.1',
+        baseUrl: 'http://3.111.58.158',
         connectTimeout: const Duration(seconds: 20),
         receiveTimeout: const Duration(seconds: 20),
         sendTimeout: const Duration(seconds: 20),
@@ -74,10 +74,7 @@ void main() {
       expect(registered.profileCreated, isTrue);
 
       final login = await dataSource.passwordLogin(
-        PasswordLoginRequestModel(
-          phone: phoneNumber,
-          password: 'smoke12345',
-        ),
+        PasswordLoginRequestModel(phone: phoneNumber, password: 'smoke12345'),
       );
       expect(login.accessToken, isNotEmpty);
       expect(login.refreshToken, isNotEmpty);
@@ -97,8 +94,7 @@ void main() {
       final authenticatedDio = DioFactory.create(
         baseUrl: 'http://65.1.134.1',
         sessionService: sessionService,
-        refreshHandler: (refreshToken) =>
-            dataSource.refreshToken(refreshToken),
+        refreshHandler: (refreshToken) => dataSource.refreshToken(refreshToken),
         enableLogging: false,
       );
       final profileDataSource = DoctorProfileRemoteDataSourceImpl(

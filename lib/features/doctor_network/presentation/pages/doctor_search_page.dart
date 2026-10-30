@@ -50,14 +50,17 @@ class _DoctorSearchPageState extends State<DoctorSearchPage> {
     if (!_scrollController.hasClients) return;
     final position = _scrollController.position;
     if (position.pixels >= position.maxScrollExtent - 240) {
-      context.read<DoctorNetworkBloc>().add(const DoctorSearchLoadMoreRequested());
+      context.read<DoctorNetworkBloc>().add(
+        const DoctorSearchLoadMoreRequested(),
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider<DoctorNetworkBloc>(
-      create: (_) => widget.bloc ?? DependencyInjection.get<DoctorNetworkBloc>(),
+      create: (_) =>
+          widget.bloc ?? DependencyInjection.get<DoctorNetworkBloc>(),
       child: Builder(
         builder: (context) {
           final bloc = context.read<DoctorNetworkBloc>();
@@ -96,8 +99,10 @@ class _DoctorSearchPageState extends State<DoctorSearchPage> {
                           );
                       }
                     },
-                    builder: (context, state) =>
-                        _SearchBody(state: state, scrollController: _scrollController),
+                    builder: (context, state) => _SearchBody(
+                      state: state,
+                      scrollController: _scrollController,
+                    ),
                   ),
                 ),
               ],
@@ -123,7 +128,8 @@ class _SearchBody extends StatelessWidget {
       case DoctorNetworkStatus.initial:
         return const AppEmptyView(
           title: 'Discover doctors',
-          message: 'Search by name, specialty or location to build your '
+          message:
+              'Search by name, specialty or location to build your '
               'professional network.',
           icon: Icons.people_alt_outlined,
         );
@@ -173,9 +179,8 @@ class _SearchBody extends StatelessWidget {
               return DoctorSearchResultCard(
                 key: ValueKey('doctor-${result.id}'),
                 result: result,
-                onTap: () => context.push(
-                  AppRouter.doctorPublicProfilePath(result.id),
-                ),
+                onTap: () =>
+                    context.push(AppRouter.doctorPublicProfilePath(result.id)),
               );
             },
           ),

@@ -103,10 +103,7 @@ class _AddRegistrationDialogState extends State<AddRegistrationDialog> {
                 onPressed: () => Navigator.of(context).pop(),
               ),
               const SizedBox(width: AppSpacing.sm),
-              PrimaryButton(
-                label: 'Save',
-                onPressed: _submit,
-              ),
+              PrimaryButton(label: 'Save', onPressed: _submit),
             ],
           ),
         ],

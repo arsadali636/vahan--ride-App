@@ -45,13 +45,24 @@ class UrgentJobModel extends Equatable {
       location: json['location'] is Map
           ? Map<String, dynamic>.from(json['location'] as Map)
           : const {},
-      salaryMin: json['salary_min'] as int? ?? 0,
-      salaryMax: json['salary_max'] as int? ?? 0,
+      salaryMin: _parseInt(json['salary_min']),
+      salaryMax: _parseInt(json['salary_max']),
       salaryVisibility: json['salary_visibility'] as String? ?? '',
-      experienceMinYears: json['experience_min_years'] as int? ?? 0,
+      experienceMinYears: _parseInt(json['experience_min_years']),
       isUrgent: json['is_urgent'] as bool? ?? false,
       postedAt: json['posted_at'] as String? ?? '',
     );
+  }
+
+  static int _parseInt(dynamic value, [int defaultValue = 0]) {
+    if (value is int) return value;
+    if (value is num) return value.toInt();
+    if (value is String) {
+      return int.tryParse(value) ??
+          double.tryParse(value)?.toInt() ??
+          defaultValue;
+    }
+    return defaultValue;
   }
 
   UrgentJob toEntity() {
@@ -74,18 +85,18 @@ class UrgentJobModel extends Equatable {
 
   @override
   List<Object?> get props => [
-        id,
-        title,
-        hospitalName,
-        hospitalLogo,
-        jobType,
-        jobTypeDisplay,
-        location,
-        salaryMin,
-        salaryMax,
-        salaryVisibility,
-        experienceMinYears,
-        isUrgent,
-        postedAt,
-      ];
+    id,
+    title,
+    hospitalName,
+    hospitalLogo,
+    jobType,
+    jobTypeDisplay,
+    location,
+    salaryMin,
+    salaryMax,
+    salaryVisibility,
+    experienceMinYears,
+    isUrgent,
+    postedAt,
+  ];
 }

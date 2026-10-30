@@ -70,8 +70,8 @@ class _PhotoUploadSectionState extends State<PhotoUploadSection> {
     final photo = _pending;
     if (photo == null) return;
     context.read<DoctorProfileBloc>().add(
-          DoctorProfilePhotoUploadRequested(photo),
-        );
+      DoctorProfilePhotoUploadRequested(photo),
+    );
   }
 
   Future<void> _chooseSource() async {

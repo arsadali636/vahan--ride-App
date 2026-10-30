@@ -6,12 +6,8 @@ class ApplicationsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Applications'),
-      ),
-      body: Center(
-        child: Text('Applications Feature Page'),
-      ),
+      appBar: AppBar(title: const Text('Applications')),
+      body: Center(child: Text('Applications Feature Page')),
     );
   }
 }

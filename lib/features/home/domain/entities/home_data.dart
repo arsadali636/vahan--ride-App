@@ -27,13 +27,13 @@ class HomeData extends Equatable {
 
   @override
   List<Object?> get props => [
-        doctorCount,
-        hospitalCount,
-        jobCount,
-        urgentJobs,
-        suggestedDoctors,
-        unreadMessages,
-        unreadNotifications,
-        pendingConnections,
-      ];
+    doctorCount,
+    hospitalCount,
+    jobCount,
+    urgentJobs,
+    suggestedDoctors,
+    unreadMessages,
+    unreadNotifications,
+    pendingConnections,
+  ];
 }

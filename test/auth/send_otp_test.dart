@@ -56,10 +56,7 @@ void main() {
         phone: '9876543210',
         purpose: OtpPurpose.register,
       );
-      expect(request.toJson(), {
-        'phone': '9876543210',
-        'purpose': 'REGISTER',
-      });
+      expect(request.toJson(), {'phone': '9876543210', 'purpose': 'REGISTER'});
     });
   });
 

@@ -15,7 +15,8 @@ import 'package:doc_connect_app/features/professional_identity/data/repositories
 import 'package:doc_connect_app/features/professional_identity/domain/entities/doctor_verification_status.dart';
 import 'package:doc_connect_app/features/professional_identity/domain/entities/location.dart';
 
-class _FakeDoctorProfileRemoteDataSource implements DoctorProfileRemoteDataSource {
+class _FakeDoctorProfileRemoteDataSource
+    implements DoctorProfileRemoteDataSource {
   DoctorProfileCreateModel? lastCreate;
   DoctorProfileUpdateModel? lastUpdate;
   DoctorQualificationModel? lastQualification;
@@ -49,7 +50,9 @@ class _FakeDoctorProfileRemoteDataSource implements DoctorProfileRemoteDataSourc
   }
 
   @override
-  Future<DoctorProfileResponseModel> getDoctorProfileById(String doctorId) async {
+  Future<DoctorProfileResponseModel> getDoctorProfileById(
+    String doctorId,
+  ) async {
     getCalls++;
     if (errorToThrow != null) throw errorToThrow!;
     return result!;
@@ -175,7 +178,9 @@ void main() {
     });
 
     test('maps a backend ApiException to a Failure', () async {
-      dataSource.errorToThrow = ValidationException(message: 'first_name: required');
+      dataSource.errorToThrow = ValidationException(
+        message: 'first_name: required',
+      );
 
       await expectLater(
         repository.createProfile(firstName: '', lastName: ''),
@@ -241,8 +246,7 @@ void main() {
     });
 
     test('maps a backend ApiException to a Failure', () async {
-      dataSource.errorToThrow =
-          NotFoundException(message: 'profile not found');
+      dataSource.errorToThrow = NotFoundException(message: 'profile not found');
 
       await expectLater(
         repository.updateProfile(about: 'New about'),

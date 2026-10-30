@@ -1,6 +1,1 @@
-enum VerificationStatus {
-  pending,
-  verified,
-  rejected,
-  unverified,
-}
+enum VerificationStatus { pending, verified, rejected, unverified }

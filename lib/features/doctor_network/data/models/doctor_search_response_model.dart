@@ -28,8 +28,9 @@ class DoctorSearchResponseModel extends Equatable {
       pageSize: json['page_size'] as int? ?? 20,
       results: (json['results'] as List? ?? const [])
           .whereType<Map>()
-          .map((e) =>
-              DoctorSearchResultModel.fromJson(e.cast<String, dynamic>()))
+          .map(
+            (e) => DoctorSearchResultModel.fromJson(e.cast<String, dynamic>()),
+          )
           .toList(),
     );
   }

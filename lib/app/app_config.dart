@@ -7,10 +7,7 @@ import 'environment_config.dart';
 /// Initialized once during bootstrap (`main()`), before the widget tree and
 /// the dependency injection container are set up. Access via `AppConfig.instance`.
 class AppConfig {
-  AppConfig._({
-    required this.appTitle,
-    required this.environmentConfig,
-  });
+  AppConfig._({required this.appTitle, required this.environmentConfig});
 
   static late final AppConfig instance;
 
@@ -27,7 +24,8 @@ class AppConfig {
     _initialized = true;
     instance = AppConfig._(
       appTitle: appTitle,
-      environmentConfig: environmentConfig ?? EnvironmentConfig.fromDartDefines(),
+      environmentConfig:
+          environmentConfig ?? EnvironmentConfig.fromDartDefines(),
     );
   }
 

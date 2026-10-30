@@ -90,7 +90,9 @@ void main() {
     addTearDown(() => tester.binding.setSurfaceSize(null));
     bloc = buildBloc();
     await tester.pumpWidget(
-      MaterialApp(home: DoctorPublicProfilePage(doctorId: 'doc-42', bloc: bloc)),
+      MaterialApp(
+        home: DoctorPublicProfilePage(doctorId: 'doc-42', bloc: bloc),
+      ),
     );
     await tester.pump();
   }
@@ -107,21 +109,19 @@ void main() {
       expect(find.text('Discover doctors'), findsOneWidget);
     });
 
-    testWidgets('searches after a debounce and renders result cards',
-        (tester) async {
+    testWidgets('searches after a debounce and renders result cards', (
+      tester,
+    ) async {
       repository.searchPages = [
-        _page(
-          [
-            _result(
-              headline: 'Senior Consultant',
-              specialty: 'Cardiology',
-              location: const Location(city: 'Mumbai', state: 'Maharashtra'),
-              experienceYears: 12,
-              openToOpportunities: true,
-            ),
-          ],
-          total: 1,
-        ),
+        _page([
+          _result(
+            headline: 'Senior Consultant',
+            specialty: 'Cardiology',
+            location: const Location(city: 'Mumbai', state: 'Maharashtra'),
+            experienceYears: 12,
+            openToOpportunities: true,
+          ),
+        ], total: 1),
       ];
       await pumpSearch(tester);
 
@@ -166,9 +166,12 @@ void main() {
       expect(repository.searchCalls, 2);
     });
 
-    testWidgets('navigates to the public profile when a card is tapped',
-        (tester) async {
-      repository.searchPages = [_page([_result()], total: 1)];
+    testWidgets('navigates to the public profile when a card is tapped', (
+      tester,
+    ) async {
+      repository.searchPages = [
+        _page([_result()], total: 1),
+      ];
       final router = GoRouter(
         initialLocation: AppRouter.doctorNetworkRoute,
         routes: [
@@ -180,9 +183,7 @@ void main() {
             path: AppRouter.doctorPublicProfileRoute,
             builder: (context, state) => Scaffold(
               body: Center(
-                child: Text(
-                  'PROFILE-${state.pathParameters['doctorId']}',
-                ),
+                child: Text('PROFILE-${state.pathParameters['doctorId']}'),
               ),
             ),
           ),
@@ -242,8 +243,9 @@ void main() {
       await pumpBloc(tester);
     });
 
-    testWidgets('shows a failure view and a snackbar when loading fails',
-        (tester) async {
+    testWidgets('shows a failure view and a snackbar when loading fails', (
+      tester,
+    ) async {
       repository.profileFailure = const ServerFailure('profile exploded');
       await pumpProfile(tester);
       await pumpBloc(tester);
@@ -277,7 +279,10 @@ void main() {
       expect(find.text('Senior Cardiologist'), findsOneWidget);
       expect(find.text('Mumbai, Maharashtra'), findsOneWidget);
       expect(find.text('About'), findsOneWidget);
-      expect(find.text('Heart surgery and preventive cardiology.'), findsOneWidget);
+      expect(
+        find.text('Heart surgery and preventive cardiology.'),
+        findsOneWidget,
+      );
       expect(find.text('Specialization'), findsOneWidget);
       expect(find.text('Experience'), findsOneWidget);
       expect(find.text('12 years'), findsOneWidget);
@@ -286,8 +291,9 @@ void main() {
       expect(find.text('Research'), findsOneWidget);
     });
 
-    testWidgets('shows coming-soon messages for the network actions',
-        (tester) async {
+    testWidgets('shows coming-soon messages for the network actions', (
+      tester,
+    ) async {
       repository.profile = const PublicDoctorProfile(
         id: 'doc-42',
         fullName: 'Ada Lovelace',

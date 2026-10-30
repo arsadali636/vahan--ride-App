@@ -58,9 +58,11 @@ Future<DoctorNetworkState> _awaitProfile(
   void Function() trigger,
 ) async {
   final done = bloc.stream
-      .firstWhere((s) =>
-          s.profileStatus == DoctorNetworkProfileStatus.loaded ||
-          s.profileStatus == DoctorNetworkProfileStatus.failure)
+      .firstWhere(
+        (s) =>
+            s.profileStatus == DoctorNetworkProfileStatus.loaded ||
+            s.profileStatus == DoctorNetworkProfileStatus.failure,
+      )
       .timeout(const Duration(seconds: 5));
   trigger();
   return done;
@@ -148,29 +150,33 @@ void main() {
   });
 
   group('DoctorSearchFiltersChanged', () {
-    test('resets pagination and searches page 1 with the new filters',
-        () async {
-      repository.searchPages = [
-        _page([_result('d-1', 'Ahmed Ali')], total: 1),
-      ];
+    test(
+      'resets pagination and searches page 1 with the new filters',
+      () async {
+        repository.searchPages = [
+          _page([_result('d-1', 'Ahmed Ali')], total: 1),
+        ];
 
-      await _awaitSearch(bloc, () {
-        bloc.add(const DoctorSearchStarted());
-      });
+        await _awaitSearch(bloc, () {
+          bloc.add(const DoctorSearchStarted());
+        });
 
-      final state = await _awaitSearch(bloc, () {
-        bloc.add(const DoctorSearchFiltersChanged(
-          DoctorNetworkFilters(specialty: 'Cardiology', city: 'Mumbai'),
-        ));
-      });
+        final state = await _awaitSearch(bloc, () {
+          bloc.add(
+            const DoctorSearchFiltersChanged(
+              DoctorNetworkFilters(specialty: 'Cardiology', city: 'Mumbai'),
+            ),
+          );
+        });
 
-      expect(repository.searchCalls, 2);
-      expect(repository.lastQuery!.page, 1);
-      expect(repository.lastQuery!.specialty, 'Cardiology');
-      expect(repository.lastQuery!.city, 'Mumbai');
-      expect(state.filters.specialty, 'Cardiology');
-      expect(state.results.map((r) => r.id), ['d-1']);
-    });
+        expect(repository.searchCalls, 2);
+        expect(repository.lastQuery!.page, 1);
+        expect(repository.lastQuery!.specialty, 'Cardiology');
+        expect(repository.lastQuery!.city, 'Mumbai');
+        expect(state.filters.specialty, 'Cardiology');
+        expect(state.results.map((r) => r.id), ['d-1']);
+      },
+    );
   });
 
   group('DoctorSearchLoadMoreRequested', () {

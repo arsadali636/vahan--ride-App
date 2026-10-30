@@ -114,8 +114,9 @@ void main() {
     expect(find.text('Invalid password'), findsOneWidget);
   });
 
-  testWidgets('switches to the OTP step and reveals the dev OTP',
-      (tester) async {
+  testWidgets('switches to the OTP step and reveals the dev OTP', (
+    tester,
+  ) async {
     repository.sendOtpResult = const SendOtpResult(
       success: true,
       message: 'OTP generated',

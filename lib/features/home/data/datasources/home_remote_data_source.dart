@@ -16,8 +16,6 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
   @override
   Future<HomeResponseModel> getHomeData() async {
     final data = await apiClient.get(ApiEndpoints.feedHome);
-    return HomeResponseModel.fromJson(
-      (data as Map).cast<String, dynamic>(),
-    );
+    return HomeResponseModel.fromJson((data as Map).cast<String, dynamic>());
   }
 }

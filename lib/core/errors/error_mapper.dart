@@ -26,9 +26,7 @@ class ApiExceptionMapper {
       case DioExceptionType.sendTimeout:
       case DioExceptionType.receiveTimeout:
       case DioExceptionType.transformTimeout:
-        return NetworkTimeoutException(
-          statusCode: error.response?.statusCode,
-        );
+        return NetworkTimeoutException(statusCode: error.response?.statusCode);
       case DioExceptionType.connectionError:
         return NetworkException(
           statusCode: error.response?.statusCode,

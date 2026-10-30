@@ -47,7 +47,8 @@ class DoctorProfile extends Equatable {
     this.updatedAt,
   });
 
-  String get displayName => fullName.isNotEmpty ? fullName : '$firstName $lastName'.trim();
+  String get displayName =>
+      fullName.isNotEmpty ? fullName : '$firstName $lastName'.trim();
 
   DoctorProfile copyWith({
     String? firstName,
@@ -75,7 +76,8 @@ class DoctorProfile extends Equatable {
       photoFileId: photoFileId ?? this.photoFileId,
       headline: headline ?? this.headline,
       about: about ?? this.about,
-      primarySpecializationId: primarySpecializationId ?? this.primarySpecializationId,
+      primarySpecializationId:
+          primarySpecializationId ?? this.primarySpecializationId,
       clinicalInterests: clinicalInterests ?? this.clinicalInterests,
       professionalLocation: professionalLocation ?? this.professionalLocation,
       experienceYears: experienceYears ?? this.experienceYears,
@@ -89,22 +91,22 @@ class DoctorProfile extends Equatable {
 
   @override
   List<Object?> get props => [
-        id,
-        userId,
-        firstName,
-        lastName,
-        fullName,
-        photoFileId,
-        headline,
-        about,
-        primarySpecializationId,
-        clinicalInterests,
-        professionalLocation,
-        experienceYears,
-        openToOpportunities,
-        verificationStatus,
-        isVerified,
-        createdAt,
-        updatedAt,
-      ];
+    id,
+    userId,
+    firstName,
+    lastName,
+    fullName,
+    photoFileId,
+    headline,
+    about,
+    primarySpecializationId,
+    clinicalInterests,
+    professionalLocation,
+    experienceYears,
+    openToOpportunities,
+    verificationStatus,
+    isVerified,
+    createdAt,
+    updatedAt,
+  ];
 }

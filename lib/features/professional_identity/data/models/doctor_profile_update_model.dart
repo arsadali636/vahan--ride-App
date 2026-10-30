@@ -40,8 +40,9 @@ class DoctorProfileUpdateModel extends Equatable {
         'primary_specialization_id': primarySpecializationId,
       if (clinicalInterests != null) 'clinical_interests': clinicalInterests,
       if (professionalLocation != null)
-        'professional_location':
-            LocationModel.fromEntity(professionalLocation!).toJson(),
+        'professional_location': LocationModel.fromEntity(
+          professionalLocation!,
+        ).toJson(),
       if (experienceYears != null) 'experience_years': experienceYears,
       if (openToOpportunities != null)
         'open_to_opportunities': openToOpportunities,
@@ -50,14 +51,14 @@ class DoctorProfileUpdateModel extends Equatable {
 
   @override
   List<Object?> get props => [
-        firstName,
-        lastName,
-        headline,
-        about,
-        primarySpecializationId,
-        clinicalInterests,
-        professionalLocation,
-        experienceYears,
-        openToOpportunities,
-      ];
+    firstName,
+    lastName,
+    headline,
+    about,
+    primarySpecializationId,
+    clinicalInterests,
+    professionalLocation,
+    experienceYears,
+    openToOpportunities,
+  ];
 }

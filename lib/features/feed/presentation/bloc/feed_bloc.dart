@@ -14,8 +14,8 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
     required this.likePost,
     required this.editPost,
     required this.deletePost,
-  })  : _currentPosts = [],
-        super(const FeedState()) {
+  }) : _currentPosts = [],
+       super(const FeedState()) {
     on<FeedStarted>(_onStarted);
     on<FeedLoadMoreRequested>(_onLoadMoreRequested);
     on<FeedRefreshRequested>(_onRefreshRequested);
@@ -34,14 +34,8 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
 
   final List<FeedPost> _currentPosts;
 
-  Future<void> _onStarted(
-    FeedStarted event,
-    Emitter<FeedState> emit,
-  ) async {
-    emit(state.copyWith(
-      status: FeedStatus.loading,
-      clearError: true,
-    ));
+  Future<void> _onStarted(FeedStarted event, Emitter<FeedState> emit) async {
+    emit(state.copyWith(status: FeedStatus.loading, clearError: true));
     await _fetchPage(emit, page: 1);
   }
 
@@ -89,10 +83,7 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
       final result = await likePost(postId: event.postId);
       final reconciled = state.posts.map((post) {
         if (post.id != event.postId) return post;
-        return post.copyWith(
-          liked: result.liked,
-          likeCount: result.count,
-        );
+        return post.copyWith(liked: result.liked, likeCount: result.count);
       }).toList();
       emit(state.copyWith(posts: reconciled));
     } on Failure catch (_) {
@@ -100,8 +91,9 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
       final reverted = state.posts.map((post) {
         if (post.id != event.postId) return post;
         final revertedLiked = !post.liked;
-        final revertedCount =
-            revertedLiked ? post.likeCount + 1 : post.likeCount - 1;
+        final revertedCount = revertedLiked
+            ? post.likeCount + 1
+            : post.likeCount - 1;
         return post.copyWith(
           liked: revertedLiked,
           likeCount: revertedCount < 0 ? 0 : revertedCount,
@@ -130,10 +122,12 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
         );
         _currentPosts[index] = updatedPost;
       }
-      emit(state.copyWith(
-        status: FeedStatus.loaded,
-        posts: List.unmodifiable(_currentPosts),
-      ));
+      emit(
+        state.copyWith(
+          status: FeedStatus.loaded,
+          posts: List.unmodifiable(_currentPosts),
+        ),
+      );
     } on Failure catch (e) {
       emit(state.copyWith(error: e, clearError: true));
     }
@@ -146,42 +140,40 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
     try {
       await deletePost(postId: event.postId);
       _currentPosts.removeWhere((p) => p.id == event.postId);
-      emit(state.copyWith(
-        status: FeedStatus.loaded,
-        posts: List.unmodifiable(_currentPosts),
-      ));
+      emit(
+        state.copyWith(
+          status: FeedStatus.loaded,
+          posts: List.unmodifiable(_currentPosts),
+        ),
+      );
     } on Failure catch (e) {
       emit(state.copyWith(error: e, clearError: true));
     }
   }
 
-  Future<void> _fetchPage(
-    Emitter<FeedState> emit, {
-    required int page,
-  }) async {
+  Future<void> _fetchPage(Emitter<FeedState> emit, {required int page}) async {
     try {
       final posts = await getFeedPosts(page: page, pageSize: _pageSize);
       final isFirstPage = page == 1;
       if (isFirstPage) {
-      _currentPosts
-        ..clear()
-        ..addAll(posts);
-    } else {
-      _currentPosts.addAll(posts);
-    }
+        _currentPosts
+          ..clear()
+          ..addAll(posts);
+      } else {
+        _currentPosts.addAll(posts);
+      }
 
-    emit(state.copyWith(
-      status: _currentPosts.isEmpty ? FeedStatus.empty : FeedStatus.loaded,
-      posts: List.unmodifiable(_currentPosts),
-      page: page,
-      hasMore: getFeedPosts.hasMore,
-      clearError: true,
-    ));
+      emit(
+        state.copyWith(
+          status: _currentPosts.isEmpty ? FeedStatus.empty : FeedStatus.loaded,
+          posts: List.unmodifiable(_currentPosts),
+          page: page,
+          hasMore: getFeedPosts.hasMore,
+          clearError: true,
+        ),
+      );
     } on Failure catch (e) {
-      emit(state.copyWith(
-        status: FeedStatus.failure,
-        error: e,
-      ));
+      emit(state.copyWith(status: FeedStatus.failure, error: e));
     }
   }
 }

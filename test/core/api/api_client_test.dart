@@ -34,15 +34,17 @@ void main() {
     );
   });
 
-  test('marks a public request so the auth interceptor skips the token',
-      () async {
-    await apiClient.get('/auth/send-otp', requiresAuth: false);
+  test(
+    'marks a public request so the auth interceptor skips the token',
+    () async {
+      await apiClient.get('/auth/send-otp', requiresAuth: false);
 
-    expect(
-      adapter.captured.single.extra[ApiConstants.requiresAuthExtraKey],
-      isFalse,
-    );
-  });
+      expect(
+        adapter.captured.single.extra[ApiConstants.requiresAuthExtraKey],
+        isFalse,
+      );
+    },
+  );
 
   test('sends query parameters and a request body', () async {
     await apiClient.post(
@@ -73,18 +75,20 @@ void main() {
     );
   });
 
-  test('falls back to mapping when no error interceptor wrapped the failure',
-      () async {
-    adapter.throwError = DioException(
-      requestOptions: RequestOptions(path: '/hospitals'),
-      type: DioExceptionType.connectionTimeout,
-    );
+  test(
+    'falls back to mapping when no error interceptor wrapped the failure',
+    () async {
+      adapter.throwError = DioException(
+        requestOptions: RequestOptions(path: '/hospitals'),
+        type: DioExceptionType.connectionTimeout,
+      );
 
-    await expectLater(
-      apiClient.get('/hospitals'),
-      throwsA(isA<NetworkTimeoutException>()),
-    );
-  });
+      await expectLater(
+        apiClient.get('/hospitals'),
+        throwsA(isA<NetworkTimeoutException>()),
+      );
+    },
+  );
 
   test('throws a typed ApiException for a 5xx response', () async {
     adapter

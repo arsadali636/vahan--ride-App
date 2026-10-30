@@ -20,7 +20,8 @@ class CommunitiesPage extends StatelessWidget {
       appBar: AppBar(title: const Text('Communities')),
       body: const AppEmptyView(
         title: 'Specialty communities are not available yet',
-        message: 'The community endpoints are not published in the backend '
+        message:
+            'The community endpoints are not published in the backend '
             'contract yet. Discovering, joining and participating in '
             'specialty communities will appear here once the communities '
             'API is available.',

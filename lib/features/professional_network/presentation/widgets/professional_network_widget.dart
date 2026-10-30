@@ -5,8 +5,6 @@ class ProfessionalNetworkWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SizedBox(
-      child: Text('ProfessionalNetwork Widget'),
-    );
+    return const SizedBox(child: Text('ProfessionalNetwork Widget'));
   }
 }

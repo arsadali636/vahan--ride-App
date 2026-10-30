@@ -142,10 +142,7 @@ class ApiClient {
   Options _authOptions(Options? options, bool requiresAuth) {
     if (requiresAuth) return options ?? Options();
     return (options ?? Options()).copyWith(
-      extra: {
-        ...?options?.extra,
-        ApiConstants.requiresAuthExtraKey: false,
-      },
+      extra: {...?options?.extra, ApiConstants.requiresAuthExtraKey: false},
     );
   }
 

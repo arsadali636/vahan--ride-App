@@ -30,12 +30,7 @@ enum DoctorNetworkStatus {
 }
 
 /// Lifecycle of the public doctor profile request.
-enum DoctorNetworkProfileStatus {
-  initial,
-  loading,
-  loaded,
-  failure,
-}
+enum DoctorNetworkProfileStatus { initial, loading, loaded, failure }
 
 /// Active filter values for doctor discovery.
 ///
@@ -75,8 +70,12 @@ class DoctorNetworkFilters extends Equatable {
   }
 
   @override
-  List<Object?> get props =>
-      [specialty, city, experienceMin, openToOpportunities];
+  List<Object?> get props => [
+    specialty,
+    city,
+    experienceMin,
+    openToOpportunities,
+  ];
 }
 
 /// Single source of truth for the doctor discovery (search + public profile)
@@ -141,23 +140,24 @@ class DoctorNetworkState extends Equatable {
       error: clearError ? null : (error ?? this.error),
       profileStatus: profileStatus ?? this.profileStatus,
       profile: profile ?? this.profile,
-      profileError:
-          clearProfileError ? null : (profileError ?? this.profileError),
+      profileError: clearProfileError
+          ? null
+          : (profileError ?? this.profileError),
     );
   }
 
   @override
   List<Object?> get props => [
-        status,
-        query,
-        filters,
-        results,
-        page,
-        total,
-        hasReachedEnd,
-        error,
-        profileStatus,
-        profile,
-        profileError,
-      ];
+    status,
+    query,
+    filters,
+    results,
+    page,
+    total,
+    hasReachedEnd,
+    error,
+    profileStatus,
+    profile,
+    profileError,
+  ];
 }

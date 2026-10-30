@@ -40,7 +40,11 @@ class AccountTab extends StatelessWidget {
             child: Row(
               children: [
                 Expanded(
-                  child: _StatTile(icon: Icons.visibility_outlined, value: '0', label: 'Profile viewers'),
+                  child: _StatTile(
+                    icon: Icons.visibility_outlined,
+                    value: '0',
+                    label: 'Profile viewers',
+                  ),
                 ),
                 const SizedBox(width: AppSpacing.md),
                 Expanded(
@@ -54,29 +58,31 @@ class AccountTab extends StatelessWidget {
             ),
           ),
           const SizedBox(height: AppSpacing.md),
-          _MenuGroup(children: [
-            _MenuItem(
-              icon: Icons.badge_outlined,
-              title: 'My Profile',
-              onTap: () => context.push(AppRouter.profileRoute),
-            ),
-            _MenuItem(
-              icon: Icons.settings_outlined,
-              title: 'Settings & Privacy',
-              onTap: () {},
-            ),
-            _MenuItem(
-              icon: Icons.help_outline_rounded,
-              title: 'Help & Support',
-              onTap: () {},
-            ),
-            _MenuItem(
-              icon: Icons.logout_rounded,
-              title: 'Sign out',
-              destructive: true,
-              onTap: () => context.read<AuthBloc>().signOut(),
-            ),
-          ]),
+          _MenuGroup(
+            children: [
+              _MenuItem(
+                icon: Icons.badge_outlined,
+                title: 'My Profile',
+                onTap: () => context.push(AppRouter.profileRoute),
+              ),
+              _MenuItem(
+                icon: Icons.settings_outlined,
+                title: 'Settings & Privacy',
+                onTap: () {},
+              ),
+              _MenuItem(
+                icon: Icons.help_outline_rounded,
+                title: 'Help & Support',
+                onTap: () {},
+              ),
+              _MenuItem(
+                icon: Icons.logout_rounded,
+                title: 'Sign out',
+                destructive: true,
+                onTap: () => context.read<AuthBloc>().signOut(),
+              ),
+            ],
+          ),
         ],
       ),
     );
@@ -125,7 +131,8 @@ class _ProfileHeaderCard extends StatelessWidget {
                         const SizedBox(height: AppSpacing.xxs),
                         Text(headline, style: AppTypography.bodyMedium),
                       ],
-                      if (qualification != null && qualification.isNotEmpty) ...[
+                      if (qualification != null &&
+                          qualification.isNotEmpty) ...[
                         const SizedBox(height: AppSpacing.xxs),
                         Text(qualification, style: AppTypography.bodySmall),
                       ],

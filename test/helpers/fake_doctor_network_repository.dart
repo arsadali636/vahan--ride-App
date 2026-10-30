@@ -24,8 +24,9 @@ class FakeDoctorNetworkRepository implements DoctorNetworkRepository {
   DoctorSearchQuery? lastQuery;
   String? lastDoctorId;
 
-  FakeDoctorNetworkRepository({List<PaginatedResult<DoctorSearchResult>>? searchPages})
-      : searchPages = searchPages ?? [];
+  FakeDoctorNetworkRepository({
+    List<PaginatedResult<DoctorSearchResult>>? searchPages,
+  }) : searchPages = searchPages ?? [];
 
   @override
   Future<PaginatedResult<DoctorSearchResult>> searchDoctors(

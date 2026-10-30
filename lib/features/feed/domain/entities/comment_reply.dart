@@ -24,13 +24,13 @@ class CommentReply extends Equatable {
 
   @override
   List<Object?> get props => [
-        id,
-        author,
-        initials,
-        color,
-        photo,
-        content,
-        createdAt,
-        isMine,
-      ];
+    id,
+    author,
+    initials,
+    color,
+    photo,
+    content,
+    createdAt,
+    isMine,
+  ];
 }

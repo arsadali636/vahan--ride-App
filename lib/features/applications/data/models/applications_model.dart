@@ -4,14 +4,10 @@ class ApplicationsModel extends ApplicationsEntity {
   const ApplicationsModel({required super.id});
 
   factory ApplicationsModel.fromJson(Map<String, dynamic> json) {
-    return ApplicationsModel(
-      id: json['id'] as String? ?? '',
-    );
+    return ApplicationsModel(id: json['id'] as String? ?? '');
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-    };
+    return {'id': id};
   }
 }

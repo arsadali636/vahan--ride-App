@@ -46,22 +46,13 @@ void main() {
       DependencyInjection.instance.isRegistered<AuthRemoteDataSource>(),
       isTrue,
     );
-    expect(
-      DependencyInjection.instance.isRegistered<AuthRepository>(),
-      isTrue,
-    );
-    expect(
-      DependencyInjection.get<SendOtpUseCase>(),
-      isA<SendOtpUseCase>(),
-    );
+    expect(DependencyInjection.instance.isRegistered<AuthRepository>(), isTrue);
+    expect(DependencyInjection.get<SendOtpUseCase>(), isA<SendOtpUseCase>());
     expect(DependencyInjection.get<RegisterUser>(), isA<RegisterUser>());
     expect(DependencyInjection.get<PasswordLogin>(), isA<PasswordLogin>());
     expect(DependencyInjection.get<VerifyOtp>(), isA<VerifyOtp>());
     expect(DependencyInjection.get<Logout>(), isA<Logout>());
-    expect(
-      DependencyInjection.get<RestoreSession>(),
-      isA<RestoreSession>(),
-    );
+    expect(DependencyInjection.get<RestoreSession>(), isA<RestoreSession>());
     expect(DependencyInjection.get<RefreshToken>(), isA<RefreshToken>());
 
     final authBloc = DependencyInjection.get<AuthBloc>();
@@ -78,8 +69,10 @@ void main() {
       DependencyInjection.instance.isRegistered<DoctorProfileRepository>(),
       isTrue,
     );
-    expect(DependencyInjection.get<CreateDoctorProfile>(),
-        isA<CreateDoctorProfile>());
+    expect(
+      DependencyInjection.get<CreateDoctorProfile>(),
+      isA<CreateDoctorProfile>(),
+    );
     expect(
       DependencyInjection.get<GetDoctorProfile>(),
       isA<GetDoctorProfile>(),

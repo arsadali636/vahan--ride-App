@@ -3,7 +3,15 @@ import 'package:equatable/equatable.dart';
 import '../../../../core/errors/failures.dart';
 import '../../domain/entities/feed_post.dart';
 
-enum FeedStatus { initial, loading, loaded, refreshing, loadingMore, failure, empty }
+enum FeedStatus {
+  initial,
+  loading,
+  loaded,
+  refreshing,
+  loadingMore,
+  failure,
+  empty,
+}
 
 class FeedState extends Equatable {
   final FeedStatus status;

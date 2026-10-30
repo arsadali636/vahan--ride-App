@@ -53,8 +53,9 @@ class DoctorSearchResultModel extends Equatable {
       headline: json['headline'] as String?,
       photoFileId: json['photo_file_id'] as String?,
       primarySpecializationId: json['primary_specialization_id'] as String?,
-      professionalLocation:
-          LocationModel.fromMapOrNull(json['professional_location']),
+      professionalLocation: LocationModel.fromMapOrNull(
+        json['professional_location'],
+      ),
       experienceYears: (json['experience_years'] as num? ?? 0).toDouble(),
       openToOpportunities: json['open_to_opportunities'] as bool? ?? false,
       verificationStatus: DoctorVerificationStatus.fromWire(
@@ -83,17 +84,17 @@ class DoctorSearchResultModel extends Equatable {
 
   @override
   List<Object?> get props => [
-        id,
-        fullName,
-        firstName,
-        lastName,
-        headline,
-        photoFileId,
-        primarySpecializationId,
-        professionalLocation,
-        experienceYears,
-        openToOpportunities,
-        verificationStatus,
-        isVerified,
-      ];
+    id,
+    fullName,
+    firstName,
+    lastName,
+    headline,
+    photoFileId,
+    primarySpecializationId,
+    professionalLocation,
+    experienceYears,
+    openToOpportunities,
+    verificationStatus,
+    isVerified,
+  ];
 }

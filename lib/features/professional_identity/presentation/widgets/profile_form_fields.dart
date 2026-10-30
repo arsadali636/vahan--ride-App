@@ -45,10 +45,8 @@ class _ProfileFormFieldsState extends State<ProfileFormFields> {
   late List<String> _interests;
   late bool _openToOpportunities;
 
-  DoctorProfileDraft get _initial => widget.initial ?? const DoctorProfileDraft(
-        firstName: '',
-        lastName: '',
-      );
+  DoctorProfileDraft get _initial =>
+      widget.initial ?? const DoctorProfileDraft(firstName: '', lastName: '');
 
   @override
   void initState() {
@@ -58,8 +56,9 @@ class _ProfileFormFieldsState extends State<ProfileFormFields> {
     _lastName = TextEditingController(text: initial.lastName);
     _headline = TextEditingController(text: initial.headline ?? '');
     _about = TextEditingController(text: initial.about ?? '');
-    _specializationId =
-        TextEditingController(text: initial.primarySpecializationId ?? '');
+    _specializationId = TextEditingController(
+      text: initial.primarySpecializationId ?? '',
+    );
     _experienceYears = TextEditingController(
       text: initial.experienceYears?.toString() ?? '',
     );
@@ -117,8 +116,9 @@ class _ProfileFormFieldsState extends State<ProfileFormFields> {
                     : _address.text.trim(),
                 city: city,
                 state: state,
-                pincode:
-                    _pincode.text.trim().isEmpty ? null : _pincode.text.trim(),
+                pincode: _pincode.text.trim().isEmpty
+                    ? null
+                    : _pincode.text.trim(),
               )
             : null,
         experienceYears: double.tryParse(_experienceYears.text.trim()),
@@ -195,8 +195,9 @@ class _ProfileFormFieldsState extends State<ProfileFormFields> {
                 AppTextField(
                   label: 'Years of experience',
                   controller: _experienceYears,
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
+                  keyboardType: const TextInputType.numberWithOptions(
+                    decimal: true,
+                  ),
                   validator: _validateYears,
                 ),
                 const SizedBox(height: AppSpacing.md),

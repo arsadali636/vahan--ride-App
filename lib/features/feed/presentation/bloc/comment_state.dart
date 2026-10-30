@@ -29,8 +29,9 @@ class CommentState extends Equatable {
       status: status ?? this.status,
       comments: comments ?? this.comments,
       error: clearError ? null : (error ?? this.error),
-      parentIdToDelete:
-          clearError ? null : (parentIdToDelete ?? this.parentIdToDelete),
+      parentIdToDelete: clearError
+          ? null
+          : (parentIdToDelete ?? this.parentIdToDelete),
     );
   }
 

@@ -53,13 +53,13 @@ class PostCommentResponseModel extends Equatable {
 
   @override
   List<Object?> get props => [
-        id,
-        author,
-        initials,
-        color,
-        photo,
-        content,
-        createdAt,
-        count,
-      ];
+    id,
+    author,
+    initials,
+    color,
+    photo,
+    content,
+    createdAt,
+    count,
+  ];
 }

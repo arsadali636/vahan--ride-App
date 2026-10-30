@@ -6,12 +6,8 @@ class PrivacyPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Privacy'),
-      ),
-      body: Center(
-        child: Text('Privacy Feature Page'),
-      ),
+      appBar: AppBar(title: const Text('Privacy')),
+      body: Center(child: Text('Privacy Feature Page')),
     );
   }
 }

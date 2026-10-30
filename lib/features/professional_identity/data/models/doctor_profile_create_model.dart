@@ -38,20 +38,22 @@ class DoctorProfileCreateModel extends Equatable {
         'primary_specialization_id': primarySpecializationId,
       if (clinicalInterests != null) 'clinical_interests': clinicalInterests,
       if (professionalLocation != null)
-        'professional_location': LocationModel.fromEntity(professionalLocation!).toJson(),
+        'professional_location': LocationModel.fromEntity(
+          professionalLocation!,
+        ).toJson(),
       if (experienceYears != null) 'experience_years': experienceYears,
     };
   }
 
   @override
   List<Object?> get props => [
-        firstName,
-        lastName,
-        headline,
-        about,
-        primarySpecializationId,
-        clinicalInterests,
-        professionalLocation,
-        experienceYears,
-      ];
+    firstName,
+    lastName,
+    headline,
+    about,
+    primarySpecializationId,
+    clinicalInterests,
+    professionalLocation,
+    experienceYears,
+  ];
 }
