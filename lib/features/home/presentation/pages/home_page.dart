@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../app/dependency_injection.dart';
 import '../../../../core/api/api_client.dart';
 import '../../../../design_system/colors/app_colors.dart';
-import '../../../../design_system/components/app_bottom_sheet.dart';
 import '../../data/datasources/home_remote_data_source.dart';
 import '../../data/repositories/home_repository_impl.dart';
 import '../../domain/usecases/get_home_data_usecase.dart';
@@ -63,10 +62,11 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _openComposer() {
-    AppBottomSheet.show(
+    showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
-      child: const PostComposerSheet(),
+      backgroundColor: Colors.transparent,
+      builder: (modalContext) => const PostComposerSheet(),
     );
   }
 

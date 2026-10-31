@@ -48,6 +48,8 @@ class FakeFeedRepository implements FeedRepository {
     required String postType,
     required bool isAnonymous,
     File? imageFile,
+    List<int>? imageBytes,
+    String? imageName,
   }) async {
     createPostCalls++;
     lastCreatedContent = content;

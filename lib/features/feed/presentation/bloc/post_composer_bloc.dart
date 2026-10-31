@@ -2,6 +2,7 @@
 
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/errors/failures.dart';
@@ -44,7 +45,14 @@ class PostComposerBloc extends Bloc<PostComposerEvent, PostComposerState> {
     PostImageSelected event,
     Emitter<PostComposerState> emit,
   ) {
-    emit(state.copyWith(imagePath: event.imagePath, clearError: true));
+    emit(
+      state.copyWith(
+        imagePath: event.imagePath,
+        imageName: event.imageName,
+        imageBytes: event.imageBytes,
+        clearError: true,
+      ),
+    );
   }
 
   void _onImageRemoved(
@@ -67,7 +75,7 @@ class PostComposerBloc extends Bloc<PostComposerEvent, PostComposerState> {
 
     try {
       File? imageFile;
-      if (state.imagePath != null) {
+      if (!kIsWeb && state.imagePath != null && state.imagePath!.isNotEmpty) {
         imageFile = File(state.imagePath!);
       }
 
@@ -76,6 +84,8 @@ class PostComposerBloc extends Bloc<PostComposerEvent, PostComposerState> {
         postType: state.postType,
         isAnonymous: state.isAnonymous,
         imageFile: imageFile,
+        imageBytes: state.imageBytes,
+        imageName: state.imageName,
       );
 
       emit(state.copyWith(status: PostComposerStatus.success));

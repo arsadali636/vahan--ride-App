@@ -25,10 +25,13 @@ class AnonymousToggled extends PostComposerEvent {
 
 class PostImageSelected extends PostComposerEvent {
   final String? imagePath;
-  const PostImageSelected(this.imagePath);
+  final String? imageName;
+  final List<int>? imageBytes;
+
+  const PostImageSelected(this.imagePath, {this.imageName, this.imageBytes});
 
   @override
-  List<Object?> get props => [imagePath];
+  List<Object?> get props => [imagePath, imageName, imageBytes];
 }
 
 class PostImageRemoved extends PostComposerEvent {

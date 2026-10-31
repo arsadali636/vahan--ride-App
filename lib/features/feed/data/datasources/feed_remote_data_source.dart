@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 
 import '../../../../core/api/api_client.dart';
 import '../../../../core/constants/api_endpoints.dart';
@@ -29,6 +30,8 @@ abstract class FeedRemoteDataSource {
     required String postType,
     required bool isAnonymous,
     File? imageFile,
+    List<int>? imageBytes,
+    String? imageName,
   });
 
   /// Toggles like on a post. Returns the server-confirmed like state and count.
@@ -105,6 +108,8 @@ class FeedRemoteDataSourceImpl implements FeedRemoteDataSource {
     required String postType,
     required bool isAnonymous,
     File? imageFile,
+    List<int>? imageBytes,
+    String? imageName,
   }) async {
     final formData = <String, dynamic>{
       'content': content,
@@ -114,16 +119,28 @@ class FeedRemoteDataSourceImpl implements FeedRemoteDataSource {
 
     if (postType == 'CASE') {
       formData['patient_privacy_confirmed'] = 'true';
+    } else {
+      formData['patient_privacy_confirmed'] = 'false';
     }
 
-    if (imageFile != null) {
-      final fileName = imageFile.path.split('/').last;
+    if (imageBytes != null && imageBytes.isNotEmpty) {
+      final fileName = imageName ?? 'image.jpg';
       final contentType = _guessContentType(fileName);
-      formData['image'] = await MultipartFile.fromFile(
-        imageFile.path,
+      formData['image'] = MultipartFile.fromBytes(
+        imageBytes,
         filename: fileName,
         contentType: DioMediaType.parse(contentType),
       );
+    } else if (imageFile != null) {
+      final fileName = imageName ?? imageFile.path.split('/').last;
+      final contentType = _guessContentType(fileName);
+      if (!kIsWeb) {
+        formData['image'] = await MultipartFile.fromFile(
+          imageFile.path,
+          filename: fileName,
+          contentType: DioMediaType.parse(contentType),
+        );
+      }
     }
 
     final data = await apiClient.post(

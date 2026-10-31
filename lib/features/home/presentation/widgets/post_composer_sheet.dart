@@ -1,10 +1,12 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../app/dependency_injection.dart';
+import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/models/user_model.dart';
 import '../../../../core/utils/url_utils.dart';
 import '../../../../design_system/colors/app_colors.dart';
@@ -136,7 +138,14 @@ class _PostComposerSheetState extends State<PostComposerSheet> {
     );
 
     if (picked != null && mounted) {
-      _composerBloc.add(PostImageSelected(picked.path));
+      final bytes = await picked.readAsBytes();
+      _composerBloc.add(
+        PostImageSelected(
+          picked.path,
+          imageName: picked.name,
+          imageBytes: bytes,
+        ),
+      );
     }
   }
 
@@ -310,7 +319,7 @@ class _PostComposerSheetState extends State<PostComposerSheet> {
       listener: (context, state) {
         if (state.status == PostComposerStatus.success) {
           Navigator.of(context).pop();
-          context.read<FeedBloc>().add(const FeedRefreshRequested());
+          context.readOrNull<FeedBloc>()?.add(const FeedRefreshRequested());
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(
@@ -704,18 +713,32 @@ class _PostComposerSheetState extends State<PostComposerSheet> {
                       ),
 
                       // Image attachment preview
-                      if (state.imagePath != null) ...[
+                      if (state.hasImage) ...[
                         const SizedBox(height: AppSpacing.xs),
                         Stack(
                           children: [
                             ClipRRect(
                               borderRadius: AppRadius.borderLg,
-                              child: Image.file(
-                                File(state.imagePath!),
-                                height: 200,
-                                width: double.infinity,
-                                fit: BoxFit.cover,
-                              ),
+                              child: state.imageBytes != null
+                                  ? Image.memory(
+                                      Uint8List.fromList(state.imageBytes!),
+                                      height: 200,
+                                      width: double.infinity,
+                                      fit: BoxFit.cover,
+                                    )
+                                  : (kIsWeb
+                                        ? Image.network(
+                                            state.imagePath!,
+                                            height: 200,
+                                            width: double.infinity,
+                                            fit: BoxFit.cover,
+                                          )
+                                        : Image.file(
+                                            File(state.imagePath!),
+                                            height: 200,
+                                            width: double.infinity,
+                                            fit: BoxFit.cover,
+                                          )),
                             ),
                             Positioned(
                               top: AppSpacing.xs,
@@ -799,6 +822,39 @@ class _PostComposerSheetState extends State<PostComposerSheet> {
                   ),
                 ),
               ),
+
+              // ── Inline Error Banner ──────────────────────────────────
+              if (state.error != null)
+                Container(
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.md,
+                    vertical: AppSpacing.xs,
+                  ),
+                  padding: const EdgeInsets.all(AppSpacing.sm),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFFEF2F2),
+                    borderRadius: AppRadius.borderMd,
+                    border: Border.all(color: const Color(0xFFFECACA)),
+                  ),
+                  child: Row(
+                    children: [
+                      const Icon(
+                        Icons.error_outline_rounded,
+                        color: AppColors.error,
+                        size: 18,
+                      ),
+                      const SizedBox(width: AppSpacing.xs),
+                      Expanded(
+                        child: Text(
+                          state.error?.message ?? 'Failed to create post',
+                          style: AppTypography.labelSmall.copyWith(
+                            color: AppColors.error,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
 
               // ── LinkedIn Bottom Toolbar (Proofread, Image, Add) ────────
               Container(

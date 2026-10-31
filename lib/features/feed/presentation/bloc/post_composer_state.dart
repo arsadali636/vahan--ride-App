@@ -9,6 +9,8 @@ class PostComposerState extends Equatable {
   final String postType;
   final bool isAnonymous;
   final String? imagePath;
+  final String? imageName;
+  final List<int>? imageBytes;
   final Failure? error;
 
   const PostComposerState({
@@ -16,16 +18,23 @@ class PostComposerState extends Equatable {
     this.postType = 'UPDATE',
     this.isAnonymous = false,
     this.imagePath,
+    this.imageName,
+    this.imageBytes,
     this.error,
   });
 
   bool get isCaseType => postType == 'CASE';
+  bool get hasImage =>
+      (imageBytes != null && imageBytes!.isNotEmpty) ||
+      (imagePath != null && imagePath!.isNotEmpty);
 
   PostComposerState copyWith({
     PostComposerStatus? status,
     String? postType,
     bool? isAnonymous,
     String? imagePath,
+    String? imageName,
+    List<int>? imageBytes,
     bool clearImage = false,
     Failure? error,
     bool clearError = false,
@@ -35,10 +44,20 @@ class PostComposerState extends Equatable {
       postType: postType ?? this.postType,
       isAnonymous: isAnonymous ?? this.isAnonymous,
       imagePath: clearImage ? null : (imagePath ?? this.imagePath),
+      imageName: clearImage ? null : (imageName ?? this.imageName),
+      imageBytes: clearImage ? null : (imageBytes ?? this.imageBytes),
       error: clearError ? null : (error ?? this.error),
     );
   }
 
   @override
-  List<Object?> get props => [status, postType, isAnonymous, imagePath, error];
+  List<Object?> get props => [
+    status,
+    postType,
+    isAnonymous,
+    imagePath,
+    imageName,
+    imageBytes,
+    error,
+  ];
 }

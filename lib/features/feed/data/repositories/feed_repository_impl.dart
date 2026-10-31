@@ -40,6 +40,8 @@ class FeedRepositoryImpl implements FeedRepository {
     required String postType,
     required bool isAnonymous,
     File? imageFile,
+    List<int>? imageBytes,
+    String? imageName,
   }) async {
     try {
       await remoteDataSource.createPost(
@@ -47,6 +49,8 @@ class FeedRepositoryImpl implements FeedRepository {
         postType: postType,
         isAnonymous: isAnonymous,
         imageFile: imageFile,
+        imageBytes: imageBytes,
+        imageName: imageName,
       );
     } on ApiException catch (e) {
       throw FailureMapper.fromApiException(e);

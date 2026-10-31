@@ -21,6 +21,8 @@ abstract class FeedRepository {
     required String postType,
     required bool isAnonymous,
     File? imageFile,
+    List<int>? imageBytes,
+    String? imageName,
   });
 
   /// Toggles like on a post. Returns the server-confirmed `{liked, count}`.
